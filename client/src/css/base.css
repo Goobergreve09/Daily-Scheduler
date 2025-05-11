@@ -1,5 +1,6 @@
 body {
     background-color: #d5dbdb ;
+    padding-top: 100px;
 }
 
 .justify-content-center {
@@ -37,3 +38,4 @@ h1 {
 .headerImage {
     width:150px;
 }
+

@@ -3,3 +3,10 @@
     width:100%;
     font-size: 75px;
 }
+
+@media screen and (max-width:1034px) {
+    .homePage-row {
+        font-size: 32px;
+       text-align: center;
+    }
+}

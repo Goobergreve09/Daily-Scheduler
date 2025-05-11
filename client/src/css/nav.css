@@ -1,28 +1,45 @@
 .custom-navbar {
-    background-color: black!important;
+    background-color: black !important;
     width: 100vw;
     height: 100px;
     font-family: "Oxygen", sans-serif;
     z-index: 100;
     justify-content: center;
-    display:flex;
-    color:whitesmoke !important;
+    display: flex;
+    align-items: center;
+    color: whitesmoke !important;
+    position: fixed; /* Ensure navbar stays on top */
+    top: 0;
+    left: 0;
   }
   
   .navbar-logo {
-    width: 200px;
-    padding: 25px;
+    max-height: 100px; /* Constrain logo height */
+    width: auto;
+    padding: 10px;
   }
   
   #navbarCollapse {
-    margin-top: -30px;
+    margin-top: 0;
+    color: whitesmoke !important;
     text-align: center;
-    padding-left: 50px;
-    color:whitesmoke !important;
+    background-color: rgba(0, 0, 0, 0.95); /* Almost fully opaque black */
+    border-radius: 15px;
   }
   
-  @media (max-width: 450px) {
+  @media (max-width: 768px) {
     .custom-navbar {
-      width: 450px; /* Set a fixed width for screens smaller than 450px */
+      height: 80px;
+      padding: 0 10px;
     }
+  
+    .navbar-logo {
+      max-height: 50px;
+      padding: 5px;
+    }
+
+    body {
+        padding-top: 80px; /* Match smaller navbar height */
+      }
   }
+  
