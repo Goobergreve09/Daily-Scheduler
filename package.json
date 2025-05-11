@@ -1,5 +1,5 @@
 {
-    "name": "Blockbuster2024",
+    "name": "DailyScheduler",
     "version": "1.0.0",
     "description": "",
     "main": "server/server.js",
