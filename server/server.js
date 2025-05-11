@@ -6,7 +6,13 @@ const { expressMiddleware } = require('@apollo/server/express4');
 const { authMiddleware } = require('./utils/auth')
 
 const { typeDefs, resolvers } = require('./schemas');
+
 const db = require('./config/connection');
+db.once('open', () => {
+  console.log('Connected to MongoDB successfully!');
+});
+
+const cors = require('cors');
 
 const PORT = process.env.PORT || 3001;
 const server = new ApolloServer({
@@ -21,6 +27,11 @@ const startApolloServer = async () => {
   
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
+
+  app.use(cors({
+    origin: "http://localhost:3000", // Adjust for your frontend URL
+    credentials: true
+  }));
   
   app.use('/graphql', expressMiddleware(server, {
     context: authMiddleware

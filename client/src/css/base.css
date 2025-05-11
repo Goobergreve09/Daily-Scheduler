@@ -1,5 +1,5 @@
 body {
-    background-color: black;
+    background-color: #d5dbdb ;
 }
 
 .justify-content-center {
@@ -8,4 +8,32 @@ body {
 
 .italic {
     font-style: italic;
+}
+
+h1 {
+    color:black;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+ 
+}
+
+.uploaded-image {
+    width:300px;
+}
+
+.submissionImage {
+    width: 50%;
+}
+
+.submissionRow {
+    font-size: 24px;
+    text-align: center;
+    color: black !important;
+}
+
+.submissionContainer {
+    border: 2px solid black;
+}
+
+.headerImage {
+    width:150px;
 }

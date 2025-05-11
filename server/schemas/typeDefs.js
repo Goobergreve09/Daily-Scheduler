@@ -31,6 +31,38 @@ type User {
   movieLength: String!
   }
 
+  
+type LuckyPick {
+  _id: ID!
+  beforeImageUrl: String!
+  afterImageUrl: String!
+  multipliers: Int
+  freeGames: Int
+  numbersOffBoard: Int
+  wilds: Int
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  hitProgressive: Boolean
+  stageDetails: String
+  answer: String
+  createdAt: DateTime
+}
+
+input LuckyPickInput {
+  beforeImageUrl: String!
+  afterImageUrl: String!
+  multipliers: Int
+  freeGames: Int
+  numbersOffBoard: Int
+  wilds: Int
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  hitProgressive: Boolean
+  stageDetails: String
+}
+
   type Watchlist {
     _id: ID!
     movieId: String!
@@ -72,6 +104,7 @@ type User {
   type Query {
     me: User
     users: [User]
+    luckyPickSubmissions: [LuckyPick]
   }
 
   type Mutation {
@@ -84,6 +117,7 @@ type User {
     removeMovie(movieId: ID!): User
     saveWatchlist(movieData: WatchlistInput!): User
     removeWatchlist(movieId: ID!): User
+      submitLuckyPick(luckyPickData: LuckyPickInput!): LuckyPick
   }
 `;
 

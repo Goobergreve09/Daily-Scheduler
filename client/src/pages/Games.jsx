@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Games = () => {
   return (
     <Container className="home-container align-items-center">
       <Row className="img-header-row">
         <Col className="justify-content-center">
-          <div className="membership-card">
-            <MemberCardProfile
-              username={userData.username}
-              email={userData.email}
-              hoursWatched={formattedTotalWatchHours} // Pass total watch hours to MemberCard
-              paddedUsername={paddedUsername}
-              memberSince={memberSince}
-            />
-          </div>
+          <h1>Games History</h1>
+        </Col>
+      </Row>
+      <Row>
+      <Col className="justify-content-center">
+          <Link to="/lucky-pick"><h5>Lucky Pick</h5> </Link>
+        </Col>
+        <Col className="justify-content-center">
+          <h5>Moneyball</h5>
         </Col>
       </Row>
     </Container>

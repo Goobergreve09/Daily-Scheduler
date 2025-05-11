@@ -39,6 +39,17 @@ mutation resetPassword($email:String!){
 }
   `
 
+  export const LUCKYPICK_SUBMIT = gql`
+  mutation SubmitLuckyPick($luckyPickData: LuckyPickInput!) {
+    submitLuckyPick(luckyPickData: $luckyPickData) {
+      _id
+      beforeImageUrl
+      afterImageUrl
+      createdAt
+    }
+  }
+`;
+
 // export const SAVE_MOVIE = gql`
 //   mutation saveMovie($movieData: MovieInput!) {
 //     saveMovie(movieData: $movieData) {

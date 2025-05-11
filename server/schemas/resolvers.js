@@ -1,10 +1,14 @@
 const { signToken, AuthenticationError, generateResetToken } = require("../utils/auth.js");
 const { User } = require("../models");
+const { LuckyPickSubmission } = require("../models");
 
 
 
 const resolvers = {
   Query: {
+    luckyPickSubmissions: async () => {
+        return await LuckyPickSubmission.find().sort({ createdAt: -1 });
+      },
     me: async (parent, args, context) => {
       if (context.user) {
         return User.findOne({ _id: context.user._id });
@@ -61,93 +65,71 @@ const resolvers = {
           throw AuthenticationError;
         }
       },
- 
 
-
-        saveBook: async (parent, { bookData }, context) => {
-          if (context.user) {
-            const updatedUser = await User.findByIdAndUpdate(
-              { _id: context.user._id },
-              { $push: { savedBooks: bookData } },
-              { new: true }
-            );
-
-            return updatedUser;
-          }
-
-          throw AuthenticationError;
-        },
-
-          saveMovie: async (parent, { movieData }, context) => {
-            if (context.user) {
-              const updatedUser = await User.findByIdAndUpdate(
-                { _id: context.user._id },
-                { $push: { savedMovies: movieData } },
-                { new: true }
-              );
-
-              return updatedUser;
-            }
-
-            throw AuthenticationError;
+      submitLuckyPick: async (
+        parent,
+        {
+          luckyPickData: {
+            beforeImageUrl,
+            afterImageUrl,
+            multipliers,
+            freeGames,
+            numbersOffBoard,
+            wilds,
+            bet,
+            cashStart,
+            cashEnd,
+            hitProgressive,
+            stageDetails,
           },
+        },
+        context
+      ) => {
+        if (!context.user) {
+          throw new AuthenticationError("You must be logged in.");
+        }
+      
+        console.log("Data received in resolver:", {
+          beforeImageUrl,
+          afterImageUrl,
+          multipliers,
+          freeGames,
+          numbersOffBoard,
+          wilds,
+          bet,
+          cashStart,
+          cashEnd,
+          hitProgressive,
+          stageDetails,
+        });
+      
+        try {
+          const newSubmission = await LuckyPickSubmission.create({
+            beforeImageUrl,
+            afterImageUrl,
+            multipliers,
+            freeGames,
+            numbersOffBoard,
+            wilds,
+            bet,
+            cashStart,
+            cashEnd,
+            hitProgressive,
+            stageDetails,
+            answer: "default", // You can modify this if needed
+          });
+          console.log("New LuckyPick created:", newSubmission);
+          return newSubmission;
+        } catch (error) {
+          console.error("Error creating LuckyPick:", error);
+          throw new Error("Failed to create LuckyPick submission.");
+        }
+      },
+    },
+};
 
-            removeBook: async (parent, { bookId }, context) => {
-              if (context.user) {
-                const updatedUser = await User.findOneAndUpdate(
-                  { _id: context.user._id },
-                  { $pull: { savedBooks: { bookId } } },
-                  { new: true }
-                );
 
-                return updatedUser;
-              }
 
-              throw AuthenticationError;
-            },
 
-              removeMovie: async (parent, { movieId }, context) => {
-                if (context.user) {
-                  const updatedUser = await User.findOneAndUpdate(
-                    { _id: context.user._id },
-                    { $pull: { savedMovies: { movieId } } },
-                    { new: true }
-                  );
-
-                  return updatedUser;
-                }
-
-                throw AuthenticationError;
-              },
-
-                saveWatchlist: async (parent, { movieData }, context) => {
-                  if (context.user) {
-                    const updatedUser = await User.findByIdAndUpdate(
-                      { _id: context.user._id },
-                      { $push: { savedWatchlist: movieData } },
-                      { new: true }
-                    );
-
-                    return updatedUser;
-                  }
-
-                  throw AuthenticationError;
-                },
-
-                  removeWatchlist: async (parent, { movieId }, context) => {
-                    if (context.user) {
-                      const updatedUser = await User.findOneAndUpdate(
-                        { _id: context.user._id },
-                        { $pull: { savedWatchlist: { movieId } } },
-                        { new: true }
-                      );
-
-                      return updatedUser;
-                    }
-
-                    throw AuthenticationError;
-                  },
-  },
-  };
 
   module.exports = resolvers;

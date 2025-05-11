@@ -25,42 +25,27 @@ export const QUERY_USER = gql`
       _id
       username
       email
-      savedBooks
-      savedMovies
-      savedWatchlist
     }
   }
 `;
 
-export const QUERY_MOVIE = gql`
-  query movie {
-    me {
+export const QUERY_LUCKYPICK = gql`
+  query luckyPickSubmissions {
+    luckyPickSubmissions {
       _id
-      username
-      email
-      savedMovies {
-        movieId
-        title
-        image
-        movieLength
-      }
-    }
-  }
-`;
-
-export const QUERY_WATCHLIST = gql`
-  query watchlist {
-    me {
-      _id
-      username
-      email
-      savedWatchlist {
-        movieId
-        image
-        title
-        movieLength
-        createdAt
-      }
+      beforeImageUrl
+      afterImageUrl
+      answer
+      multipliers
+      freeGames
+      numbersOffBoard
+      wilds
+      bet
+      cashStart
+      cashEnd
+      hitProgressive
+      stageDetails
+      createdAt
     }
   }
 `;
