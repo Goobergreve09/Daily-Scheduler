@@ -1,0 +1,28 @@
+.custom-navbar {
+    background-color: black!important;
+    width: 100vw;
+    height: 100px;
+    font-family: "Oxygen", sans-serif;
+    z-index: 100;
+    justify-content: center;
+    display:flex;
+    color:whitesmoke !important;
+  }
+  
+  .navbar-logo {
+    width: 200px;
+    padding: 25px;
+  }
+  
+  #navbarCollapse {
+    margin-top: -30px;
+    text-align: center;
+    padding-left: 50px;
+    color:whitesmoke !important;
+  }
+  
+  @media (max-width: 450px) {
+    .custom-navbar {
+      width: 450px; /* Set a fixed width for screens smaller than 450px */
+    }
+  }

@@ -1,0 +1,46 @@
+.membership-card {
+    font-family: "American Typewriter", serif;
+    width: 100%;
+  }
+  
+  .totalMemberCard {
+    flex: auto;
+  }
+  
+  .cardText {
+    color: white;
+    font-size: 1.75vw; /* Use relative units like vw (viewport width) for font size */
+  }
+  
+  .cardText * {
+    font-size: inherit; /* Inherit font size from parent (.cardText) */
+  }
+  
+  .barcode-container {
+    display: flex;
+  }
+  
+
+  .username-container,
+  .email-container {
+    width: 70%;
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .barcode,
+  .username,
+  .email,
+  .memberSince {
+    margin-right: auto;
+  }
+  
+  .username,
+  .email {
+    margin-top: -5px;
+  }
+  
+  .username-container {
+    margin-top: 12px;
+  }
+  

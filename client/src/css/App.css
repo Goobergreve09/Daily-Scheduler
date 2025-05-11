@@ -1,0 +1,51 @@
+.small {
+    font-weight: 300;
+    font-style: italic;
+  }
+  
+  .forgot-password-link {
+    color: #57a3db;
+  }
+  .forgot-password-link:hover {
+    color: #2485cc;
+  }
+  
+  .contactSupport {
+    color: #57a3db;
+  }
+  
+  .contactSupport:hover {
+    color: #2485cc;
+    text-decoration: underline;
+  }
+  
+  .needHelp-bold {
+    font-weight: bold;
+  }
+  
+  .emailAddress {
+    padding-right: 10px;
+    font-weight: bold;
+  }
+  
+  .resetpassword-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background-image: url(https://cdn.wallpapersafari.com/11/37/z6cE9y.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  
+  @media (max-width: 600px) {
+    .feedback-btn {
+      width: max-content !important;
+      font-size: 16px;
+    }
+  }
