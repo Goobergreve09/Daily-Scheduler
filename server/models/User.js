@@ -2,8 +2,8 @@ const { Schema, model } = require("mongoose");
 const bcrypt = require("bcrypt");
 
 // Import other schemas
-const movieSchema = require("./Movie");
-const watchlistSchema = require("./Watchlist");
+
+// const watchlistSchema = require("./Watchlist");
 
 const userSchema = new Schema(
   {
@@ -24,14 +24,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    memberSince: {
-      type: Date,
-    },
 
     // Set savedBooks to be an array of data that adheres to bookSchema
-    savedBooks: [bookSchema],
-    savedMovies: [movieSchema],
-    savedWatchlist: [watchlistSchema],
+    // savedBooks: [bookSchema],
+    // savedMovies: [movieSchema],
+    // savedWatchlist: [watchlistSchema],
   },
   // Set this to use virtual below
   {
@@ -47,8 +44,6 @@ userSchema.pre("save", async function (next) {
     const saltRounds = 10;
     this.password = await bcrypt.hash(this.password, saltRounds);
   }
-
-
 });
 
 // Custom method to compare and validate password for logging in
@@ -57,9 +52,9 @@ userSchema.methods.isCorrectPassword = async function (password) {
 };
 
 // When we query a user, we'll also get another field called `bookCount` with the number of saved books we have
-userSchema.virtual("bookCount").get(function () {
-  return this.savedBooks.length;
-});
+// userSchema.virtual("bookCount").get(function () {
+//   return this.savedBooks.length;
+// });
 
 const User = model("User", userSchema);
 
