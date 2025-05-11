@@ -15,7 +15,7 @@ const Games = () => {
           <Link to="/lucky-pick"><h5>Lucky Pick</h5> </Link>
         </Col>
         <Col className="justify-content-center">
-          <h5>Moneyball</h5>
+        <Link to="/moneyball"><h5>Moneyball</h5></Link>
         </Col>
       </Row>
     </Container>

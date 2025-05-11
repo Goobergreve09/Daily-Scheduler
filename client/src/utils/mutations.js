@@ -25,21 +25,20 @@ export const ADD_USER = gql`
   }
 `;
 
-
 export const RESET_PASSWORD = gql`
-mutation resetPassword($email:String!){
-  resetPassword(email:$email) {
-    token
-    user{
-      _id
-      username
-      email
+  mutation resetPassword($email: String!) {
+    resetPassword(email: $email) {
+      token
+      user {
+        _id
+        username
+        email
+      }
     }
   }
-}
-  `
+`;
 
-  export const LUCKYPICK_SUBMIT = gql`
+export const LUCKYPICK_SUBMIT = gql`
   mutation SubmitLuckyPick($luckyPickData: LuckyPickInput!) {
     submitLuckyPick(luckyPickData: $luckyPickData) {
       _id
@@ -50,54 +49,11 @@ mutation resetPassword($email:String!){
   }
 `;
 
-// export const SAVE_MOVIE = gql`
-//   mutation saveMovie($movieData: MovieInput!) {
-//     saveMovie(movieData: $movieData) {
-//       _id
-//       username
-//       email
-//       savedMovies {
-//         movieId
-//         title
-//         image
-//         movieLength
-//       }
-//     }
-//   }
-// `;
-
-// export const REMOVE_MOVIE = gql`
-//   mutation removeMovie($movieId: ID!) {
-//     removeMovie(movieId: $movieId) {
-//       _id
-//       username
-//       email
-//       savedMovies {
-//         movieId
-//         title
-//         image
-//         movieLength
-//       }
-//     }
-//   }
-// `;
-
-// export const SAVE_BOOK = gql`
-//   mutation saveBook($bookData: BookInput!) {
-//     saveBook(bookData: $bookData) {
-//       _id
-//       username
-//       email
-//       bookCount
-//       savedBooks {
-//         bookId
-//         authors
-//         description
-//         title
-//         image
-//         link
-//       }
-//     }
-//   }
-// `;
-
+export const MONEYBALL_SUBMIT = gql`
+  mutation SubmitMoneyBall($moneyBallData: MoneyBallInput!) {
+    submitMoneyBall(moneyBallData: $moneyBallData) {
+      _id
+      createdAt
+    }
+  }
+`;

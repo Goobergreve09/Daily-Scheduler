@@ -60,6 +60,26 @@ export const submitLuckyPick = async (formData) => {
     .catch(handleFetchError);
 };
 
+export const submitMoneyBall = async (formData) => {
+  const token = AuthService.getToken();
+
+  return fetch("/api/moneyball", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to submit Money Ball data");
+      }
+      return response.json();
+    })
+    .catch(handleFetchError);
+};
+
 
 // save book data for a logged in user
 // export const saveBook = (bookData) => {

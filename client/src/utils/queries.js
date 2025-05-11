@@ -49,3 +49,21 @@ export const QUERY_LUCKYPICK = gql`
     }
   }
 `;
+
+export const QUERY_MONEYBALL = gql`
+  query moneyBallSubmissions {
+    moneyBallSubmissions {
+      _id
+      beginningNumber
+      endingNumber
+      hitJackPot
+      jackpotDetails
+      bet
+      cashStart
+      cashEnd
+      hitFreeGames
+      freeGamesDetails
+      createdAt
+    }
+  }
+`;
