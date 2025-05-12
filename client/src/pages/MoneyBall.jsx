@@ -43,7 +43,7 @@ const MoneyBall = () => {
             jackpotDetails: formData.jackpotDetails || "",
             bet: parseFloat(formData.bet) || 0,
             cashStart: parseFloat(formData.cashStart) || 0,
-            cashEnd: parseFloat(formData.cashEnd) || 0,
+            cashEnd: formData.cashEnd !== "" ? parseFloat(formData.cashEnd) : 0,
             hitFreeGames: formData.hitFreeGames === "true",
             freeGamesDetails: formData.freeGamesDetails || "",
           },
@@ -92,181 +92,189 @@ const MoneyBall = () => {
 
       {/* Custom Form Fields */}
       <Card className="formCard mt-5 mb-5 p-4">
-      <Row className="mt-4">
-        <Col md={6}>
-          <Form.Group controlId="beginningNumber">
-            <Form.Label>What number did you begin with?</Form.Label>
-            <Form.Control
-              type="number"
-              name="beginningNumber"
-              value={formData.beginningNumber}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
+        <Row className="mt-4">
+          <Col md={6}>
+            <Form.Group controlId="beginningNumber">
+              <Form.Label>What number did you begin with?</Form.Label>
+              <Form.Control
+                type="number"
+                name="beginningNumber"
+                value={formData.beginningNumber}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="endingNumber">
-            <Form.Label>What number did you hit on?</Form.Label>
-            <Form.Control
-              type="number"
-              name="endingNumber"
-              value={formData.endingNumber}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
+            <Form.Group controlId="endingNumber">
+              <Form.Label>What number did you hit on?</Form.Label>
+              <Form.Control
+                type="number"
+                name="endingNumber"
+                value={formData.endingNumber}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="hitJackPot">
-            <Form.Label>Did you hit the jackpot?</Form.Label>
-            <Form.Control
-              as="select"
-              name="hitJackPot"
-              value={formData.hitJackPot}
-              onChange={handleInputChange}
-            >
-              <option value="">Select...</option>
-              <option value="true">Yes</option>
-              <option value="false">No</option>
-            </Form.Control>
-          </Form.Group>
+            <Form.Group controlId="hitJackPot">
+              <Form.Label>Did you hit the jackpot?</Form.Label>
+              <Form.Control
+                as="select"
+                name="hitJackPot"
+                value={formData.hitJackPot}
+                onChange={handleInputChange}
+              >
+                <option value="">Select...</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId="jackpotDetails">
-            <Form.Label>How many times?</Form.Label>
-            <Form.Control
-              type="text"
-              name="jackpotDetails"
-              value={formData.jackpotDetails}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-        </Col>
+            <Form.Group controlId="jackpotDetails">
+              <Form.Label>How many times?</Form.Label>
+              <Form.Control
+                type="text"
+                name="jackpotDetails"
+                value={formData.jackpotDetails}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </Col>
 
-        <Col md={6}>
-          <Form.Group controlId="bet">
-            <Form.Label>Bet?</Form.Label>
-            <Form.Control
-              type="number"
-              step="0.01"
-              name="bet"
-              value={formData.bet}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
+          <Col md={6}>
+            <Form.Group controlId="bet">
+              <Form.Label>Bet?</Form.Label>
+              <Form.Control
+                type="number"
+                step="0.01"
+                name="bet"
+                value={formData.bet}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="cashStart">
-            <Form.Label>Cash Start</Form.Label>
-            <Form.Control
-              type="number"
-              step="0.01"
-              name="cashStart"
-              value={formData.cashStart}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
+            <Form.Group controlId="cashStart">
+              <Form.Label>Cash Start</Form.Label>
+              <Form.Control
+                type="number"
+                step="0.01"
+                name="cashStart"
+                value={formData.cashStart}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="cashEnd">
-            <Form.Label>Cash End</Form.Label>
-            <Form.Control
-              type="number"
-              step="0.01"
-              name="cashEnd"
-              value={formData.cashEnd}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
+            <Form.Group controlId="cashEnd">
+              <Form.Label>Cash End</Form.Label>
+              <Form.Control
+                type="number"
+                name="cashEnd"
+                value={formData.cashEnd}
+                onChange={handleInputChange}
+                step="any"
+              />
+            </Form.Group>
 
-          <Form.Group controlId="hitFreeGames">
-            <Form.Label>Did you hit free games?</Form.Label>
-            <Form.Control
-              as="select"
-              name="hitFreeGames"
-              value={formData.hitFreeGames}
-              onChange={handleInputChange}
-            >
-              <option value="">Select...</option>
-              <option value="true">Yes</option>
-              <option value="false">No</option>
-            </Form.Control>
-          </Form.Group>
+            <Form.Group controlId="hitFreeGames">
+              <Form.Label>Did you hit free games?</Form.Label>
+              <Form.Control
+                as="select"
+                name="hitFreeGames"
+                value={formData.hitFreeGames}
+                onChange={handleInputChange}
+              >
+                <option value="">Select...</option>
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId="freeGamesDetails">
-            <Form.Label>How many times?</Form.Label>
-            <Form.Control
-              type="text"
-              name="freeGamesDetails"
-              value={formData.freeGamesDetails}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
+            <Form.Group controlId="freeGamesDetails">
+              <Form.Label>How many times?</Form.Label>
+              <Form.Control
+                type="text"
+                name="freeGamesDetails"
+                value={formData.freeGamesDetails}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
 
-      {/* Submit Button */}
-      <Row className="mt-4 mb-5 text-center">
-        <Col>
-          <Button className="w-25" variant="success" onClick={handleSubmit}>
-            Submit
-          </Button>
-        </Col>
-      </Row>
-</Card>
+        {/* Submit Button */}
+        <Row className="mt-4 mb-5 text-center">
+          <Col>
+            <Button className="w-25" variant="success" onClick={handleSubmit}>
+              Submit
+            </Button>
+          </Col>
+        </Row>
+      </Card>
       {/* Display Submissions */}
 
       <Row>
-  <Col>
-    <h3 className="justify-content-center mb-5">Previous Submissions</h3>
+        <Col>
+          <h3 className="justify-content-center mb-5">Previous Submissions</h3>
 
- 
+          {!loading &&
+            submissions.length > 0 &&
+            (() => {
+              const totals = submissions.reduce(
+                (acc, sub) => {
+                  const start = parseFloat(sub.cashStart) || 0;
+                  const end = parseFloat(sub.cashEnd) || 0;
+                  acc.cashStart += start;
+                  acc.cashEnd += end;
+                  if (end > start) acc.gamesWon += 1;
+                  else if (end < start) acc.gamesLost += 1;
+                  return acc;
+                },
+                { cashStart: 0, cashEnd: 0, gamesWon: 0, gamesLost: 0 }
+              );
 
-    {!loading && submissions.length > 0 && (() => {
-  const totals = submissions.reduce(
-    (acc, sub) => {
-      const start = parseFloat(sub.cashStart) || 0;
-      const end = parseFloat(sub.cashEnd) || 0;
-      acc.cashStart += start;
-      acc.cashEnd += end;
-      if (end > start) acc.gamesWon += 1;
-      else if (end < start) acc.gamesLost += 1;
-      return acc;
-    },
-    { cashStart: 0, cashEnd: 0, gamesWon: 0, gamesLost: 0 }
-  );
+              const totalRevenue = (totals.cashEnd - totals.cashStart).toFixed(
+                2
+              );
+              const totalGames = totals.gamesWon + totals.gamesLost;
+              const winPercentage =
+                totalGames > 0
+                  ? ((totals.gamesWon / totalGames) * 100).toFixed(2)
+                  : "0.00";
+              const averageHit = (
+                submissions.reduce(
+                  (acc, sub) => acc + (sub.endingNumber || 0),
+                  0
+                ) / submissions.length
+              ).toFixed(2);
 
-  const totalRevenue = (totals.cashEnd - totals.cashStart).toFixed(2);
-  const totalGames = totals.gamesWon + totals.gamesLost;
-  const winPercentage = totalGames > 0 ? ((totals.gamesWon / totalGames) * 100).toFixed(2) : "0.00";
-  const averageHit = (
-    submissions.reduce((acc, sub) => acc + (sub.endingNumber || 0), 0) / submissions.length
-  ).toFixed(2);
-
-  return (
-    <Container className="totalsBackground p-3 mb-4">
-      <Row className="text-center mb-2">
-        <Col>
-          <h5>Average Number Hit: {averageHit}</h5>
-        </Col>
-      </Row>
-      <Row className="text-center mb-2">
-        <Col>
-          <h5>Total Revenue: ${totalRevenue}</h5>
-        </Col>
-      </Row>
-      <Row className="text-center mt-4">
-        <Col>
-          <h5>Games Won: {totals.gamesWon}</h5>
-        </Col>
-        </Row>
-        <Row className="text-center">
-        <Col>
-          <h5>Games Lost: {totals.gamesLost}</h5>
-        </Col>
-      </Row>
-      <Row className="text-center mt-4">
-        <Col>
-          <h5>Win Percentage: {winPercentage}%</h5>
-        </Col>
-      </Row>
-    </Container>
-  );
-})()}
+              return (
+                <Container className="totalsBackground p-3 mb-4">
+                  <Row className="text-center mb-2">
+                    <Col>
+                      <h5>Average Number Hit: {averageHit}</h5>
+                    </Col>
+                  </Row>
+                  <Row className="text-center mb-2">
+                    <Col>
+                      <h5>Total Revenue: ${totalRevenue}</h5>
+                    </Col>
+                  </Row>
+                  <Row className="text-center mt-4">
+                    <Col>
+                      <h5>Games Won: {totals.gamesWon}</h5>
+                    </Col>
+                  </Row>
+                  <Row className="text-center">
+                    <Col>
+                      <h5>Games Lost: {totals.gamesLost}</h5>
+                    </Col>
+                  </Row>
+                  <Row className="text-center mt-4">
+                    <Col>
+                      <h5>Win Percentage: {winPercentage}%</h5>
+                    </Col>
+                  </Row>
+                </Container>
+              );
+            })()}
           {loading ? (
             <p>Loading...</p>
           ) : submissions.length === 0 ? (
