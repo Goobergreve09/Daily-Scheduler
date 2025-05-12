@@ -67,6 +67,31 @@ input MoneyBallInput {
   createdAt: DateTime
 }
 
+type RegalRiches {
+  _id: ID!
+ whichColor: String
+  combo: Boolean
+ beginningNumber: Int
+  endingNumber: Int
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  notes: String
+  createdAt: DateTime
+}
+
+input RegalRichesInput {
+ whichColor: String
+  combo: Boolean
+ beginningNumber: Int
+  endingNumber: Int
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  notes: String
+  createdAt: DateTime
+}
+
 
   type Auth {
     token: ID!
@@ -78,6 +103,7 @@ input MoneyBallInput {
     users: [User]
     luckyPickSubmissions: [LuckyPick]
     moneyBallSubmissions: [MoneyBall]
+     regalRichesSubmissions: [RegalRiches]
   }
 
   type Mutation {
@@ -86,6 +112,7 @@ input MoneyBallInput {
     resetPassword(email:String!): Auth
       submitLuckyPick(luckyPickData: LuckyPickInput!): LuckyPick
       submitMoneyBall(moneyBallData: MoneyBallInput!): MoneyBall
+      submitRegalRiches(regalRichesData: RegalRichesInput!): RegalRiches
   }
 `;
 

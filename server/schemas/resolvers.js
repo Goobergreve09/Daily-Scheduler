@@ -170,7 +170,63 @@ const resolvers = {
         throw new Error("Failed to create MoneyBall submission.");
       }
     },
-  },
-};
+    submitRegalRiches: async (
+        parent,
+        {
+          regalRichesData: {
+            whichColor,
+            combo,
+            beginningNumber,
+            endingNumber,
+            bet,
+            cashStart,
+            cashEnd,
+            notes,
+            createdAt,
+          },
+        },
+        context
+      ) => {
+        if (!context.user) {
+          throw new AuthenticationError("You must be logged in.");
+        }
+  
+        console.log("Data received in resolver:", {
+            whichColor,
+            combo,
+            beginningNumber,
+            endingNumber,
+            bet,
+            cashStart,
+            cashEnd,
+            notes,
+            createdAt,
+        });
+  
+        try {
+          const newSubmissionRegalRiches = await RegalRichesSubmission.create({
+            whichColor,
+            combo,
+            beginningNumber,
+            endingNumber,
+            bet,
+            cashStart,
+            cashEnd,
+            notes,
+            createdAt,
+          });
+          console.log("New Regal Riches created:", newSubmissionRegalRiches);
+          return newSubmissionRegalRiches;
+        } catch (error) {
+          console.error("Error creating Regal Riches:", error);
+          throw new Error("Failed to create Regal Riches submission.");
+        }
+      },
+    },
+  };
+  
+
+
+
 
 module.exports = resolvers;

@@ -9,6 +9,7 @@ import Games from './pages/Games.jsx';
 import ForgotPassword from "./pages/ForgotPassword";
 import LuckyPick from './pages/LuckyPick.jsx';
 import MoneyBall from "./pages/MoneyBall.jsx"
+import RegalRiches from "./pages/RegalRiches.jsx"
 
 
 const router = createBrowserRouter([
@@ -41,6 +42,11 @@ const router = createBrowserRouter([
       {
         path: "/moneyball",
         element: <MoneyBall />,
+      },
+
+      {
+        path: "/regalriches",
+        element: <RegalRiches />,
       },
       
     ],

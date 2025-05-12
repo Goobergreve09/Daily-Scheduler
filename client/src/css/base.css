@@ -39,3 +39,15 @@ h1 {
     width:150px;
 }
 
+.formCard {
+    border: 3px solid black;
+    font-family: "Funnel Display", sans-serif;
+}
+
+.totalsBackground {
+    background-color: whitesmoke !important;
+    width:max-content;
+    border:solid 2px black;
+    border-radius: 10px;
+}
+

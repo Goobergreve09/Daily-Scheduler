@@ -67,3 +67,20 @@ export const QUERY_MONEYBALL = gql`
     }
   }
 `;
+
+export const QUERY_REGAL = gql`
+  query regalRichesSubmissions {
+    regalRichesSubmissions {
+      _id
+      whichColor
+      combo
+      beginningNumber
+      endingNumber
+      bet
+      cashStart
+      cashEnd
+      notes
+      createdAt
+    }
+  }
+`;

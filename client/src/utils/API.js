@@ -80,44 +80,23 @@ export const submitMoneyBall = async (formData) => {
     .catch(handleFetchError);
 };
 
+export const submitRegalRiches = async (formData) => {
+  const token = AuthService.getToken();
 
-// save book data for a logged in user
-// export const saveBook = (bookData) => {
-//   const token = AuthService.getToken();
-//   console.log("Using token:", token);
-//   return fetch("/api/users", {
-//     method: "PUT",
-//     headers: {
-//       "Content-Type": "application/json",
-//       authorization: `Bearer ${token}`,
-//     },
-//     body: JSON.stringify(bookData),
-//   })
-//   .catch((error) => {
-//     handleFetchError(error);
-//   });
-// };
+  return fetch("/api/regalriches", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to submit Regal Riches data");
+      }
+      return response.json();
+    })
+    .catch(handleFetchError);
+};
 
-// export const deleteBook = (bookId) => {
-//     const token = AuthService.getToken();
-//     console.log("Using token:", token);
-//     return fetch(`/api/users/books/${bookId}`, {
-//       method: "DELETE",
-//       headers: {
-//         authorization: `Bearer ${token}`,
-//       },
-//     })
-//     .catch((error) => {
-//       handleFetchError(error);
-//     });
-//   };
-
-
-
-// remove saved book data for a logged in user
-
-
-
-
-// Make a search to Google Books API
-// https://www.googleapis.com/books/v1/volumes?q=harry+potter

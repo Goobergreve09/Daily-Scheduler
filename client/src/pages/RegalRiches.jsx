@@ -1,30 +1,28 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { QUERY_MONEYBALL } from "../utils/queries";
-import { MONEYBALL_SUBMIT } from "../utils/mutations";
-import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
-import moneyBallLogo from "../assets/images/moneyBallLogo.jpg";
+import { QUERY_REGAL } from "../utils/queries";
+import { REGALRICHES_SUBMIT } from "../utils/mutations";
+import { Container, Row, Col, Form, Button} from "react-bootstrap";
+import regalRichesLogo from "../assets/images/regalRiches-Logo.webp";
 
-import "../css/base.css";
 import "../css/luckyPick.css";
 
-const MoneyBall = () => {
-  const { loading, data, refetch } = useQuery(QUERY_MONEYBALL);
+const RegalRiches = () => {
+  const { loading, data, refetch } = useQuery(QUERY_REGAL);
 
-  const [submitMoneyBall] = useMutation(MONEYBALL_SUBMIT, {
+  const [submitRegalRiches] = useMutation(REGALRICHES_SUBMIT, {
     errorPolicy: "all",
   });
 
   const [formData, setFormData] = useState({
+    whichColor: "",
+    combo: "",
     beginningNumber: "",
     endingNumber: "",
-    hitJackPot: "",
-    jackpotDetails: "",
     bet: "",
     cashStart: "",
     cashEnd: "",
-    hitFreeGames: "",
-    freeGamesDetails: "",
+    notes: "",
   });
 
   const handleInputChange = (e) => {
@@ -34,18 +32,17 @@ const MoneyBall = () => {
 
   const handleSubmit = async () => {
     try {
-      await submitMoneyBall({
+      await submitRegalRiches({
         variables: {
-          moneyBallData: {
+          regalRichesData: {
+            whichColor: formData.whichColor|| "",
+            combo: formData.combo === "true",
             beginningNumber: parseInt(formData.beginningNumber),
             endingNumber: parseInt(formData.endingNumber),
-            hitJackPot: formData.hitJackPot === "true",
-            jackpotDetails: formData.jackpotDetails || "",
             bet: parseFloat(formData.bet) || 0,
             cashStart: parseFloat(formData.cashStart) || 0,
             cashEnd: parseFloat(formData.cashEnd) || 0,
-            hitFreeGames: formData.hitFreeGames === "true",
-            freeGamesDetails: formData.freeGamesDetails || "",
+            notes: formData.notes || "",
           },
         },
       });
@@ -55,43 +52,41 @@ const MoneyBall = () => {
 
       // Reset form
       setFormData({
+        whichColor: "",
+        combo: "",
         beginningNumber: "",
         endingNumber: "",
-        hitJackPot: "",
-        jackpotDetails: "",
         bet: "",
         cashStart: "",
         cashEnd: "",
-        hitFreeGames: "",
-        freeGamesDetails: "",
+        notes: "",
       });
     } catch (error) {
       console.error("Submission error:", error);
     }
   };
 
-  const submissions = data?.moneyBallSubmissions || [];
+  const submissions = data?.regalRichesSubmissions || [];
 
   return (
     <Container className="luckyPick-container">
       {/* Image Upload Section - unchanged */}
       <Row className="img-header-row text-center">
         <Col>
-          <h1 className="mt-4">MoneyBall Submission</h1>
+          <h1 className="mt-4">Regal Riches Submission</h1>
         </Col>
       </Row>
       <Row className="img-header-row text-center">
         <Col>
           <img
-            src={moneyBallLogo}
-            alt="Money Ball Logo"
+            src={regalRichesLogo}
+            alt="Regal Riches Logo"
             className="headerImage"
           />
         </Col>
       </Row>
 
       {/* Custom Form Fields */}
-      <Card className="formCard mt-5 mb-5 p-4">
       <Row className="mt-4">
         <Col md={6}>
           <Form.Group controlId="beginningNumber">
@@ -202,71 +197,45 @@ const MoneyBall = () => {
       {/* Submit Button */}
       <Row className="mt-4 mb-5 text-center">
         <Col>
-          <Button className="w-25" variant="success" onClick={handleSubmit}>
+          <Button variant="success" onClick={handleSubmit}>
             Submit
           </Button>
         </Col>
       </Row>
-</Card>
+
       {/* Display Submissions */}
 
       <Row>
   <Col>
     <h3 className="justify-content-center mb-5">Previous Submissions</h3>
 
- 
-
-    {!loading && submissions.length > 0 && (() => {
-  const totals = submissions.reduce(
-    (acc, sub) => {
-      const start = parseFloat(sub.cashStart) || 0;
-      const end = parseFloat(sub.cashEnd) || 0;
-      acc.cashStart += start;
-      acc.cashEnd += end;
-      if (end > start) acc.gamesWon += 1;
-      else if (end < start) acc.gamesLost += 1;
-      return acc;
-    },
-    { cashStart: 0, cashEnd: 0, gamesWon: 0, gamesLost: 0 }
-  );
-
-  const totalRevenue = (totals.cashEnd - totals.cashStart).toFixed(2);
-  const totalGames = totals.gamesWon + totals.gamesLost;
-  const winPercentage = totalGames > 0 ? ((totals.gamesWon / totalGames) * 100).toFixed(2) : "0.00";
-  const averageHit = (
-    submissions.reduce((acc, sub) => acc + (sub.endingNumber || 0), 0) / submissions.length
-  ).toFixed(2);
-
-  return (
-    <Container className="totalsBackground p-3 mb-4">
-      <Row className="text-center mb-2">
-        <Col>
-          <h5>Average Number Hit: {averageHit}</h5>
-        </Col>
-      </Row>
-      <Row className="text-center mb-2">
-        <Col>
-          <h5>Total Revenue: ${totalRevenue}</h5>
-        </Col>
-      </Row>
-      <Row className="text-center mt-4">
-        <Col>
-          <h5>Games Won: {totals.gamesWon}</h5>
-        </Col>
+    {!loading && submissions.length > 0 && (
+      <>
+        <Row className="text-center mb-3">
+          <Col>
+            <h5>
+              Average Number Hit On:{" "}
+              {(
+                submissions.reduce((acc, sub) => acc + (sub.endingNumber || 0), 0) /
+                submissions.length
+              ).toFixed(2)}
+            </h5>
+          </Col>
         </Row>
-        <Row className="text-center">
-        <Col>
-          <h5>Games Lost: {totals.gamesLost}</h5>
-        </Col>
-      </Row>
-      <Row className="text-center mt-4">
-        <Col>
-          <h5>Win Percentage: {winPercentage}%</h5>
-        </Col>
-      </Row>
-    </Container>
-  );
-})()}
+
+        <Row className="text-center mb-5">
+          <Col>
+            <h5>
+              Total Revenue: $
+              {(
+                submissions.reduce((acc, sub) => acc + (sub.cashEnd || 0), 0) -
+                submissions.reduce((acc, sub) => acc + (sub.cashStart || 0), 0)
+              ).toFixed(2)}
+            </h5>
+          </Col>
+        </Row>
+      </>
+    )}
           {loading ? (
             <p>Loading...</p>
           ) : submissions.length === 0 ? (
@@ -362,4 +331,4 @@ const MoneyBall = () => {
   );
 };
 
-export default MoneyBall;
+export default RegalRiches;

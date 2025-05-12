@@ -57,3 +57,12 @@ export const MONEYBALL_SUBMIT = gql`
     }
   }
 `;
+
+export const REGALRICHES_SUBMIT = gql`
+  mutation SubmitRegalRiches($regalRichesData: RegalRichesInput!) {
+    submitRegalRiches(regalRichesData: $regalRichesData) {
+      _id
+      createdAt
+    }
+  }
+`;
