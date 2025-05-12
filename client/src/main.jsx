@@ -5,12 +5,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App.jsx";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import Games from './pages/Games.jsx';
+import Games from "./pages/Games.jsx";
 import ForgotPassword from "./pages/ForgotPassword";
-import LuckyPick from './pages/LuckyPick.jsx';
-import MoneyBall from "./pages/MoneyBall.jsx"
-import RegalRiches from "./pages/RegalRiches.jsx"
-
+import LuckyPick from "./pages/LuckyPick.jsx";
+import MoneyBall from "./pages/MoneyBall.jsx";
+import RegalRiches from "./pages/RegalRiches.jsx";
+import RichLittlePiggies from "./pages/RichLittlePiggies.jsx";
 
 const router = createBrowserRouter([
   {
@@ -48,7 +48,11 @@ const router = createBrowserRouter([
         path: "/regalriches",
         element: <RegalRiches />,
       },
-      
+
+      {
+        path: "/richlittlepiggies",
+        element: <RichLittlePiggies />,
+      },
     ],
   },
 ]);

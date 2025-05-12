@@ -202,7 +202,7 @@ const MoneyBall = () => {
         {/* Submit Button */}
         <Row className="mt-4 mb-5 text-center">
           <Col>
-            <Button className="w-25" variant="success" onClick={handleSubmit}>
+            <Button className="submitButton w-25" variant="success" onClick={handleSubmit}>
               Submit
             </Button>
           </Col>

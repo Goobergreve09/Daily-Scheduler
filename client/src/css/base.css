@@ -36,7 +36,8 @@ h1 {
 }
 
 .headerImage {
-    width:150px;
+    width:300px;
+    border-radius: 15px;
 }
 
 .formCard {
@@ -49,5 +50,15 @@ h1 {
     width:max-content;
     border:solid 2px black;
     border-radius: 10px;
+}
+
+@media screen and (max-width:570px) {
+    .submitButton {
+        width:75% !important;
+    }
+
+    .headerImage {
+        width:75% !important;
+    }
 }
 

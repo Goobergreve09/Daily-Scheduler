@@ -7,7 +7,7 @@ import regalRichesLogo from "../assets/images/regalRiches-logo.webp";
 
 import "../css/luckyPick.css";
 
-const RegalRiches = () => {
+const RichLittlePiggies = () => {
   const { loading, data, refetch } = useQuery(QUERY_REGAL);
 
   const [submitRegalRiches] = useMutation(REGALRICHES_SUBMIT, {
@@ -291,4 +291,4 @@ const RegalRiches = () => {
   );
 };
 
-export default RegalRiches;
+export default RichLittlePiggies;
