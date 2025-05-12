@@ -3,7 +3,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_REGAL } from "../utils/queries";
 import { REGALRICHES_SUBMIT } from "../utils/mutations";
 import { Container, Row, Col, Form, Button} from "react-bootstrap";
-import regalRichesLogo from "../assets/images/regalRiches-Logo.webp";
+import regalRichesLogo from "../assets/images/regalRiches-logo.webp";
 
 import "../css/luckyPick.css";
 
