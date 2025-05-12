@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_REGAL } from "../utils/queries";
 import { REGALRICHES_SUBMIT } from "../utils/mutations";
-import { Container, Row, Col, Form, Button, Card} from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import regalRichesLogo from "../assets/images/regalRiches-logo.webp";
 
 import "../css/luckyPick.css";
@@ -67,6 +67,16 @@ const RegalRiches = () => {
 
   const submissions = data?.regalRichesSubmissions || [];
 
+  // Calculate metrics: Total Revenue, Wins, Losses, Win Percentage
+  const totalRevenue = submissions.reduce(
+    (acc, sub) => acc + (sub.cashEnd || 0) - (sub.cashStart || 0),
+    0
+  ).toFixed(2);
+
+  const gamesWon = submissions.filter((sub) => sub.endingNumber > sub.beginningNumber).length;
+  const gamesLost = submissions.length - gamesWon;
+  const winPercentage = submissions.length > 0 ? ((gamesWon / submissions.length) * 100).toFixed(2) : 0;
+
   return (
     <Container className="luckyPick-container">
       <Row className="img-header-row text-center">
@@ -82,114 +92,114 @@ const RegalRiches = () => {
 
       {/* Form Section */}
       <Card className="formCard mt-5 mb-5 p-4">
-      <Row className="mt-4">
-        <Col md={6}>
-          <Form.Group controlId="whichColor">
-            <Form.Label>Which color did you play?</Form.Label>
-            <Form.Control
-              as="select"
-              name="whichColor"
-              value={formData.whichColor}
-              onChange={handleInputChange}
-            >
-              <option value="">Select a color</option>
-              <option value="blue">Blue</option>
-              <option value="purple">Purple</option>
-              <option value="green">Green</option>
-              <option value="yellow">Yellow</option>
-            </Form.Control>
-          </Form.Group>
+        <Row className="mt-4">
+          <Col md={6}>
+            <Form.Group controlId="whichColor">
+              <Form.Label>Which color did you play?</Form.Label>
+              <Form.Control
+                as="select"
+                name="whichColor"
+                value={formData.whichColor}
+                onChange={handleInputChange}
+              >
+                <option value="">Select a color</option>
+                <option value="blue">Blue</option>
+                <option value="purple">Purple</option>
+                <option value="green">Green</option>
+                <option value="yellow">Yellow</option>
+              </Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId="combo">
-            <Form.Label>Was this a combo?</Form.Label>
-            <Form.Control
-              as="select"
-              name="combo"
-              value={formData.combo}
-              onChange={handleInputChange}
-            >
-              <option value="">Select...</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </Form.Control>
-          </Form.Group>
+            <Form.Group controlId="combo">
+              <Form.Label>Was this a combo?</Form.Label>
+              <Form.Control
+                as="select"
+                name="combo"
+                value={formData.combo}
+                onChange={handleInputChange}
+              >
+                <option value="">Select...</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId="beginningNumber">
-            <Form.Label>What number did you start with?</Form.Label>
-            <Form.Control
-              type="number"
-              name="beginningNumber"
-              value={formData.beginningNumber}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
+            <Form.Group controlId="beginningNumber">
+              <Form.Label>What number did you start with?</Form.Label>
+              <Form.Control
+                type="number"
+                name="beginningNumber"
+                value={formData.beginningNumber}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="endingNumber">
-            <Form.Label>What number did it hit on?</Form.Label>
-            <Form.Control
-              type="number"
-              name="endingNumber"
-              value={formData.endingNumber}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-        </Col>
+            <Form.Group controlId="endingNumber">
+              <Form.Label>What number did it hit on?</Form.Label>
+              <Form.Control
+                type="number"
+                name="endingNumber"
+                value={formData.endingNumber}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </Col>
 
-        <Col md={6}>
-          <Form.Group controlId="bet">
-            <Form.Label>Bet</Form.Label>
-            <Form.Control
-              type="number"
-              step="any"
-              name="bet"
-              value={formData.bet}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
+          <Col md={6}>
+            <Form.Group controlId="bet">
+              <Form.Label>Bet</Form.Label>
+              <Form.Control
+                type="number"
+                step="any"
+                name="bet"
+                value={formData.bet}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="cashStart">
-            <Form.Label>Cash Start</Form.Label>
-            <Form.Control
-              type="number"
-              step="any"
-              name="cashStart"
-              value={formData.cashStart}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
+            <Form.Group controlId="cashStart">
+              <Form.Label>Cash Start</Form.Label>
+              <Form.Control
+                type="number"
+                step="any"
+                name="cashStart"
+                value={formData.cashStart}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="cashEnd">
-            <Form.Label>Cash End</Form.Label>
-            <Form.Control
-              type="number"
-              step="any"
-              name="cashEnd"
-              value={formData.cashEnd}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
+            <Form.Group controlId="cashEnd">
+              <Form.Label>Cash End</Form.Label>
+              <Form.Control
+                type="number"
+                step="any"
+                name="cashEnd"
+                value={formData.cashEnd}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
 
-          <Form.Group controlId="notes">
-            <Form.Label>Do you have any comments?</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              name="notes"
-              value={formData.notes}
-              onChange={handleInputChange}
-            />
-          </Form.Group>
-        </Col>
-      </Row>
+            <Form.Group controlId="notes">
+              <Form.Label>Do you have any comments?</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="notes"
+                value={formData.notes}
+                onChange={handleInputChange}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
 
-      {/* Submit Button */}
-      <Row className="mt-4 mb-5 text-center">
-        <Col>
-          <Button className=" submitButton w-25" variant="success" onClick={handleSubmit}>
-            Submit
-          </Button>
-        </Col>
-      </Row>
+        {/* Submit Button */}
+        <Row className="mt-4 mb-5 text-center">
+          <Col>
+            <Button className=" submitButton w-25" variant="success" onClick={handleSubmit}>
+              Submit
+            </Button>
+          </Col>
+        </Row>
       </Card>
 
       {/* Submissions Summary */}
@@ -199,29 +209,34 @@ const RegalRiches = () => {
 
           {!loading && submissions.length > 0 && (
             <>
+             <Container className="totalsBackground p-3 mb-4">
+
               <Row className="text-center mb-3">
                 <Col>
                   <h5>
-                    Average Number Hit On:{" "}
-                    {(
-                      submissions.reduce((acc, sub) => acc + (sub.endingNumber || 0), 0) /
-                      submissions.length
-                    ).toFixed(2)}
+                    Total Revenue: ${totalRevenue}
                   </h5>
+                </Col>
+              </Row>
+
+              {/* Add the new metrics */}
+              <Row className="text-center mt-4">
+                <Col>
+                  <h5>Games Won: {gamesWon}</h5>
+                </Col>
+                </Row>
+                <Row className="text-center mb-4">
+                <Col>
+                  <h5>Games Lost: {gamesLost}</h5>
                 </Col>
               </Row>
 
               <Row className="text-center mb-3">
                 <Col>
-                  <h5>
-                    Total Revenue: $
-                    {(
-                      submissions.reduce((acc, sub) => acc + (sub.cashEnd || 0), 0) -
-                      submissions.reduce((acc, sub) => acc + (sub.cashStart || 0), 0)
-                    ).toFixed(2)}
-                  </h5>
+                  <h5>Win Percentage: {winPercentage}%</h5>
                 </Col>
               </Row>
+              </Container>
             </>
           )}
 

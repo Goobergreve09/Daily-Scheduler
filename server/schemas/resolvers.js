@@ -1,6 +1,6 @@
 const { signToken, AuthenticationError, generateResetToken } = require("../utils/auth.js");
 const { User } = require("../models");
-const { LuckyPickSubmission, MoneyBallSubmission } = require("../models");
+const { LuckyPickSubmission, MoneyBallSubmission, RegalRichesSubmission } = require("../models");
 
 
 const resolvers = {
@@ -11,6 +11,9 @@ const resolvers = {
     moneyBallSubmissions: async () => {
       return await MoneyBallSubmission.find().sort({ createdAt: -1 });
     },
+    regalRichesSubmissions: async () => {
+        return await RegalRichesSubmission.find().sort({ createdAt: -1 });
+      },
     me: async (parent, args, context) => {
       if (context.user) {
         return User.findOne({ _id: context.user._id });
@@ -170,6 +173,7 @@ const resolvers = {
         throw new Error("Failed to create MoneyBall submission.");
       }
     },
+
     submitRegalRiches: async (
         parent,
         {
@@ -182,7 +186,7 @@ const resolvers = {
             cashStart,
             cashEnd,
             notes,
-            createdAt,
+            createdAt
           },
         },
         context

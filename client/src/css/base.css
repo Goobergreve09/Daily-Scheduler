@@ -43,6 +43,7 @@ h1 {
 .formCard {
     border: 3px solid black;
     font-family: "Funnel Display", sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
 
 .totalsBackground {

@@ -17,7 +17,7 @@ const RegalRichesSubmissionSchema = new mongoose.Schema(
     endingNumber: {
         type: Number,
       },
-      
+
     bet: {
       type: Number,
     },
@@ -45,12 +45,12 @@ const RegalRichesSubmissionSchema = new mongoose.Schema(
 );
 
 // Create a virtual `id` field to match the frontend convention
-MoneyBallSubmissionSchema.virtual("id").get(function () {
+RegalRichesSubmissionSchema.virtual("id").get(function () {
   return this._id.toHexString();
 });
 
 // Export the model with `module.exports`
 module.exports = mongoose.model(
-  "MoneyBallSubmission",
-  MoneyBallSubmissionSchema
+  "RegalRichesSubmission",
+  RegalRichesSubmissionSchema
 );
