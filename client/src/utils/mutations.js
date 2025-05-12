@@ -66,3 +66,12 @@ export const REGALRICHES_SUBMIT = gql`
     }
   }
 `;
+
+export const RICHLITTLEPIGGIES_SUBMIT = gql`
+  mutation SubmitRichLittlePiggies($richLittlePiggiesData: RichLittlePiggiesInput!) {
+    submitRichLittlePiggies(richLittlePiggiesData: $richLittlePiggiesData) {
+      _id
+      createdAt
+    }
+  }
+`;

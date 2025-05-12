@@ -29,15 +29,15 @@ export const getMe = () => {
       authorization: `Bearer ${token}`,
     },
   })
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    return response.json();
-  })
-  .catch((error) => {
-    handleFetchError(error);
-  });
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .catch((error) => {
+      handleFetchError(error);
+    });
 };
 
 export const submitLuckyPick = async (formData) => {
@@ -100,3 +100,22 @@ export const submitRegalRiches = async (formData) => {
     .catch(handleFetchError);
 };
 
+export const submitRichLittlePiggies = async (formData) => {
+  const token = AuthService.getToken();
+
+  return fetch("/api/richlittlepiggies", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to submit Rich Little Piggies data");
+      }
+      return response.json();
+    })
+    .catch(handleFetchError);
+};

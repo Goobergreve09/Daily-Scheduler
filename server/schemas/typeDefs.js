@@ -92,6 +92,29 @@ input RegalRichesInput {
   createdAt: DateTime
 }
 
+type RichLittlePiggies {
+  _id: ID!
+ beginningNumber: Int
+endingNumber: Int
+ jackPotFreeGames: Boolean
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  notes: String
+  createdAt: DateTime
+}
+
+input RichLittlePiggiesInput {
+beginningNumber: Int
+endingNumber: Int
+ jackPotFreeGames: Boolean
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  notes: String
+  createdAt: DateTime
+}
+
 
   type Auth {
     token: ID!
@@ -104,6 +127,7 @@ input RegalRichesInput {
     luckyPickSubmissions: [LuckyPick]
     moneyBallSubmissions: [MoneyBall]
      regalRichesSubmissions: [RegalRiches]
+     richLittlePiggiesSubmissions: [RichLittlePiggies]
   }
 
   type Mutation {
@@ -113,6 +137,7 @@ input RegalRichesInput {
       submitLuckyPick(luckyPickData: LuckyPickInput!): LuckyPick
       submitMoneyBall(moneyBallData: MoneyBallInput!): MoneyBall
       submitRegalRiches(regalRichesData: RegalRichesInput!): RegalRiches
+       submitRichLittlePiggies(richLittlePiggiesData: RichLittlePiggiesInput!): RichLittlePiggies
   }
 `;
 

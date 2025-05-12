@@ -84,3 +84,19 @@ export const QUERY_REGAL = gql`
     }
   }
 `;
+
+export const QUERY_RICH_PIGGIES = gql`
+  query richLittlePiggiesSubmissions {
+    richLittlePiggiesSubmissions {
+      _id
+      beginningNumber
+      endingNumber
+      jackPotFreeGames
+      bet
+      cashStart
+      cashEnd
+      notes
+      createdAt
+    }
+  }
+`;

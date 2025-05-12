@@ -1,7 +1,6 @@
 const { signToken, AuthenticationError, generateResetToken } = require("../utils/auth.js");
 const { User } = require("../models");
-const { LuckyPickSubmission, MoneyBallSubmission, RegalRichesSubmission } = require("../models");
-
+const { LuckyPickSubmission, MoneyBallSubmission, RegalRichesSubmission, RichLittlePiggiesSubmission } = require("../models");
 
 const resolvers = {
   Query: {
@@ -12,8 +11,11 @@ const resolvers = {
       return await MoneyBallSubmission.find().sort({ createdAt: -1 });
     },
     regalRichesSubmissions: async () => {
-        return await RegalRichesSubmission.find().sort({ createdAt: -1 });
-      },
+      return await RegalRichesSubmission.find().sort({ createdAt: -1 });
+    },
+    richLittlePiggiesSubmissions: async () => { // Fixed the plural name here
+      return await RichLittlePiggiesSubmission.find().sort({ createdAt: -1 });
+    },
     me: async (parent, args, context) => {
       if (context.user) {
         return User.findOne({ _id: context.user._id });
@@ -175,62 +177,108 @@ const resolvers = {
     },
 
     submitRegalRiches: async (
-        parent,
-        {
-          regalRichesData: {
-            whichColor,
-            combo,
-            beginningNumber,
-            endingNumber,
-            bet,
-            cashStart,
-            cashEnd,
-            notes,
-            createdAt
-          },
+      parent,
+      {
+        regalRichesData: {
+          whichColor,
+          combo,
+          beginningNumber,
+          endingNumber,
+          bet,
+          cashStart,
+          cashEnd,
+          notes,
+          createdAt
         },
-        context
-      ) => {
-        if (!context.user) {
-          throw new AuthenticationError("You must be logged in.");
-        }
-  
-        console.log("Data received in resolver:", {
-            whichColor,
-            combo,
-            beginningNumber,
-            endingNumber,
-            bet,
-            cashStart,
-            cashEnd,
-            notes,
-            createdAt,
-        });
-  
-        try {
-          const newSubmissionRegalRiches = await RegalRichesSubmission.create({
-            whichColor,
-            combo,
-            beginningNumber,
-            endingNumber,
-            bet,
-            cashStart,
-            cashEnd,
-            notes,
-            createdAt,
-          });
-          console.log("New Regal Riches created:", newSubmissionRegalRiches);
-          return newSubmissionRegalRiches;
-        } catch (error) {
-          console.error("Error creating Regal Riches:", error);
-          throw new Error("Failed to create Regal Riches submission.");
-        }
       },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in.");
+      }
+
+      console.log("Data received in resolver:", {
+        whichColor,
+        combo,
+        beginningNumber,
+        endingNumber,
+        bet,
+        cashStart,
+        cashEnd,
+        notes,
+        createdAt,
+      });
+
+      try {
+        const newSubmissionRegalRiches = await RegalRichesSubmission.create({
+          whichColor,
+          combo,
+          beginningNumber,
+          endingNumber,
+          bet,
+          cashStart,
+          cashEnd,
+          notes,
+          createdAt,
+        });
+        console.log("New Regal Riches created:", newSubmissionRegalRiches);
+        return newSubmissionRegalRiches;
+      } catch (error) {
+        console.error("Error creating Regal Riches:", error);
+        throw new Error("Failed to create Regal Riches submission.");
+      }
     },
-  };
-  
 
+    submitRichLittlePiggies: async ( // Fixed here by moving it inside Mutation
+      parent,
+      {
+        richLittlePiggiesData: {
+          beginningNumber,
+          endingNumber,
+          jackPotFreeGames,
+          bet,
+          cashStart,
+          cashEnd,
+          notes,
+          createdAt
+        },
+      },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in.");
+      }
 
+      console.log("Data received in resolver:", {
+        beginningNumber,
+        endingNumber,
+        jackPotFreeGames,
+        bet,
+        cashStart,
+        cashEnd,
+        notes,
+        createdAt
+      });
 
+      try {
+        const newSubmissionRichLittlePiggies = await RichLittlePiggiesSubmission.create({
+          beginningNumber,
+          endingNumber,
+          jackPotFreeGames,
+          bet,
+          cashStart,
+          cashEnd,
+          notes,
+          createdAt
+        });
+        console.log("New Rich Little Piggies created:", newSubmissionRichLittlePiggies);
+        return newSubmissionRichLittlePiggies; // Fixed the return statement
+      } catch (error) {
+        console.error("Error creating Rich Little Piggies:", error);
+        throw new Error("Failed to create Rich Little Piggies submission.");
+      }
+    },
+  },
+};
 
 module.exports = resolvers;
