@@ -2,10 +2,20 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_RICH_PIGGIES } from "../utils/queries";
 import { RICHLITTLEPIGGIES_SUBMIT } from "../utils/mutations";
-import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
-import richLittlePiggiesLogo from "../assets/images/richLittlePiggies.webp";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  ProgressBar,
+  Accordion,
+} from "react-bootstrap";
 import Alert from "@mui/material/Alert";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
+import richLittlePiggiesLogo from "../assets/images/richLittlePiggies.webp";
 import "../css/luckyPick.css";
 
 const RichLittlePiggies = () => {
@@ -19,9 +29,9 @@ const RichLittlePiggies = () => {
   });
 
   const [formData, setFormData] = useState({
-    beginningNumber: "", // New field for Free Games count
+    beginningNumber: "",
     endingNumber: "",
-    jackPotFreeGames: "", // For "Did Free Games and Jackpot hit at the same time?"
+    jackPotFreeGames: "",
     bet: "",
     cashStart: "",
     cashEnd: "",
@@ -44,7 +54,7 @@ const RichLittlePiggies = () => {
           richLittlePiggiesData: {
             beginningNumber: parseInt(formData.beginningNumber),
             endingNumber: parseInt(formData.endingNumber),
-            jackPotFreeGames: formData.jackPotFreeGames === "yes", // Converts 'yes'/'no' to boolean
+            jackPotFreeGames: formData.jackPotFreeGames === "yes",
             bet: parseFloat(formData.bet),
             cashStart: parseFloat(formData.cashStart),
             cashEnd: parseFloat(formData.cashEnd),
@@ -54,7 +64,6 @@ const RichLittlePiggies = () => {
       });
 
       setSuccessMessage("Submission successful!");
-
       refetch();
 
       setFormData({
@@ -76,257 +85,258 @@ const RichLittlePiggies = () => {
 
   const submissions = data?.richLittlePiggiesSubmissions || [];
 
+  // Metrics
+  const averageHit =
+    submissions.length > 0
+      ? (
+          submissions.reduce((acc, sub) => acc + (sub.endingNumber || 0), 0) /
+          submissions.length
+        ).toFixed(2)
+      : "0.00";
+
+  const totalRevenue = submissions
+    .reduce((acc, sub) => acc + (sub.cashEnd || 0) - (sub.cashStart || 0), 0)
+    .toFixed(2);
+
+  const gamesWon = submissions.filter(
+    (sub) => parseFloat(sub.cashEnd) > parseFloat(sub.cashStart)
+  ).length;
+
+  const gamesLost = submissions.filter(
+    (sub) => parseFloat(sub.cashEnd) < parseFloat(sub.cashStart)
+  ).length;
+
+  const winPercentage =
+    submissions.length > 0
+      ? ((gamesWon / submissions.length) * 100).toFixed(2)
+      : "0.00";
+
+  const doubleHitPercentage =
+    submissions.length > 0
+      ? (
+          (submissions.filter((sub) => sub.jackPotFreeGames === true).length /
+            submissions.length) *
+          100
+        ).toFixed(2)
+      : "0.00";
+
   return (
     <Container className="luckyPick-container">
-      <Row className="img-header-row text-center">
-        <Col>
-          <h1 className="mt-4">Rich Little Piggies Submission</h1>
-        </Col>
-      </Row>
       <Row className="img-header-row text-center">
         <Col>
           <img
             src={richLittlePiggiesLogo}
             alt="Rich Little Piggies Logo"
-            className="headerImage"
+            className="headerImage mt-3"
           />
         </Col>
       </Row>
 
+      <Row className="img-header-row text-center">
+        <Col>
+          <h1 className="mt-4">
+            Rich Little Piggies <span>Submission Form</span>
+          </h1>
+        </Col>
+      </Row>
+
       {/* Form Section */}
-      <Card className="formCard mt-5 mb-5 p-4">
-        <Row className="mt-4">
-          <Col md={6}>
-            <Form.Group controlId="beginningNumber">
-              <Form.Label>How many free games to begin?</Form.Label>
-              <Form.Control
-                type="number"
-                name="beginningNumber"
-                value={formData.beginningNumber}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+      <Accordion className="mb-5">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header className="accordionHeader">
+            📥 Submit New Entry
+          </Accordion.Header>
+          <Accordion.Body>
+            <Card className="formCard mt-5 mb-5 p-4">
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="beginningNumber">
+                    <Form.Label>How many free games to begin?</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="beginningNumber"
+                      value={formData.beginningNumber}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="endingNumber">
-              <Form.Label>At what number did it hit?</Form.Label>
-              <Form.Control
-                type="number"
-                name="endingNumber"
-                value={formData.endingNumber}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                  <Form.Group controlId="endingNumber">
+                    <Form.Label>At what number did it hit?</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="endingNumber"
+                      value={formData.endingNumber}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="jackPotFreeGames">
-              <Form.Label>
-                Did Free Games and Jackpot hit at the same time?
-              </Form.Label>
-              <Form.Control
-                as="select"
-                name="jackPotFreeGames"
-                value={formData.jackPotFreeGames}
-                onChange={handleInputChange}
-              >
-                <option value="">Select...</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </Form.Control>
-            </Form.Group>
+                  <Form.Group controlId="jackPotFreeGames">
+                    <Form.Label>
+                      Did Free Games and Jackpot hit at the same time?
+                    </Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="jackPotFreeGames"
+                      value={formData.jackPotFreeGames}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select...</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                  <Form.Group controlId="bet">
+                    <Form.Label>Bet</Form.Label>
+                    <Form.Control
+                      type="number"
+                      step="any"
+                      name="bet"
+                      value={formData.bet}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="cashStart">
+                    <Form.Label>Cash Start</Form.Label>
+                    <Form.Control
+                      type="number"
+                      step="any"
+                      name="cashStart"
+                      value={formData.cashStart}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="cashEnd">
+                    <Form.Label>Cash End</Form.Label>
+                    <Form.Control
+                      type="number"
+                      step="any"
+                      name="cashEnd"
+                      value={formData.cashEnd}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="notes">
+                    <Form.Label>Do you have any comments?</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      name="notes"
+                      value={formData.notes}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              {/* Submit Button & Alerts */}
+              <Row className="mt-4 mb-5 text-center">
+                <Col>
+                  <Button
+                    className="submitButton w-25"
+                    variant="success"
+                    onClick={handleSubmit}
+                    disabled={loadingSubmit}
+                  >
+                    {loadingSubmit ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit"
+                    )}
+                  </Button>
+
+                  {errorMessage && (
+                    <Alert
+                      severity="error"
+                      onClose={() => setErrorMessage("")}
+                      className="mt-4"
+                    >
+                      {errorMessage}
+                    </Alert>
+                  )}
+
+                  {successMessage && (
+                    <Alert
+                      severity="success"
+                      onClose={() => setSuccessMessage("")}
+                      className="mt-4"
+                    >
+                      {successMessage}
+                    </Alert>
+                  )}
+                </Col>
+              </Row>
+            </Card>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+
+      {/* Game Statistics Summary */}
+      <Card className="text-center shadow-sm rounded mb-4 p-4 bg-light">
+        <Card.Title className="mb-4">📊 Game Statistics</Card.Title>
+
+        <Row className="mb-3">
+          <Col>
+            <h6 className="text-secondary">Average Hit Number</h6>
+            <h4 className="text-primary fw-bold">{averageHit}</h4>
           </Col>
-
-          <Col md={6}>
-            <Form.Group controlId="bet">
-              <Form.Label>Bet</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                name="bet"
-                value={formData.bet}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="cashStart">
-              <Form.Label>Cash Start</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                name="cashStart"
-                value={formData.cashStart}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="cashEnd">
-              <Form.Label>Cash End</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                name="cashEnd"
-                value={formData.cashEnd}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="notes">
-              <Form.Label>Do you have any comments?</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="notes"
-                value={formData.notes}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+          <Col>
+            <h6 className="text-secondary">Total Revenue</h6>
+            <h4 className="text-success fw-bold">${totalRevenue}</h4>
           </Col>
         </Row>
 
-        {/* Submit Button */}
-        <Row className="mt-4 mb-5 text-center">
+        <Row className="mb-4">
           <Col>
-            <Button
-              className="submitButton w-25"
-              variant="success"
-              onClick={handleSubmit}
-              disabled={loadingSubmit}
-            >
-              {loadingSubmit ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Submitting...
-                </>
-              ) : (
-                "Submit"
-              )}
-            </Button>
-            {errorMessage && (
-              <Alert
-                severity="error"
-                onClose={() => setErrorMessage("")}
-                className="mt-4"
-              >
-                {errorMessage}
-              </Alert>
-            )}
+            <h6 className="text-secondary">Win Percentage</h6>
+            <ProgressBar
+              now={winPercentage}
+              label={`${winPercentage}%`}
+              variant="info"
+            />
+          </Col>
+        </Row>
 
-            {successMessage && (
-              <Alert
-                severity="success"
-                onClose={() => setSuccessMessage("")}
-                className="mt-4"
-              >
-                {successMessage}
-              </Alert>
-            )}
+        <Row>
+          <Col>
+            <h6 className="text-secondary">Games Won</h6>
+            <h4 className="text-success">
+              <FaArrowUp className="me-2" />
+              {gamesWon}
+            </h4>
+          </Col>
+          <Col>
+            <h6 className="text-secondary">Games Lost</h6>
+            <h4 className="text-danger">
+              <FaArrowDown className="me-2" />
+              {gamesLost}
+            </h4>
+          </Col>
+        </Row>
+
+        <Row className="mt-4">
+          <Col>
+            <h6 className="text-secondary">🎉 Jackpot + Free Games Hit</h6>
+            <h4 className="fw-bold">{doubleHitPercentage}%</h4>
           </Col>
         </Row>
       </Card>
 
-      {/* Submissions Summary */}
+      {/* Submissions Table */}
       <Row>
         <Col>
-          <h3 className="mb-5  text-center">Previous Submissions</h3>
-          {!loading && submissions.length > 0 && (
-            <>
-              <Container className="totalsBackground p-3 mb-4">
-                <Row className="text-center mb-3">
-                  <Col>
-                    <h5>
-                      Average Number Hit On:{" "}
-                      {(
-                        submissions.reduce(
-                          (acc, sub) => acc + (sub.endingNumber || 0),
-                          0
-                        ) / submissions.length
-                      ).toFixed(2)}
-                    </h5>
-                  </Col>
-                </Row>
-
-                <Row className="text-center mb-3">
-                  <Col>
-                    <h5>
-                      Total Revenue: $$
-                      {(
-                        submissions.reduce(
-                          (acc, sub) => acc + (sub.cashEnd || 0),
-                          0
-                        ) -
-                        submissions.reduce(
-                          (acc, sub) => acc + (sub.cashStart || 0),
-                          0
-                        )
-                      ).toFixed(2)}
-                    </h5>
-                  </Col>
-                </Row>
-
-                {/* New Metrics: Games Won, Games Lost, and Win Percentage */}
-                <Row className="text-center">
-                  <Col>
-                    <h5>
-                      Games Won:{" "}
-                      {
-                        submissions.filter((sub) => sub.cashEnd > sub.cashStart)
-                          .length
-                      }
-                    </h5>
-                  </Col>
-                </Row>
-
-                <Row className="text-center mb-3">
-                  <Col>
-                    <h5>
-                      Games Lost:{" "}
-                      {
-                        submissions.filter((sub) => sub.cashEnd < sub.cashStart)
-                          .length
-                      }
-                    </h5>
-                  </Col>
-                </Row>
-
-                <Row className="text-center mb-3">
-                  <Col>
-                    <h5>
-                      Win Percentage:{" "}
-                      {(
-                        (submissions.filter(
-                          (sub) => sub.cashEnd > sub.cashStart
-                        ).length /
-                          submissions.length) *
-                        100
-                      ).toFixed(2)}
-                      %
-                    </h5>
-                  </Col>
-                </Row>
-
-                {/* New Metric: Free Games and Jackpot Hit at the Same Time */}
-                <Row className="text-center mb-3">
-                  <Col>
-                    <h5>
-                      <span className="minimizeText">
-                        Free Games & Jackpot Double Hit:{" "}
-                        {(
-                          (submissions.filter(
-                            (sub) => sub.jackPotFreeGames === true
-                          ).length /
-                            submissions.length) *
-                          100
-                        ).toFixed(2)}
-                        %
-                      </span>
-                    </h5>
-                  </Col>
-                </Row>
-              </Container>
-            </>
-          )}
 
           {loading ? (
             <p>Loading...</p>
@@ -359,9 +369,7 @@ const RichLittlePiggies = () => {
                       </tr>
                       <tr>
                         <td>
-                          <strong>
-                            Jackpot and Free Games at the Same Time?
-                          </strong>
+                          <strong>Jackpot + Free Games?</strong>
                         </td>
                         <td>{sub.jackPotFreeGames ? "Yes" : "No"}</td>
                       </tr>

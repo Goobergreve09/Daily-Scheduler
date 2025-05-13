@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_LUCKYPICK } from "../utils/queries";
 import { LUCKYPICK_SUBMIT } from "../utils/mutations";
+
 import Alert from "@mui/material/Alert";
+import { FaUpload } from "react-icons/fa";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+
 import {
   Container,
   Row,
@@ -11,9 +15,11 @@ import {
   Button,
   Image,
   Card,
+  ProgressBar,
+  Accordion,
 } from "react-bootstrap";
 import ModalImage from "react-modal-image";
-import luckyPickLogo from "../assets/images/luckyPickLogo.png";
+import luckyPickLogo from "../assets/images/luckyPickLogo.jpg";
 
 import "../css/luckyPick.css";
 
@@ -156,180 +162,218 @@ const LuckyPick = () => {
     <Container className="luckyPick-container">
       <Row className="img-header-row text-center">
         <Col>
-          <h1 className="mt-4">Lucky Pick Submission</h1>
+          <img
+            src={luckyPickLogo}
+            alt="Lucky Pick Logo"
+            className="headerImage mt-3"
+          />
         </Col>
       </Row>
       <Row className="img-header-row text-center">
         <Col>
-          <img
-            src={luckyPickLogo}
-            alt="Lucky Pick Logo"
-            className="headerImage"
-          />
-        </Col>
-      </Row>
-
-      {/* Image Upload Section */}
-      <Row className="mt-4">
-        <Col md={6}>
-          <Form.Group controlId="beforePhoto">
-            <Form.Label>Before Photo</Form.Label>
-            <Form.Control type="file" onChange={handleBeforeChange} />
-            {previewBefore && (
-              <Image
-                src={previewBefore}
-                thumbnail
-                className="submissionImage mt-2"
-              />
-            )}
-          </Form.Group>
-        </Col>
-        <Col md={6}>
-          <Form.Group controlId="afterPhoto">
-            <Form.Label>After Photo</Form.Label>
-            <Form.Control type="file" onChange={handleAfterChange} />
-            {previewAfter && (
-              <Image
-                src={previewAfter}
-                thumbnail
-                className="submissionImage mt-2"
-              />
-            )}
-          </Form.Group>
+          <h1 className="mt-4">
+            Lucky Pick <span>Submission Form</span>
+          </h1>
         </Col>
       </Row>
 
       {/* Form Fields */}
-      <Card className="p-4 mt-5 formCard">
-        <Row className="mt-4">
-          <Col md={6}>
-            {[
-              "multipliers",
-              "freeGames",
-              "numbersOffBoard",
-              "wilds",
-              "bet",
-            ].map((field) => (
-              <Form.Group controlId={field} key={field}>
-                <Form.Label>{field.replace(/([A-Z])/g, " $1")}</Form.Label>
-                <Form.Control
-                  type="number"
-                  name={field}
-                  value={formData[field]}
-                  onChange={handleInputChange}
-                />
-              </Form.Group>
-            ))}
-          </Col>
-          <Col md={6}>
-            <Form.Group controlId="cashStart">
-              <Form.Label>Cash Start</Form.Label>
-              <Form.Control
-                type="number"
-                name="cashStart"
-                value={formData.cashStart}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="cashEnd">
-              <Form.Label>Cash End</Form.Label>
-              <Form.Control
-                type="number"
-                name="cashEnd"
-                value={formData.cashEnd}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="allWilds">
-              <Form.Label>Did you find all of the wilds?</Form.Label>
-              <Form.Control
-                as="select"
-                name="allWilds"
-                value={formData.allWilds}
-                onChange={handleInputChange}
-              >
-                <option value="">Select...</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </Form.Control>
-            </Form.Group>
-            <Form.Group controlId="hitProgressive">
-              <Form.Label>Did you hit a progressive?</Form.Label>
-              <Form.Control
-                as="select"
-                name="hitProgressive"
-                value={formData.hitProgressive}
-                onChange={handleInputChange}
-              >
-                <option value="">Select...</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </Form.Control>
-            </Form.Group>
-            <Form.Group controlId="stageDetails">
-              <Form.Label>Which stage and how many times?</Form.Label>
-              <Form.Control
-                type="text"
-                name="stageDetails"
-                value={formData.stageDetails}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-          </Col>
-        </Row>
+      <Accordion className="mb-5">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header className="accordionHeader">
+            📥 Submit New Entry
+          </Accordion.Header>
+          <Accordion.Body>
+            <Card className="p-4 mt-5 formCard">
+              <Row className="mt-4">
+                <Col md={6} className="mt-3">
+                  <Form.Group controlId="beforePhoto">
+                    <div className="custom-file-upload">
+                      <Button
+                        variant="outline-primary"
+                        onClick={() =>
+                          document.getElementById("beforeInput").click()
+                        }
+                      >
+                        <FaUpload className="me-2" />
+                        Upload Before Photo
+                      </Button>
+                      <Form.Control
+                        type="file"
+                        id="beforeInput"
+                        onChange={handleBeforeChange}
+                        style={{ display: "none" }}
+                        accept="image/*"
+                      />
+                    </div>
+                    {previewBefore && (
+                      <div className="previewWrapper mt-3">
+                        <p className="text-muted">Preview:</p>
+                        <Image
+                          src={previewBefore}
+                          className="submissionImage"
+                        />
+                      </div>
+                    )}
+                  </Form.Group>
+                </Col>
+                <Col md={6} className="mt-3">
+                  <Form.Group controlId="afterPhoto">
+                    <div className="custom-file-upload">
+                      <Button
+                        variant="outline-primary"
+                        onClick={() =>
+                          document.getElementById("afterInput").click()
+                        }
+                      >
+                        <FaUpload className="me-2" />
+                        Upload After Photo
+                      </Button>
+                      <Form.Control
+                        type="file"
+                        id="afterInput"
+                        onChange={handleAfterChange}
+                        style={{ display: "none" }}
+                        accept="image/*"
+                      />
+                    </div>
+                    {previewAfter && (
+                      <div className="previewWrapper mt-3">
+                        <p className="text-muted">Preview:</p>
+                        <Image src={previewAfter} className="submissionImage" />
+                      </div>
+                    )}
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row className="mt-4">
+                <Col md={6}>
+                  {[
+                    "multipliers",
+                    "freeGames",
+                    "numbersOffBoard",
+                    "wilds",
+                    "bet",
+                  ].map((field) => (
+                    <Form.Group controlId={field} key={field}>
+                      <Form.Label>
+                        {field.replace(/([A-Z])/g, " $1")}
+                      </Form.Label>
+                      <Form.Control
+                        type="number"
+                        name={field}
+                        value={formData[field]}
+                        onChange={handleInputChange}
+                      />
+                    </Form.Group>
+                  ))}
+                </Col>
+                <Col md={6}>
+                  <Form.Group controlId="cashStart">
+                    <Form.Label>Cash Start</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="cashStart"
+                      value={formData.cashStart}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="cashEnd">
+                    <Form.Label>Cash End</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="cashEnd"
+                      value={formData.cashEnd}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="allWilds">
+                    <Form.Label>Did you find all of the wilds?</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="allWilds"
+                      value={formData.allWilds}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select...</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="hitProgressive">
+                    <Form.Label>Did you hit a progressive?</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="hitProgressive"
+                      value={formData.hitProgressive}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select...</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="stageDetails">
+                    <Form.Label>Which stage and how many times?</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="stageDetails"
+                      value={formData.stageDetails}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-        <Row className="mt-4 mb-5 text-center">
-          <Col>
-            <Button
-              className="submitButton w-25"
-              variant="success"
-              onClick={handleSubmit}
-              disabled={loadingSubmit}
-            >
-              {loadingSubmit ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Submitting...
-                </>
-              ) : (
-                "Submit"
-              )}
-            </Button>
-            {errorMessage && (
-              <Alert
-                severity="error"
-                onClose={() => setErrorMessage("")}
-                className="mt-4"
-              >
-                {errorMessage}
-              </Alert>
-            )}
+              <Row className="mt-4 mb-5 text-center">
+                <Col>
+                  <Button
+                    className="submitButton w-25"
+                    variant="success"
+                    onClick={handleSubmit}
+                    disabled={loadingSubmit}
+                  >
+                    {loadingSubmit ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit"
+                    )}
+                  </Button>
+                  {errorMessage && (
+                    <Alert
+                      severity="error"
+                      onClose={() => setErrorMessage("")}
+                      className="mt-4"
+                    >
+                      {errorMessage}
+                    </Alert>
+                  )}
 
-            {successMessage && (
-              <Alert
-                severity="success"
-                onClose={() => setSuccessMessage("")}
-                className="mt-4"
-              >
-                {successMessage}
-              </Alert>
-            )}
-          </Col>
-        </Row>
-      </Card>
+                  {successMessage && (
+                    <Alert
+                      severity="success"
+                      onClose={() => setSuccessMessage("")}
+                      className="mt-4"
+                    >
+                      {successMessage}
+                    </Alert>
+                  )}
+                </Col>
+              </Row>
+            </Card>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
 
       {/* Previous Submissions */}
-      <Row>
-        <Col>
-          <h3 className="justify-content-center mb-4 mt-5">
-            Previous Submissions
-          </h3>
-        </Col>
-      </Row>
+
 
       {!loading &&
         submissions.length > 0 &&
@@ -355,28 +399,38 @@ const LuckyPick = () => {
               : "0.00";
 
           return (
-            <Container className="totalsBackground p-3 mb-4">
-              <Row className="text-center mb-2">
+            <Card className="text-center shadow-sm rounded mb-4 p-4 bg-light">
+              <Card.Title className="mb-4">📊 Game Statistics</Card.Title>
+              <Row className="mb-3">
                 <Col>
-                  <h5>Total Revenue: ${totalRevenue}</h5>
+                  <h6 className="text-secondary">Total Revenue</h6>
+                  <h4 className="text-success fw-bold">${totalRevenue}</h4>
+                </Col>
+                <Col>
+                  <h6 className="text-secondary">Win Percentage</h6>
+                  <ProgressBar
+                    now={winPercentage}
+                    label={`${winPercentage}%`}
+                    variant="info"
+                  />
                 </Col>
               </Row>
-              <Row className="text-center mt-4">
+              <Row>
                 <Col>
-                  <h5>Games Won: {totals.gamesWon}</h5>
+                  <h6 className="text-secondary">Games Won</h6>
+                  <h4 className="text-success">
+                    <FaArrowUp className="me-2" /> {totals.gamesWon}
+                  </h4>
+                </Col>
+                <Col>
+                  <h6 className="text-secondary">Games Lost</h6>
+                  <h4 className="text-danger">
+                    <FaArrowDown className="me-2" />
+                    {totals.gamesLost}
+                  </h4>
                 </Col>
               </Row>
-              <Row className="text-center">
-                <Col>
-                  <h5>Games Lost: {totals.gamesLost}</h5>
-                </Col>
-              </Row>
-              <Row className="text-center mt-3">
-                <Col>
-                  <h5>Win Percentage: {winPercentage}%</h5>
-                </Col>
-              </Row>
-            </Container>
+            </Card>
           );
         })()}
 

@@ -38,7 +38,7 @@ const AppNavbar = () => {
         <Navbar.Brand background="dark" as={Link} to="/">
           <img
             src={Logo}
-            alt="Blockbuster 2024"
+            alt="Scheduler Logo"
             className="navbar-logo"
             onClick={handleLinkClick}
           />

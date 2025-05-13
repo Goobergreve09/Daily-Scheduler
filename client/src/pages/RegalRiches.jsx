@@ -2,9 +2,19 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_REGAL } from "../utils/queries";
 import { REGALRICHES_SUBMIT } from "../utils/mutations";
-import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  Accordion,
+} from "react-bootstrap";
 import regalRichesLogo from "../assets/images/regalRiches-logo.webp";
 import Alert from "@mui/material/Alert";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import ProgressBar from "react-bootstrap/ProgressBar";
 
 import "../css/luckyPick.css";
 
@@ -101,198 +111,215 @@ const RegalRiches = () => {
     <Container className="luckyPick-container">
       <Row className="img-header-row text-center">
         <Col>
-          <h1 className="mt-4">Regal Riches Submission</h1>
+          <img
+            src={regalRichesLogo}
+            alt="Regal Riches Logo"
+            className="headerImage mt-3"
+          />
         </Col>
       </Row>
       <Row className="img-header-row text-center">
         <Col>
-          <img
-            src={regalRichesLogo}
-            alt="Regal Riches Logo"
-            className="headerImage"
-          />
+          <h1 className="mt-4">
+            Regal Riches <span>Submission Form</span>
+          </h1>
         </Col>
       </Row>
 
       {/* Form Section */}
-      <Card className="formCard mt-5 mb-5 p-4">
-        <Row className="mt-4">
-          <Col md={6}>
-            <Form.Group controlId="whichColor">
-              <Form.Label>Which color did you play?</Form.Label>
-              <Form.Control
-                as="select"
-                name="whichColor"
-                value={formData.whichColor}
-                onChange={handleInputChange}
-              >
-                <option value="">Select a color</option>
-                <option value="blue">Blue</option>
-                <option value="purple">Purple</option>
-                <option value="green">Green</option>
-                <option value="yellow">Yellow</option>
-              </Form.Control>
-            </Form.Group>
+      <Accordion className="mb-5">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header className="accordionHeader">
+            📥 Submit New Entry
+          </Accordion.Header>
+          <Accordion.Body>
+            <Card className="formCard mt-5 mb-5 p-4">
+              <Row className="mt-4">
+                <Col md={6}>
+                  <Form.Group controlId="whichColor">
+                    <Form.Label>Which color did you play?</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="whichColor"
+                      value={formData.whichColor}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select a color</option>
+                      <option value="blue">Blue</option>
+                      <option value="purple">Purple</option>
+                      <option value="green">Green</option>
+                      <option value="yellow">Yellow</option>
+                    </Form.Control>
+                  </Form.Group>
 
-            <Form.Group controlId="combo">
-              <Form.Label>Was this a combo?</Form.Label>
-              <Form.Control
-                as="select"
-                name="combo"
-                value={formData.combo}
-                onChange={handleInputChange}
-              >
-                <option value="">Select...</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </Form.Control>
-            </Form.Group>
+                  <Form.Group controlId="combo">
+                    <Form.Label>Was this a combo?</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="combo"
+                      value={formData.combo}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select...</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </Form.Control>
+                  </Form.Group>
 
-            <Form.Group controlId="beginningNumber">
-              <Form.Label>What number did you start with?</Form.Label>
-              <Form.Control
-                type="number"
-                name="beginningNumber"
-                value={formData.beginningNumber}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                  <Form.Group controlId="beginningNumber">
+                    <Form.Label>What number did you start with?</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="beginningNumber"
+                      value={formData.beginningNumber}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="endingNumber">
-              <Form.Label>What number did it hit on?</Form.Label>
-              <Form.Control
-                type="number"
-                name="endingNumber"
-                value={formData.endingNumber}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-          </Col>
+                  <Form.Group controlId="endingNumber">
+                    <Form.Label>What number did it hit on?</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="endingNumber"
+                      value={formData.endingNumber}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Col>
 
-          <Col md={6}>
-            <Form.Group controlId="bet">
-              <Form.Label>Bet</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                name="bet"
-                value={formData.bet}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                <Col md={6}>
+                  <Form.Group controlId="bet">
+                    <Form.Label>Bet</Form.Label>
+                    <Form.Control
+                      type="number"
+                      step="any"
+                      name="bet"
+                      value={formData.bet}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="cashStart">
-              <Form.Label>Cash Start</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                name="cashStart"
-                value={formData.cashStart}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                  <Form.Group controlId="cashStart">
+                    <Form.Label>Cash Start</Form.Label>
+                    <Form.Control
+                      type="number"
+                      step="any"
+                      name="cashStart"
+                      value={formData.cashStart}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="cashEnd">
-              <Form.Label>Cash End</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                name="cashEnd"
-                value={formData.cashEnd}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                  <Form.Group controlId="cashEnd">
+                    <Form.Label>Cash End</Form.Label>
+                    <Form.Control
+                      type="number"
+                      step="any"
+                      name="cashEnd"
+                      value={formData.cashEnd}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="notes">
-              <Form.Label>Do you have any comments?</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="notes"
-                value={formData.notes}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Form.Group controlId="notes">
+                    <Form.Label>Do you have any comments?</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      name="notes"
+                      value={formData.notes}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-        {/* Submit Button */}
-        <Row className="mt-4 mb-5 text-center">
-          <Col>
-            <Button
-              className="submitButton w-25"
-              variant="success"
-              onClick={handleSubmit}
-              disabled={loadingSubmit}
-            >
-              {loadingSubmit ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Submitting...
-                </>
-              ) : (
-                "Submit"
-              )}
-            </Button>
-            {errorMessage && (
-              <Alert
-                severity="error"
-                onClose={() => setErrorMessage("")}
-                className="mt-4"
-              >
-                {errorMessage}
-              </Alert>
-            )}
+              {/* Submit Button */}
+              <Row className="mt-4 mb-5 text-center">
+                <Col>
+                  <Button
+                    className="submitButton w-25"
+                    variant="success"
+                    onClick={handleSubmit}
+                    disabled={loadingSubmit}
+                  >
+                    {loadingSubmit ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit"
+                    )}
+                  </Button>
+                  {errorMessage && (
+                    <Alert
+                      severity="error"
+                      onClose={() => setErrorMessage("")}
+                      className="mt-4"
+                    >
+                      {errorMessage}
+                    </Alert>
+                  )}
 
-            {successMessage && (
-              <Alert
-                severity="success"
-                onClose={() => setSuccessMessage("")}
-                className="mt-4"
-              >
-                {successMessage}
-              </Alert>
-            )}
-          </Col>
-        </Row>
-      </Card>
+                  {successMessage && (
+                    <Alert
+                      severity="success"
+                      onClose={() => setSuccessMessage("")}
+                      className="mt-4"
+                    >
+                      {successMessage}
+                    </Alert>
+                  )}
+                </Col>
+              </Row>
+            </Card>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
 
       {/* Submissions Summary */}
       <Row>
         <Col>
-          <h3 className="mb-5">Previous Submissions</h3>
 
           {!loading && submissions.length > 0 && (
             <>
-              <Container className="totalsBackground p-3 mb-4">
-                <Row className="text-center mb-3">
+              <Card className="text-center shadow-sm rounded mb-4 p-4 bg-light">
+                <Card.Title className="mb-4">📊 Game Statistics</Card.Title>
+                <Row className="mb-3">
                   <Col>
-                    <h5>Total Revenue: ${totalRevenue}</h5>
+                    <h6 className="text-secondary">Total Revenue</h6>
+                    <h4 className="text-success fw-bold">${totalRevenue}</h4>
+                  </Col>
+                  <Col>
+                    <h6 className="text-secondary">Win Percentage</h6>
+                    <ProgressBar
+                      now={winPercentage}
+                      label={`${winPercentage}%`}
+                      variant="info"
+                    />
                   </Col>
                 </Row>
-
-                {/* Add the new metrics */}
-                <Row className="text-center mt-4">
+                <Row>
                   <Col>
-                    <h5>Games Won: {gamesWon}</h5>
+                    <h6 className="text-secondary">Games Won</h6>
+                    <h4 className="text-success">
+                      <FaArrowUp className="me-2" /> {gamesWon}
+                    </h4>
+                  </Col>
+                  <Col>
+                    <h6 className="text-secondary">Games Lost</h6>
+                    <h4 className="text-danger">
+                      <FaArrowDown className="me-2" />
+                      {gamesLost}
+                    </h4>
                   </Col>
                 </Row>
-                <Row className="text-center mb-4">
-                  <Col>
-                    <h5>Games Lost: {gamesLost}</h5>
-                  </Col>
-                </Row>
-
-                <Row className="text-center mb-3">
-                  <Col>
-                    <h5>Win Percentage: {winPercentage}%</h5>
-                  </Col>
-                </Row>
-              </Container>
+              </Card>
             </>
           )}
 

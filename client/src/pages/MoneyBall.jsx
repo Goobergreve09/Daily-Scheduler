@@ -2,9 +2,19 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_MONEYBALL } from "../utils/queries";
 import { MONEYBALL_SUBMIT } from "../utils/mutations";
-import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  ProgressBar,
+  Accordion,
+} from "react-bootstrap";
 import moneyBallLogo from "../assets/images/moneyBallLogo.jpg";
 import Alert from "@mui/material/Alert";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 import "../css/base.css";
 import "../css/luckyPick.css";
@@ -88,196 +98,205 @@ const MoneyBall = () => {
 
   return (
     <Container className="luckyPick-container">
-      {/* Image Upload Section - unchanged */}
-      <Row className="img-header-row text-center">
-        <Col>
-          <h1 className="mt-4">MoneyBall Submission</h1>
-        </Col>
-      </Row>
       <Row className="img-header-row text-center">
         <Col>
           <img
             src={moneyBallLogo}
             alt="Money Ball Logo"
-            className="headerImage"
+            className="headerImage mt-3"
           />
+        </Col>
+      </Row>
+      <Row className="img-header-row text-center">
+        <Col>
+          <h1 className="mt-4">
+            MoneyBall <span>Submission Form </span>
+          </h1>
         </Col>
       </Row>
 
       {/* Custom Form Fields */}
-      <Card className="formCard mt-5 mb-5 p-4">
-        <Row className="mt-4">
-          <Col md={6}>
-            <Form.Group controlId="beginningNumber">
-              <Form.Label>What number did you begin with?</Form.Label>
-              <Form.Control
-                type="number"
-                name="beginningNumber"
-                value={formData.beginningNumber}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+      <Accordion className="mb-5">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header className="accordionHeader">
+            📥 Submit New Entry
+          </Accordion.Header>
+          <Accordion.Body>
+            <Card className="formCard mt-5 mb-5 p-4">
+              <Row className="mt-4">
+                <Col md={6}>
+                  <Form.Group controlId="beginningNumber">
+                    <Form.Label>What number did you begin with?</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="beginningNumber"
+                      value={formData.beginningNumber}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="endingNumber">
-              <Form.Label>What number did you hit on?</Form.Label>
-              <Form.Control
-                type="number"
-                name="endingNumber"
-                value={formData.endingNumber}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                  <Form.Group controlId="endingNumber">
+                    <Form.Label>What number did you hit on?</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="endingNumber"
+                      value={formData.endingNumber}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="hitJackPot">
-              <Form.Label>Did you hit the jackpot?</Form.Label>
-              <Form.Control
-                as="select"
-                name="hitJackPot"
-                value={formData.hitJackPot}
-                onChange={handleInputChange}
-              >
-                <option value="">Select...</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-              </Form.Control>
-            </Form.Group>
+                  <Form.Group controlId="hitJackPot">
+                    <Form.Label>Did you hit the jackpot?</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="hitJackPot"
+                      value={formData.hitJackPot}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select...</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                    </Form.Control>
+                  </Form.Group>
 
-            <Form.Group controlId="jackpotDetails">
-              <Form.Label>How many times?</Form.Label>
-              <Form.Control
-                type="text"
-                name="jackpotDetails"
-                value={formData.jackpotDetails}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                  <Form.Group controlId="jackpotDetails">
+                    <Form.Label>How many times?</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="jackpotDetails"
+                      value={formData.jackpotDetails}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="multipliers">
-              <Form.Label>Did you Hit a Multiplier?</Form.Label>
-              <Form.Control
-                as="select"
-                name="multipliers"
-                value={formData.multipliers}
-                onChange={handleInputChange}
-              >
-                <option value="">Select an Option</option>
-                <option value="None">No</option>
-                <option value="2x">2x</option>
-                <option value="3x">3x</option>
-                <option value="5x">5x</option>
-              </Form.Control>
-            </Form.Group>
-          </Col>
+                  <Form.Group controlId="multipliers">
+                    <Form.Label>Did you Hit a Multiplier?</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="multipliers"
+                      value={formData.multipliers}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select an Option</option>
+                      <option value="None">No</option>
+                      <option value="2x">2x</option>
+                      <option value="3x">3x</option>
+                      <option value="5x">5x</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
 
-          <Col md={6}>
-            <Form.Group controlId="bet">
-              <Form.Label>Bet?</Form.Label>
-              <Form.Control
-                type="number"
-                step="0.01"
-                name="bet"
-                value={formData.bet}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                <Col md={6}>
+                  <Form.Group controlId="bet">
+                    <Form.Label>Bet?</Form.Label>
+                    <Form.Control
+                      type="number"
+                      step="0.01"
+                      name="bet"
+                      value={formData.bet}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="cashStart">
-              <Form.Label>Cash Start</Form.Label>
-              <Form.Control
-                type="number"
-                step="0.01"
-                name="cashStart"
-                value={formData.cashStart}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                  <Form.Group controlId="cashStart">
+                    <Form.Label>Cash Start</Form.Label>
+                    <Form.Control
+                      type="number"
+                      step="0.01"
+                      name="cashStart"
+                      value={formData.cashStart}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="cashEnd">
-              <Form.Label>Cash End</Form.Label>
-              <Form.Control
-                type="number"
-                name="cashEnd"
-                value={formData.cashEnd}
-                onChange={handleInputChange}
-                step="any"
-              />
-            </Form.Group>
+                  <Form.Group controlId="cashEnd">
+                    <Form.Label>Cash End</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="cashEnd"
+                      value={formData.cashEnd}
+                      onChange={handleInputChange}
+                      step="any"
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="hitFreeGames">
-              <Form.Label>Did you hit free games?</Form.Label>
-              <Form.Control
-                as="select"
-                name="hitFreeGames"
-                value={formData.hitFreeGames}
-                onChange={handleInputChange}
-              >
-                <option value="">Select...</option>
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-              </Form.Control>
-            </Form.Group>
+                  <Form.Group controlId="hitFreeGames">
+                    <Form.Label>Did you hit free games?</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="hitFreeGames"
+                      value={formData.hitFreeGames}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select...</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                    </Form.Control>
+                  </Form.Group>
 
-            <Form.Group controlId="freeGamesDetails">
-              <Form.Label>How many times?</Form.Label>
-              <Form.Control
-                type="text"
-                name="freeGamesDetails"
-                value={formData.freeGamesDetails}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Form.Group controlId="freeGamesDetails">
+                    <Form.Label>How many times?</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="freeGamesDetails"
+                      value={formData.freeGamesDetails}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-        {/* Submit Button */}
-        <Row className="mt-4 mb-5 text-center">
-          <Col>
-            <Button
-              className="submitButton w-25"
-              variant="success"
-              onClick={handleSubmit}
-              disabled={loadingSubmit}
-            >
-              {loadingSubmit ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Submitting...
-                </>
-              ) : (
-                "Submit"
-              )}
-            </Button>
-            {errorMessage && (
-              <Alert
-                severity="error"
-                onClose={() => setErrorMessage("")}
-                className="mt-4"
-              >
-                {errorMessage}
-              </Alert>
-            )}
+              {/* Submit Button */}
+              <Row className="mt-4 mb-5 text-center">
+                <Col>
+                  <Button
+                    className="submitButton w-25"
+                    variant="success"
+                    onClick={handleSubmit}
+                    disabled={loadingSubmit}
+                  >
+                    {loadingSubmit ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit"
+                    )}
+                  </Button>
+                  {errorMessage && (
+                    <Alert
+                      severity="error"
+                      onClose={() => setErrorMessage("")}
+                      className="mt-4"
+                    >
+                      {errorMessage}
+                    </Alert>
+                  )}
 
-            {successMessage && (
-              <Alert
-                severity="success"
-                onClose={() => setSuccessMessage("")}
-                className="mt-4"
-              >
-                {successMessage}
-              </Alert>
-            )}
-          </Col>
-        </Row>
-      </Card>
+                  {successMessage && (
+                    <Alert
+                      severity="success"
+                      onClose={() => setSuccessMessage("")}
+                      className="mt-4"
+                    >
+                      {successMessage}
+                    </Alert>
+                  )}
+                </Col>
+              </Row>
+            </Card>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
       {/* Display Submissions */}
 
       <Row>
         <Col>
-          <h3 className="justify-content-center mb-5">Previous Submissions</h3>
 
           {!loading &&
             submissions.length > 0 &&
@@ -353,53 +372,71 @@ const MoneyBall = () => {
                 : "0.00";
 
               return (
-                <Container className="totalsBackground p-3 mb-4">
-                  <Row className="text-center mb-2">
+                <Card className="text-center shadow-sm rounded mb-4 p-4 bg-light">
+                  <Card.Title className="mb-4">📊 Game Statistics</Card.Title>
+
+                  <Row className="mb-3">
                     <Col>
-                      <h5>Average Number Hit: {averageHit}</h5>
+                      <h6 className="text-secondary">Average Number Hit</h6>
+                      <h4 className="text-primary fw-bold">{averageHit}</h4>
+                    </Col>
+                    <Col>
+                      <h6 className="text-secondary">Total Revenue</h6>
+                      <h4 className="text-success fw-bold">${totalRevenue}</h4>
                     </Col>
                   </Row>
-                  <Row className="text-center mb-2">
+
+                  <Row className="mb-3">
                     <Col>
-                      <h5>Total Revenue: ${totalRevenue}</h5>
+                      <h6 className="text-secondary">Games Won</h6>
+                      <h4 className="text-success">
+                        <FaArrowUp className="me-2" />
+                        {totals.gamesWon}
+                      </h4>
+                    </Col>
+                    <Col>
+                      <h6 className="text-secondary">Games Lost</h6>
+                      <h4 className="text-danger">
+                        <FaArrowDown className="me-2" />
+                        {totals.gamesLost}
+                      </h4>
                     </Col>
                   </Row>
-                  <Row className="text-center mt-4">
+
+                  <Row className="mb-4">
                     <Col>
-                      <h5>Games Won: {totals.gamesWon}</h5>
+                      <h6 className="text-secondary">Win Percentage</h6>
+                      <ProgressBar
+                        now={winPercentage}
+                        label={`${winPercentage}%`}
+                        variant="info"
+                      />
                     </Col>
                   </Row>
-                  <Row className="text-center">
+
+                  <Row className="mb-3">
                     <Col>
-                      <h5>Games Lost: {totals.gamesLost}</h5>
+                      <h6 className="text-secondary">Free Games Hit</h6>
+                      <h4 className="fw-bold">{freeGamesPercentage}%</h4>
+                    </Col>
+                    <Col>
+                      <h6 className="text-secondary">Jackpot Hit</h6>
+                      <h4 className="fw-bold">{jackpotPercentage}%</h4>
                     </Col>
                   </Row>
-                  <Row className="text-center mt-4 mb-3">
+
+                  <Row className="mt-3">
                     <Col>
-                      <h5>Win Percentage: {winPercentage}%</h5>
-                    </Col>
-                  </Row>
-                  <Row className="text-center mt-2">
-                    <Col>
-                      <h5>Free Games Hit: {freeGamesPercentage}%</h5>
-                    </Col>
-                  </Row>
-                  <Row className="text-center">
-                    <Col>
-                      <h5>Jackpot Hit: {jackpotPercentage}%</h5>
-                    </Col>
-                  </Row>
-                  <Row className="text-center mt-4">
-                    <Col>
-                      <h5>Multiplier Distribution:</h5>
-                      <p><strong>
+                      <h6 className="text-secondary">
+                        🎯 Multiplier Distribution
+                      </h6>
+                      <p className="fw-bold mb-0">
                         2x: {twoXPercentage}% | 3x: {threeXPercentage}% | 5x:{" "}
                         {fiveXPercentage}%
-                        </strong>
                       </p>
                     </Col>
                   </Row>
-                </Container>
+                </Card>
               );
             })()}
           {loading ? (

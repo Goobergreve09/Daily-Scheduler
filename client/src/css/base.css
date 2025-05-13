@@ -12,8 +12,33 @@ body {
 }
 
 h1 {
-  color: black;
-  font-family: Georgia, "Times New Roman", Times, serif;
+  text-align: center;
+  font-size: 40px;
+  text-transform: uppercase;
+  color: #222;
+  letter-spacing: 1px;
+  font-family: "Playfair Display", serif;
+  font-weight: 400;
+  border-top: 2px double black;
+  border-bottom: 2px double black;
+  padding-top: 10px;
+}
+
+h1 span {
+  margin-top: 5px;
+  font-size: 15px;
+  color: #444;
+  word-spacing: 1px;
+  font-weight: normal;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-family: "Raleway", sans-serif;
+  font-weight: 500;
+
+  display: grid;
+  grid-template-rows: 27px 0;
+  grid-gap: 20px;
+  align-items: center;
 }
 
 .uploaded-image {
@@ -45,12 +70,17 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
 
-.totalsBackground {
-  background-color: whitesmoke !important;
-  width: max-content;
-  border: solid 2px black;
-  border-radius: 10px;
+.accordionHeader {
     font-family: "Funnel Display", sans-serif;
+}
+
+.totalsBackground {
+  background: linear-gradient(to right, #f9f9f9, #f0f0ff);
+  width: max-content;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  font-family: "Funnel Display", sans-serif;
 }
 
 @media screen and (max-width: 570px) {

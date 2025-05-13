@@ -2,9 +2,19 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_ROCKET } from "../utils/queries";
 import { ROCKETRUMBLE_SUBMIT } from "../utils/mutations";
-import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Card,
+  ProgressBar,
+  Accordion,
+} from "react-bootstrap";
 import rocketRumbleLogo from "../assets/images/rocketRumble.jpg";
 import Alert from "@mui/material/Alert";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 import "../css/luckyPick.css";
 
@@ -120,234 +130,252 @@ const RocketRumble = () => {
     <Container className="luckyPick-container">
       <Row className="img-header-row text-center">
         <Col>
-          <h1 className="mt-4">Rocket Rumble Submission</h1>
+          <img
+            src={rocketRumbleLogo}
+            alt="Rocket Rumble Logo"
+            className="headerImage mt-3"
+          />
         </Col>
       </Row>
       <Row className="img-header-row text-center">
         <Col>
-          <img
-            src={rocketRumbleLogo}
-            alt="Rocket Rumble Logo"
-            className="headerImage"
-          />
+          <h1 className="mt-4">
+            Rocket Rumble <span>Submission Form</span>
+          </h1>
         </Col>
       </Row>
 
       {/* Form Section */}
-      <Card className="formCard mt-5 mb-5 p-4">
-        <Row className="mt-4">
-          <Col md={6}>
-            <Form.Group controlId="blueNumber">
-              <Form.Label>
-                Blue Start Number?{" "}
-                <span className="italic">Only Answer if Necessary</span>
-              </Form.Label>
-              <Form.Control
-                type="number"
-                name="blueNumber"
-                value={formData.blueNumber}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="greenNumber">
-              <Form.Label>
-                Green Start Number?{" "}
-                <span className="italic">Only Answer if Necessary</span>
-              </Form.Label>
-              <Form.Control
-                type="number"
-                name="greenNumber"
-                value={formData.greenNumber}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="purpleNumber">
-              <Form.Label>
-                Purple Start Number?{" "}
-                <span className="italic">Only Answer if Necessary</span>
-              </Form.Label>
-              <Form.Control
-                type="number"
-                name="purpleNumber"
-                value={formData.purpleNumber}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-            <Form.Group controlId="redNumber">
-              <Form.Label>
-                Red Start Number?{" "}
-                <span className="italic">Only Answer if Necessary</span>
-              </Form.Label>
-              <Form.Control
-                type="number"
-                name="redNumber"
-                value={formData.redNumber}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+      <Accordion className="mb-5">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header className="accordionHeader">
+            📥 Submit New Entry
+          </Accordion.Header>
+          <Accordion.Body>
+            <Card className="formCard mt-5 mb-5 p-4">
+              <Row className="mt-4">
+                <Col md={6}>
+                  <Form.Group controlId="blueNumber">
+                    <Form.Label>
+                      Blue Start Number?{" "}
+                      <span className="italic">Only Answer if Necessary</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="blueNumber"
+                      value={formData.blueNumber}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="greenNumber">
+                    <Form.Label>
+                      Green Start Number?{" "}
+                      <span className="italic">Only Answer if Necessary</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="greenNumber"
+                      value={formData.greenNumber}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="purpleNumber">
+                    <Form.Label>
+                      Purple Start Number?{" "}
+                      <span className="italic">Only Answer if Necessary</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="purpleNumber"
+                      value={formData.purpleNumber}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="redNumber">
+                    <Form.Label>
+                      Red Start Number?{" "}
+                      <span className="italic">Only Answer if Necessary</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="redNumber"
+                      value={formData.redNumber}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="rocketBoost">
-              <Form.Label>Did you hit Rocket Boost?</Form.Label>
-              <Form.Control
-                as="select"
-                name="rocketBoost"
-                value={formData.rocketBoost}
-                onChange={handleInputChange}
-              >
-                <option value="">Select...</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </Form.Control>
-            </Form.Group>
-            <Form.Group controlId="freeGames">
-              <Form.Label>Did you hit Free Games?</Form.Label>
-              <Form.Control
-                as="select"
-                name="freeGames"
-                value={formData.freeGames}
-                onChange={handleInputChange}
-              >
-                <option value="">Select...</option>
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-              </Form.Control>
-            </Form.Group>
-          </Col>
+                  <Form.Group controlId="rocketBoost">
+                    <Form.Label>Did you hit Rocket Boost?</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="rocketBoost"
+                      value={formData.rocketBoost}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select...</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="freeGames">
+                    <Form.Label>Did you hit Free Games?</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="freeGames"
+                      value={formData.freeGames}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select...</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
 
-          <Col md={6}>
-            <Form.Group controlId="bet">
-              <Form.Label>Bet</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                name="bet"
-                value={formData.bet}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                <Col md={6}>
+                  <Form.Group controlId="bet">
+                    <Form.Label>Bet</Form.Label>
+                    <Form.Control
+                      type="number"
+                      step="any"
+                      name="bet"
+                      value={formData.bet}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="cashStart">
-              <Form.Label>Cash Start</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                name="cashStart"
-                value={formData.cashStart}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                  <Form.Group controlId="cashStart">
+                    <Form.Label>Cash Start</Form.Label>
+                    <Form.Control
+                      type="number"
+                      step="any"
+                      name="cashStart"
+                      value={formData.cashStart}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="cashEnd">
-              <Form.Label>Cash End</Form.Label>
-              <Form.Control
-                type="number"
-                step="any"
-                name="cashEnd"
-                value={formData.cashEnd}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
+                  <Form.Group controlId="cashEnd">
+                    <Form.Label>Cash End</Form.Label>
+                    <Form.Control
+                      type="number"
+                      step="any"
+                      name="cashEnd"
+                      value={formData.cashEnd}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
 
-            <Form.Group controlId="notes">
-              <Form.Label>Do you have any comments?</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="notes"
-                value={formData.notes}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-          </Col>
-        </Row>
+                  <Form.Group controlId="notes">
+                    <Form.Label>Do you have any comments?</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      name="notes"
+                      value={formData.notes}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
 
-        {/* Submit Button */}
-        <Row className="mt-4 mb-5 text-center">
-          <Col>
-            <Button
-              className="submitButton w-25"
-              variant="success"
-              onClick={handleSubmit}
-              disabled={loadingSubmit}
-            >
-              {loadingSubmit ? (
-                <>
-                  <span
-                    className="spinner-border spinner-border-sm me-2"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-                  Submitting...
-                </>
-              ) : (
-                "Submit"
-              )}
-            </Button>
-            {errorMessage && (
-              <Alert
-                severity="error"
-                onClose={() => setErrorMessage("")}
-                className="mt-4"
-              >
-                {errorMessage}
-              </Alert>
-            )}
+              {/* Submit Button */}
+              <Row className="mt-4 mb-5 text-center">
+                <Col>
+                  <Button
+                    className="submitButton w-25"
+                    variant="success"
+                    onClick={handleSubmit}
+                    disabled={loadingSubmit}
+                  >
+                    {loadingSubmit ? (
+                      <>
+                        <span
+                          className="spinner-border spinner-border-sm me-2"
+                          role="status"
+                          aria-hidden="true"
+                        ></span>
+                        Submitting...
+                      </>
+                    ) : (
+                      "Submit"
+                    )}
+                  </Button>
+                  {errorMessage && (
+                    <Alert
+                      severity="error"
+                      onClose={() => setErrorMessage("")}
+                      className="mt-4"
+                    >
+                      {errorMessage}
+                    </Alert>
+                  )}
 
-            {successMessage && (
-              <Alert
-                severity="success"
-                onClose={() => setSuccessMessage("")}
-                className="mt-4"
-              >
-                {successMessage}
-              </Alert>
-            )}
-          </Col>
-        </Row>
-      </Card>
+                  {successMessage && (
+                    <Alert
+                      severity="success"
+                      onClose={() => setSuccessMessage("")}
+                      className="mt-4"
+                    >
+                      {successMessage}
+                    </Alert>
+                  )}
+                </Col>
+              </Row>
+            </Card>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
 
       {/* Submissions Summary */}
       <Row>
         <Col>
-          <h3 className="mb-5 text-center">Previous Submissions</h3>
-
           {!loading && submissions.length > 0 && (
             <>
-              <Container className="totalsBackground p-3 mb-4">
-                <Row className="text-center mb-3">
+              <Card className="text-center shadow-sm rounded mb-4 p-4 bg-light">
+                <Card.Title className="mb-4">🚀 Game Statistics</Card.Title>
+
+                <Row className="mb-3">
                   <Col>
-                    <h5>Total Revenue: ${totalRevenue}</h5>
+                    <h6 className="text-secondary">Total Revenue</h6>
+                    <h4 className="text-success fw-bold">${totalRevenue}</h4>
+                  </Col>
+                  <Col>
+                    <h6 className="text-secondary">Win Percentage</h6>
+                    <ProgressBar
+                      now={winPercentage}
+                      label={`${winPercentage}%`}
+                      variant="info"
+                    />
                   </Col>
                 </Row>
 
-                {/* Add the new metrics */}
-                <Row className="text-center mt-4">
+                <Row className="mb-4">
                   <Col>
-                    <h5>Games Won: {gamesWon}</h5>
+                    <h6 className="text-secondary">Games Won</h6>
+                    <h4 className="text-success">
+                      <FaArrowUp className="me-2" /> {gamesWon}
+                    </h4>
                   </Col>
-                </Row>
-                <Row className="text-center mb-4">
                   <Col>
-                    <h5>Games Lost: {gamesLost}</h5>
+                    <h6 className="text-secondary">Games Lost</h6>
+                    <h4 className="text-danger">
+                      <FaArrowDown className="me-2" /> {gamesLost}
+                    </h4>
                   </Col>
                 </Row>
 
-                <Row className="text-center mb-3">
+                <Row className="mb-3">
                   <Col>
-                    <h5>Win Percentage: {winPercentage}%</h5>
+                    <h6 className="text-secondary">🚀 Rocket Boost</h6>
+                    <h4 className="fw-bold">{rocketBoostPercentage}%</h4>
+                  </Col>
+                  <Col>
+                    <h6 className="text-secondary">🎰 Free Games</h6>
+                    <h4 className="fw-bold">{freeGamesPercentage}%</h4>
                   </Col>
                 </Row>
-                <Row className="text-center">
-                  <Col>
-                    <h5>Rocket Boost: {rocketBoostPercentage}%</h5>
-                  </Col>
-                </Row>
-                <Row className="text-center">
-                  <Col>
-                    <h5>Free Games: {freeGamesPercentage}%</h5>
-                  </Col>
-                </Row>
-              </Container>
+              </Card>
             </>
           )}
 
