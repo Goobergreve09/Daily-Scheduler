@@ -58,6 +58,7 @@ export const QUERY_MONEYBALL = gql`
       endingNumber
       hitJackPot
       jackpotDetails
+      multipliers
       bet
       cashStart
       cashEnd

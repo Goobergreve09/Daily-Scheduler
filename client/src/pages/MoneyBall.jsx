@@ -24,6 +24,7 @@ const MoneyBall = () => {
     endingNumber: "",
     hitJackPot: "",
     jackpotDetails: "",
+    multipliers: "",
     bet: "",
     cashStart: "",
     cashEnd: "",
@@ -49,6 +50,7 @@ const MoneyBall = () => {
             endingNumber: parseInt(formData.endingNumber),
             hitJackPot: formData.hitJackPot === "true",
             jackpotDetails: formData.jackpotDetails || "",
+            multipliers: formData.multipliers || "",
             bet: parseFloat(formData.bet) || 0,
             cashStart: parseFloat(formData.cashStart) || 0,
             cashEnd: formData.cashEnd !== "" ? parseFloat(formData.cashEnd) : 0,
@@ -67,6 +69,7 @@ const MoneyBall = () => {
         endingNumber: "",
         hitJackPot: "",
         jackpotDetails: "",
+        multipliers: "",
         bet: "",
         cashStart: "",
         cashEnd: "",
@@ -147,6 +150,22 @@ const MoneyBall = () => {
                 value={formData.jackpotDetails}
                 onChange={handleInputChange}
               />
+            </Form.Group>
+
+            <Form.Group controlId="multipliers">
+              <Form.Label>Did you Hit a Multiplier?</Form.Label>
+              <Form.Control
+                as="select"
+                name="multipliers"
+                value={formData.multipliers}
+                onChange={handleInputChange}
+              >
+                <option value="">Select an Option</option>
+                <option value="None">No</option>
+                <option value="2x">2x</option>
+                <option value="3x">3x</option>
+                <option value="5x">5x</option>
+              </Form.Control>
             </Form.Group>
           </Col>
 
@@ -357,12 +376,19 @@ const MoneyBall = () => {
                           </td>
                           <td>{sub.hitJackPot ? "Yes" : "No"}</td>
                         </tr>
-                        <tr className=" justify-content-center ">
-                          <td>
+                        <tr>
+                          <td colSpan="2" style={{ textAlign: "center" }}>
                             <strong>
-                              Jackpot hit {sub.jackpotDetails} times
+                              Jackpot hit{" "}
+                              {sub.hitJackPot ? sub.jackpotDetails : 0} times
                             </strong>
                           </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Multiplier Hit:</strong>
+                          </td>
+                          <td>{sub.multipliers}</td>
                         </tr>
                         <tr>
                           <td>
@@ -388,10 +414,12 @@ const MoneyBall = () => {
                           </td>
                           <td>{sub.hitFreeGames ? "Yes" : "No"}</td>
                         </tr>
-                        <tr className=" justify-content-center ">
-                          <td>
+                        <tr>
+                          <td colSpan="2" style={{ textAlign: "center" }}>
                             <strong>
-                              Free Games Hit {sub.freeGamesDetails} times
+                              Free Games Hit{" "}
+                              {sub.hitFreeGames ? sub.freeGamesDetails : 0}{" "}
+                              times
                             </strong>
                           </td>
                         </tr>

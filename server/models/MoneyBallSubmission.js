@@ -17,6 +17,9 @@ const MoneyBallSubmissionSchema = new mongoose.Schema(
     jackpotDetails: {
       type: Number,
     },
+    multipliers: {
+      type: String
+    },
 
     bet: {
       type: Number,

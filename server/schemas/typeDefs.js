@@ -46,6 +46,7 @@ type MoneyBall {
   endingNumber: Int
  hitJackPot: Boolean
   jackpotDetails: String
+  multipliers: String
   bet: Float
   cashStart: Float
   cashEnd: Float
@@ -59,6 +60,7 @@ input MoneyBallInput {
   endingNumber: Int
  hitJackPot: Boolean
   jackpotDetails: String
+  multipliers: String
   bet: Float
   cashStart: Float
   cashEnd: Float
