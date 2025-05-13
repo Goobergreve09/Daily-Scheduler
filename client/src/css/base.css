@@ -61,5 +61,8 @@ h1 {
     .headerImage {
         width:75% !important;
     }
+    .minimizeText {
+        font-size: 14px;
+    }
 }
 

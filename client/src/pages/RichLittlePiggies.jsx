@@ -4,11 +4,15 @@ import { QUERY_RICH_PIGGIES } from "../utils/queries";
 import { RICHLITTLEPIGGIES_SUBMIT } from "../utils/mutations";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import richLittlePiggiesLogo from "../assets/images/richLittlePiggies.webp";
+import Alert from "@mui/material/Alert";
 
 import "../css/luckyPick.css";
 
 const RichLittlePiggies = () => {
   const { loading, data, refetch } = useQuery(QUERY_RICH_PIGGIES);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [submitRichLittlePiggies] = useMutation(RICHLITTLEPIGGIES_SUBMIT, {
     errorPolicy: "all",
@@ -30,6 +34,10 @@ const RichLittlePiggies = () => {
   };
 
   const handleSubmit = async () => {
+    setLoadingSubmit(true);
+    setErrorMessage("");
+    setSuccessMessage("");
+
     try {
       await submitRichLittlePiggies({
         variables: {
@@ -45,7 +53,8 @@ const RichLittlePiggies = () => {
         },
       });
 
-      alert("Submission successful!");
+      setSuccessMessage("Submission successful!");
+
       refetch();
 
       setFormData({
@@ -59,6 +68,9 @@ const RichLittlePiggies = () => {
       });
     } catch (error) {
       console.error("Submission error:", error);
+      setErrorMessage("Submission failed. Please try again.");
+    } finally {
+      setLoadingSubmit(false);
     }
   };
 
@@ -73,7 +85,11 @@ const RichLittlePiggies = () => {
       </Row>
       <Row className="img-header-row text-center">
         <Col>
-          <img src={richLittlePiggiesLogo} alt="Rich Little Piggies Logo" className="headerImage" />
+          <img
+            src={richLittlePiggiesLogo}
+            alt="Rich Little Piggies Logo"
+            className="headerImage"
+          />
         </Col>
       </Row>
 
@@ -102,7 +118,9 @@ const RichLittlePiggies = () => {
             </Form.Group>
 
             <Form.Group controlId="jackPotFreeGames">
-              <Form.Label>Did Free Games and Jackpot hit at the same time?</Form.Label>
+              <Form.Label>
+                Did Free Games and Jackpot hit at the same time?
+              </Form.Label>
               <Form.Control
                 as="select"
                 name="jackPotFreeGames"
@@ -166,9 +184,44 @@ const RichLittlePiggies = () => {
         {/* Submit Button */}
         <Row className="mt-4 mb-5 text-center">
           <Col>
-            <Button className="submitButton w-25" variant="success" onClick={handleSubmit}>
-              Submit
+            <Button
+              className="submitButton w-25"
+              variant="success"
+              onClick={handleSubmit}
+              disabled={loadingSubmit}
+            >
+              {loadingSubmit ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Submitting...
+                </>
+              ) : (
+                "Submit"
+              )}
             </Button>
+            {errorMessage && (
+              <Alert
+                severity="error"
+                onClose={() => setErrorMessage("")}
+                className="mt-4"
+              >
+                {errorMessage}
+              </Alert>
+            )}
+
+            {successMessage && (
+              <Alert
+                severity="success"
+                onClose={() => setSuccessMessage("")}
+                className="mt-4"
+              >
+                {successMessage}
+              </Alert>
+            )}
           </Col>
         </Row>
       </Card>
@@ -178,81 +231,102 @@ const RichLittlePiggies = () => {
         <Col>
           <h3 className="mb-5  text-center">Previous Submissions</h3>
           {!loading && submissions.length > 0 && (
-  <>
-    <Container className="totalsBackground p-3 mb-4">
-      <Row className="text-center mb-3">
-        <Col>
-          <h5>
-            Average Number Hit On:{" "}
-            {(
-              submissions.reduce((acc, sub) => acc + (sub.endingNumber || 0), 0) /
-              submissions.length
-            ).toFixed(2)}
-          </h5>
-        </Col>
-      </Row>
+            <>
+              <Container className="totalsBackground p-3 mb-4">
+                <Row className="text-center mb-3">
+                  <Col>
+                    <h5>
+                      Average Number Hit On:{" "}
+                      {(
+                        submissions.reduce(
+                          (acc, sub) => acc + (sub.endingNumber || 0),
+                          0
+                        ) / submissions.length
+                      ).toFixed(2)}
+                    </h5>
+                  </Col>
+                </Row>
 
-      <Row className="text-center mb-3">
-        <Col>
-          <h5>
-            Total Revenue: $$
-            {(
-              submissions.reduce((acc, sub) => acc + (sub.cashEnd || 0), 0) -
-              submissions.reduce((acc, sub) => acc + (sub.cashStart || 0), 0)
-            ).toFixed(2)}
-          </h5>
-        </Col>
-      </Row>
+                <Row className="text-center mb-3">
+                  <Col>
+                    <h5>
+                      Total Revenue: $$
+                      {(
+                        submissions.reduce(
+                          (acc, sub) => acc + (sub.cashEnd || 0),
+                          0
+                        ) -
+                        submissions.reduce(
+                          (acc, sub) => acc + (sub.cashStart || 0),
+                          0
+                        )
+                      ).toFixed(2)}
+                    </h5>
+                  </Col>
+                </Row>
 
-      {/* New Metrics: Games Won, Games Lost, and Win Percentage */}
-      <Row className="text-center">
-        <Col>
-          <h5>
-            Games Won:{" "}
-            {submissions.filter(sub => sub.cashEnd > sub.cashStart).length}
-          </h5>
-        </Col>
-      </Row>
+                {/* New Metrics: Games Won, Games Lost, and Win Percentage */}
+                <Row className="text-center">
+                  <Col>
+                    <h5>
+                      Games Won:{" "}
+                      {
+                        submissions.filter((sub) => sub.cashEnd > sub.cashStart)
+                          .length
+                      }
+                    </h5>
+                  </Col>
+                </Row>
 
-      <Row className="text-center mb-3">
-        <Col>
-          <h5>
-            Games Lost:{" "}
-            {submissions.filter(sub => sub.cashEnd < sub.cashStart).length}
-          </h5>
-        </Col>
-      </Row>
+                <Row className="text-center mb-3">
+                  <Col>
+                    <h5>
+                      Games Lost:{" "}
+                      {
+                        submissions.filter((sub) => sub.cashEnd < sub.cashStart)
+                          .length
+                      }
+                    </h5>
+                  </Col>
+                </Row>
 
-      <Row className="text-center mb-3">
-        <Col>
-          <h5>
-            Win Percentage:{" "}
-            {(
-              (submissions.filter(sub => sub.cashEnd > sub.cashStart).length /
-                submissions.length) *
-              100
-            ).toFixed(2)}%
-          </h5>
-        </Col>
-      </Row>
+                <Row className="text-center mb-3">
+                  <Col>
+                    <h5>
+                      Win Percentage:{" "}
+                      {(
+                        (submissions.filter(
+                          (sub) => sub.cashEnd > sub.cashStart
+                        ).length /
+                          submissions.length) *
+                        100
+                      ).toFixed(2)}
+                      %
+                    </h5>
+                  </Col>
+                </Row>
 
-      {/* New Metric: Free Games and Jackpot Hit at the Same Time */}
-      <Row className="text-center mb-3">
-  <Col>
-    <h5>
-      Free Games & Jackpot Double Hit:{" "}
-      {(
-        (submissions.filter(sub => sub.jackPotFreeGames === true).length /
-          submissions.length) *
-        100
-      ).toFixed(2)}%
-    </h5>
-  </Col>
-</Row>
-    </Container>
-  </>
-)}
-
+                {/* New Metric: Free Games and Jackpot Hit at the Same Time */}
+                <Row className="text-center mb-3">
+                  <Col>
+                    <h5>
+                      <span className="minimizeText">
+                        Free Games & Jackpot Double Hit:{" "}
+                        {(
+                          (submissions.filter(
+                            (sub) => sub.jackPotFreeGames === true
+                          ).length /
+                            submissions.length) *
+                          100
+                        ).toFixed(2)}
+                        %
+                      </span>
+                    </h5>
+                  </Col>
+                </Row>
+              </Container>
+            </>
+          )}
 
           {loading ? (
             <p>Loading...</p>
@@ -272,38 +346,56 @@ const RichLittlePiggies = () => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td><strong>Free Games Count to Start:</strong></td>
+                        <td>
+                          <strong>Free Games Count to Start:</strong>
+                        </td>
                         <td>{sub.beginningNumber}</td>
                       </tr>
                       <tr>
-                        <td><strong>Hit Number:</strong></td>
+                        <td>
+                          <strong>Hit Number:</strong>
+                        </td>
                         <td>{sub.endingNumber}</td>
                       </tr>
                       <tr>
-                        <td><strong>Jackpot and Free Games at the Same Time?</strong></td>
+                        <td>
+                          <strong>
+                            Jackpot and Free Games at the Same Time?
+                          </strong>
+                        </td>
                         <td>{sub.jackPotFreeGames ? "Yes" : "No"}</td>
                       </tr>
                       <tr>
-                        <td><strong>Bet:</strong></td>
+                        <td>
+                          <strong>Bet:</strong>
+                        </td>
                         <td>${sub.bet}</td>
                       </tr>
                       <tr>
-                        <td><strong>Cash Start:</strong></td>
+                        <td>
+                          <strong>Cash Start:</strong>
+                        </td>
                         <td>${sub.cashStart}</td>
                       </tr>
                       <tr>
-                        <td><strong>Cash End:</strong></td>
+                        <td>
+                          <strong>Cash End:</strong>
+                        </td>
                         <td>${sub.cashEnd}</td>
                       </tr>
                       <tr>
-                        <td><strong>Comments:</strong></td>
+                        <td>
+                          <strong>Comments:</strong>
+                        </td>
                         <td>{sub.notes}</td>
                       </tr>
                     </tbody>
                   </table>
                   <Row className="mt-3">
                     <Col className="text-center">
-                      <span className="italic">Submitted on {new Date(sub.createdAt).toLocaleString()}</span>
+                      <span className="italic">
+                        Submitted on {new Date(sub.createdAt).toLocaleString()}
+                      </span>
                     </Col>
                   </Row>
                 </Container>

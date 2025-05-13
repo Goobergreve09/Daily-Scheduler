@@ -4,11 +4,15 @@ import { QUERY_REGAL } from "../utils/queries";
 import { REGALRICHES_SUBMIT } from "../utils/mutations";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import regalRichesLogo from "../assets/images/regalRiches-logo.webp";
+import Alert from "@mui/material/Alert";
 
 import "../css/luckyPick.css";
 
 const RegalRiches = () => {
   const { loading, data, refetch } = useQuery(QUERY_REGAL);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [submitRegalRiches] = useMutation(REGALRICHES_SUBMIT, {
     errorPolicy: "all",
@@ -31,6 +35,10 @@ const RegalRiches = () => {
   };
 
   const handleSubmit = async () => {
+    setLoadingSubmit(true);
+    setErrorMessage("");
+    setSuccessMessage("");
+
     try {
       await submitRegalRiches({
         variables: {
@@ -47,7 +55,8 @@ const RegalRiches = () => {
         },
       });
 
-      alert("Submission successful!");
+      setSuccessMessage("Submission successful!");
+
       refetch();
 
       setFormData({
@@ -62,20 +71,31 @@ const RegalRiches = () => {
       });
     } catch (error) {
       console.error("Submission error:", error);
+      setErrorMessage("Submission failed. Please try again.");
+    } finally {
+      setLoadingSubmit(false); // stop loading
     }
   };
 
   const submissions = data?.regalRichesSubmissions || [];
 
   // Calculate metrics: Total Revenue, Wins, Losses, Win Percentage
-  const totalRevenue = submissions.reduce(
-    (acc, sub) => acc + (sub.cashEnd || 0) - (sub.cashStart || 0),
-    0
-  ).toFixed(2);
+  const totalRevenue = submissions
+    .reduce((acc, sub) => acc + (sub.cashEnd || 0) - (sub.cashStart || 0), 0)
+    .toFixed(2);
 
-  const gamesWon = submissions.filter((sub) => sub.endingNumber > sub.beginningNumber).length;
-  const gamesLost = submissions.length - gamesWon;
-  const winPercentage = submissions.length > 0 ? ((gamesWon / submissions.length) * 100).toFixed(2) : 0;
+  const gamesWon = submissions.filter(
+    (sub) => parseFloat(sub.cashEnd) > parseFloat(sub.cashStart)
+  ).length;
+
+  const gamesLost = submissions.filter(
+    (sub) => parseFloat(sub.cashEnd) < parseFloat(sub.cashStart)
+  ).length;
+
+  const winPercentage =
+    submissions.length > 0
+      ? ((gamesWon / submissions.length) * 100).toFixed(2)
+      : 0;
 
   return (
     <Container className="luckyPick-container">
@@ -86,7 +106,11 @@ const RegalRiches = () => {
       </Row>
       <Row className="img-header-row text-center">
         <Col>
-          <img src={regalRichesLogo} alt="Regal Riches Logo" className="headerImage" />
+          <img
+            src={regalRichesLogo}
+            alt="Regal Riches Logo"
+            className="headerImage"
+          />
         </Col>
       </Row>
 
@@ -195,9 +219,44 @@ const RegalRiches = () => {
         {/* Submit Button */}
         <Row className="mt-4 mb-5 text-center">
           <Col>
-            <Button className=" submitButton w-25" variant="success" onClick={handleSubmit}>
-              Submit
+            <Button
+              className="submitButton w-25"
+              variant="success"
+              onClick={handleSubmit}
+              disabled={loadingSubmit}
+            >
+              {loadingSubmit ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Submitting...
+                </>
+              ) : (
+                "Submit"
+              )}
             </Button>
+            {errorMessage && (
+              <Alert
+                severity="error"
+                onClose={() => setErrorMessage("")}
+                className="mt-4"
+              >
+                {errorMessage}
+              </Alert>
+            )}
+
+            {successMessage && (
+              <Alert
+                severity="success"
+                onClose={() => setSuccessMessage("")}
+                className="mt-4"
+              >
+                {successMessage}
+              </Alert>
+            )}
           </Col>
         </Row>
       </Card>
@@ -209,33 +268,30 @@ const RegalRiches = () => {
 
           {!loading && submissions.length > 0 && (
             <>
-             <Container className="totalsBackground p-3 mb-4">
+              <Container className="totalsBackground p-3 mb-4">
+                <Row className="text-center mb-3">
+                  <Col>
+                    <h5>Total Revenue: ${totalRevenue}</h5>
+                  </Col>
+                </Row>
 
-              <Row className="text-center mb-3">
-                <Col>
-                  <h5>
-                    Total Revenue: ${totalRevenue}
-                  </h5>
-                </Col>
-              </Row>
-
-              {/* Add the new metrics */}
-              <Row className="text-center mt-4">
-                <Col>
-                  <h5>Games Won: {gamesWon}</h5>
-                </Col>
+                {/* Add the new metrics */}
+                <Row className="text-center mt-4">
+                  <Col>
+                    <h5>Games Won: {gamesWon}</h5>
+                  </Col>
                 </Row>
                 <Row className="text-center mb-4">
-                <Col>
-                  <h5>Games Lost: {gamesLost}</h5>
-                </Col>
-              </Row>
+                  <Col>
+                    <h5>Games Lost: {gamesLost}</h5>
+                  </Col>
+                </Row>
 
-              <Row className="text-center mb-3">
-                <Col>
-                  <h5>Win Percentage: {winPercentage}%</h5>
-                </Col>
-              </Row>
+                <Row className="text-center mb-3">
+                  <Col>
+                    <h5>Win Percentage: {winPercentage}%</h5>
+                  </Col>
+                </Row>
               </Container>
             </>
           )}
@@ -258,42 +314,60 @@ const RegalRiches = () => {
                     </thead>
                     <tbody>
                       <tr>
-                        <td><strong>Color Played:</strong></td>
+                        <td>
+                          <strong>Color Played:</strong>
+                        </td>
                         <td>{sub.whichColor}</td>
                       </tr>
                       <tr>
-                        <td><strong>Combo:</strong></td>
+                        <td>
+                          <strong>Combo:</strong>
+                        </td>
                         <td>{sub.combo ? "Yes" : "No"}</td>
                       </tr>
                       <tr>
-                        <td><strong>Start Number:</strong></td>
+                        <td>
+                          <strong>Start Number:</strong>
+                        </td>
                         <td>{sub.beginningNumber}</td>
                       </tr>
                       <tr>
-                        <td><strong>Hit Number:</strong></td>
+                        <td>
+                          <strong>Hit Number:</strong>
+                        </td>
                         <td>{sub.endingNumber}</td>
                       </tr>
                       <tr>
-                        <td><strong>Bet:</strong></td>
+                        <td>
+                          <strong>Bet:</strong>
+                        </td>
                         <td>${sub.bet}</td>
                       </tr>
                       <tr>
-                        <td><strong>Cash Start:</strong></td>
+                        <td>
+                          <strong>Cash Start:</strong>
+                        </td>
                         <td>${sub.cashStart}</td>
                       </tr>
                       <tr>
-                        <td><strong>Cash End:</strong></td>
+                        <td>
+                          <strong>Cash End:</strong>
+                        </td>
                         <td>${sub.cashEnd}</td>
                       </tr>
                       <tr>
-                        <td><strong>Comments:</strong></td>
+                        <td>
+                          <strong>Comments:</strong>
+                        </td>
                         <td>{sub.notes}</td>
                       </tr>
                     </tbody>
                   </table>
                   <Row className="mt-3">
                     <Col className="text-center">
-                      <span className="italic">Submitted on {new Date(sub.createdAt).toLocaleString()}</span>
+                      <span className="italic">
+                        Submitted on {new Date(sub.createdAt).toLocaleString()}
+                      </span>
                     </Col>
                   </Row>
                 </Container>

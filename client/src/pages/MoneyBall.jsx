@@ -4,12 +4,16 @@ import { QUERY_MONEYBALL } from "../utils/queries";
 import { MONEYBALL_SUBMIT } from "../utils/mutations";
 import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import moneyBallLogo from "../assets/images/moneyBallLogo.jpg";
+import Alert from "@mui/material/Alert";
 
 import "../css/base.css";
 import "../css/luckyPick.css";
 
 const MoneyBall = () => {
   const { loading, data, refetch } = useQuery(QUERY_MONEYBALL);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const [submitMoneyBall] = useMutation(MONEYBALL_SUBMIT, {
     errorPolicy: "all",
@@ -33,6 +37,10 @@ const MoneyBall = () => {
   };
 
   const handleSubmit = async () => {
+    setLoadingSubmit(true);
+    setErrorMessage("");
+    setSuccessMessage("");
+
     try {
       await submitMoneyBall({
         variables: {
@@ -50,7 +58,7 @@ const MoneyBall = () => {
         },
       });
 
-      alert("Submission successful!");
+      setSuccessMessage("Submission successful!");
       refetch();
 
       // Reset form
@@ -67,6 +75,9 @@ const MoneyBall = () => {
       });
     } catch (error) {
       console.error("Submission error:", error);
+      setErrorMessage("Submission failed. Please try again.");
+    } finally {
+      setLoadingSubmit(false);
     }
   };
 
@@ -202,9 +213,44 @@ const MoneyBall = () => {
         {/* Submit Button */}
         <Row className="mt-4 mb-5 text-center">
           <Col>
-            <Button className="submitButton w-25" variant="success" onClick={handleSubmit}>
-              Submit
+            <Button
+              className="submitButton w-25"
+              variant="success"
+              onClick={handleSubmit}
+              disabled={loadingSubmit}
+            >
+              {loadingSubmit ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Submitting...
+                </>
+              ) : (
+                "Submit"
+              )}
             </Button>
+            {errorMessage && (
+              <Alert
+                severity="error"
+                onClose={() => setErrorMessage("")}
+                className="mt-4"
+              >
+                {errorMessage}
+              </Alert>
+            )}
+
+            {successMessage && (
+              <Alert
+                severity="success"
+                onClose={() => setSuccessMessage("")}
+                className="mt-4"
+              >
+                {successMessage}
+              </Alert>
+            )}
           </Col>
         </Row>
       </Card>

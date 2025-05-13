@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_LUCKYPICK } from "../utils/queries";
 import { LUCKYPICK_SUBMIT } from "../utils/mutations";
+import Alert from "@mui/material/Alert";
 import {
   Container,
   Row,
@@ -27,6 +28,9 @@ const LuckyPick = () => {
   const [afterPhoto, setAfterPhoto] = useState(null);
   const [previewBefore, setPreviewBefore] = useState(null);
   const [previewAfter, setPreviewAfter] = useState(null);
+  const [loadingSubmit, setLoadingSubmit] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const uploadToCloudinary = async (file) => {
     const formData = new FormData();
@@ -86,12 +90,16 @@ const LuckyPick = () => {
   };
 
   const handleSubmit = async () => {
+    setLoadingSubmit(true);
+    setErrorMessage("");
+    setSuccessMessage(""); // Start loading
     try {
       const beforeImageUrl = await uploadToCloudinary(beforePhoto);
       const afterImageUrl = await uploadToCloudinary(afterPhoto);
 
       if (!beforeImageUrl || !afterImageUrl) {
-        alert("Error uploading images. Please try again.");
+        setErrorMessage("Error uploading images. Please try again.");
+        setLoadingSubmit(false);
         return;
       }
 
@@ -113,10 +121,9 @@ const LuckyPick = () => {
         },
       });
 
-      alert("Submission successful!");
-      refetch();
+      setSuccessMessage("Submission successful!");
 
-      // Reset form
+      refetch();
       setFormData({
         multipliers: "",
         freeGames: "",
@@ -134,6 +141,9 @@ const LuckyPick = () => {
       setPreviewAfter(null);
     } catch (error) {
       console.error("Submission error:", error);
+      setErrorMessage("Submission failed. Please try again.");
+    } finally {
+      setLoadingSubmit(false); // Always end loading
     }
   };
 
@@ -155,6 +165,7 @@ const LuckyPick = () => {
           />
         </Col>
       </Row>
+
 
       {/* Image Upload Section */}
       <Row className="mt-4">
@@ -190,19 +201,23 @@ const LuckyPick = () => {
       <Card className="p-4 mt-5 formCard">
         <Row className="mt-4">
           <Col md={6}>
-            {["multipliers", "freeGames", "numbersOffBoard", "wilds", "bet"].map(
-              (field) => (
-                <Form.Group controlId={field} key={field}>
-                  <Form.Label>{field.replace(/([A-Z])/g, " $1")}</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name={field}
-                    value={formData[field]}
-                    onChange={handleInputChange}
-                  />
-                </Form.Group>
-              )
-            )}
+            {[
+              "multipliers",
+              "freeGames",
+              "numbersOffBoard",
+              "wilds",
+              "bet",
+            ].map((field) => (
+              <Form.Group controlId={field} key={field}>
+                <Form.Label>{field.replace(/([A-Z])/g, " $1")}</Form.Label>
+                <Form.Control
+                  type="number"
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleInputChange}
+                />
+              </Form.Group>
+            ))}
           </Col>
           <Col md={6}>
             <Form.Group controlId="cashStart">
@@ -250,9 +265,44 @@ const LuckyPick = () => {
 
         <Row className="mt-4 mb-5 text-center">
           <Col>
-            <Button className="submitButton w-25" variant="success" onClick={handleSubmit}>
-              Submit
+            <Button
+              className="submitButton w-25"
+              variant="success"
+              onClick={handleSubmit}
+              disabled={loadingSubmit}
+            >
+              {loadingSubmit ? (
+                <>
+                  <span
+                    className="spinner-border spinner-border-sm me-2"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
+                  Submitting...
+                </>
+              ) : (
+                "Submit"
+              )}
             </Button>
+                  {errorMessage && (
+        <Alert
+          severity="error"
+          onClose={() => setErrorMessage("")}
+          className="mt-4"
+        >
+          {errorMessage}
+        </Alert>
+      )}
+
+      {successMessage && (
+        <Alert
+          severity="success"
+          onClose={() => setSuccessMessage("")}
+          className="mt-4"
+        >
+          {successMessage}
+        </Alert>
+      )}
           </Col>
         </Row>
       </Card>
@@ -266,50 +316,54 @@ const LuckyPick = () => {
         </Col>
       </Row>
 
-      {!loading && submissions.length > 0 && (() => {
-  const totals = submissions.reduce(
-    (acc, sub) => {
-      const start = parseFloat(sub.cashStart) || 0;
-      const end = parseFloat(sub.cashEnd) || 0;
-      acc.cashStart += start;
-      acc.cashEnd += end;
-      if (end > start) acc.gamesWon += 1;
-      else if (end < start) acc.gamesLost += 1;
-      return acc;
-    },
-    { cashStart: 0, cashEnd: 0, gamesWon: 0, gamesLost: 0 }
-  );
+      {!loading &&
+        submissions.length > 0 &&
+        (() => {
+          const totals = submissions.reduce(
+            (acc, sub) => {
+              const start = parseFloat(sub.cashStart) || 0;
+              const end = parseFloat(sub.cashEnd) || 0;
+              acc.cashStart += start;
+              acc.cashEnd += end;
+              if (end > start) acc.gamesWon += 1;
+              else if (end < start) acc.gamesLost += 1;
+              return acc;
+            },
+            { cashStart: 0, cashEnd: 0, gamesWon: 0, gamesLost: 0 }
+          );
 
-  const totalRevenue = (totals.cashEnd - totals.cashStart).toFixed(2);
-  const totalGames = totals.gamesWon + totals.gamesLost;
-  const winPercentage = totalGames > 0 ? ((totals.gamesWon / totalGames) * 100).toFixed(2) : "0.00";
+          const totalRevenue = (totals.cashEnd - totals.cashStart).toFixed(2);
+          const totalGames = totals.gamesWon + totals.gamesLost;
+          const winPercentage =
+            totalGames > 0
+              ? ((totals.gamesWon / totalGames) * 100).toFixed(2)
+              : "0.00";
 
-  return (
-    <Container className="totalsBackground p-3 mb-4">
-      <Row className="text-center mb-2">
-        <Col>
-          <h5>Total Revenue: ${totalRevenue}</h5>
-        </Col>
-      </Row>
-      <Row className="text-center mt-4">
-        <Col>
-          <h5>Games Won: {totals.gamesWon}</h5>
-        </Col>
-        </Row>
-        <Row className="text-center">
-        <Col>
-          <h5>Games Lost: {totals.gamesLost}</h5>
-        </Col>
-      </Row>
-      <Row className="text-center mt-3">
-        <Col>
-          <h5>Win Percentage: {winPercentage}%</h5>
-        </Col>
-      </Row>
-    </Container>
-  );
-})()}
-    
+          return (
+            <Container className="totalsBackground p-3 mb-4">
+              <Row className="text-center mb-2">
+                <Col>
+                  <h5>Total Revenue: ${totalRevenue}</h5>
+                </Col>
+              </Row>
+              <Row className="text-center mt-4">
+                <Col>
+                  <h5>Games Won: {totals.gamesWon}</h5>
+                </Col>
+              </Row>
+              <Row className="text-center">
+                <Col>
+                  <h5>Games Lost: {totals.gamesLost}</h5>
+                </Col>
+              </Row>
+              <Row className="text-center mt-3">
+                <Col>
+                  <h5>Win Percentage: {winPercentage}%</h5>
+                </Col>
+              </Row>
+            </Container>
+          );
+        })()}
 
       {loading ? (
         <p>Loading...</p>
@@ -348,15 +402,60 @@ const LuckyPick = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr><td><strong>Multipliers:</strong></td><td>{sub.multipliers}</td></tr>
-                    <tr><td><strong>Free Games:</strong></td><td>{sub.freeGames}</td></tr>
-                    <tr><td><strong>Numbers Off Board:</strong></td><td>{sub.numbersOffBoard}</td></tr>
-                    <tr><td><strong>Wilds:</strong></td><td>{sub.wilds}</td></tr>
-                    <tr><td><strong>Bet:</strong></td><td>${sub.bet}</td></tr>
-                    <tr><td><strong>Cash Start:</strong></td><td>${sub.cashStart}</td></tr>
-                    <tr><td><strong>Cash End:</strong></td><td>${sub.cashEnd}</td></tr>
-                    <tr><td><strong>Hit Progressive:</strong></td><td>{sub.hitProgressive ? "Yes" : "No"}</td></tr>
-                    <tr><td><strong>Stages Hit:</strong></td><td>{sub.stageDetails}</td></tr>
+                    <tr>
+                      <td>
+                        <strong>Multipliers:</strong>
+                      </td>
+                      <td>{sub.multipliers}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Free Games:</strong>
+                      </td>
+                      <td>{sub.freeGames}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Numbers Off Board:</strong>
+                      </td>
+                      <td>{sub.numbersOffBoard}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Wilds:</strong>
+                      </td>
+                      <td>{sub.wilds}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Bet:</strong>
+                      </td>
+                      <td>${sub.bet}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Cash Start:</strong>
+                      </td>
+                      <td>${sub.cashStart}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Cash End:</strong>
+                      </td>
+                      <td>${sub.cashEnd}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Hit Progressive:</strong>
+                      </td>
+                      <td>{sub.hitProgressive ? "Yes" : "No"}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Stages Hit:</strong>
+                      </td>
+                      <td>{sub.stageDetails}</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
