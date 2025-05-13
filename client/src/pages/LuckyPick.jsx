@@ -68,6 +68,7 @@ const LuckyPick = () => {
     bet: "",
     cashStart: "",
     cashEnd: "",
+    allWilds: "",
     hitProgressive: "",
     stageDetails: "",
   });
@@ -115,6 +116,7 @@ const LuckyPick = () => {
             bet: parseFloat(formData.bet) || 0,
             cashStart: parseFloat(formData.cashStart) || 0,
             cashEnd: parseFloat(formData.cashEnd) || 0,
+            allWilds: formData.allWilds === "yes",
             hitProgressive: formData.hitProgressive === "yes",
             stageDetails: formData.stageDetails || "",
           },
@@ -132,6 +134,7 @@ const LuckyPick = () => {
         bet: "",
         cashStart: "",
         cashEnd: "",
+        allWilds: "",
         hitProgressive: "",
         stageDetails: "",
       });
@@ -165,7 +168,6 @@ const LuckyPick = () => {
           />
         </Col>
       </Row>
-
 
       {/* Image Upload Section */}
       <Row className="mt-4">
@@ -238,6 +240,19 @@ const LuckyPick = () => {
                 onChange={handleInputChange}
               />
             </Form.Group>
+            <Form.Group controlId="allWilds">
+              <Form.Label>Did you find all of the wilds?</Form.Label>
+              <Form.Control
+                as="select"
+                name="allWilds"
+                value={formData.allWilds}
+                onChange={handleInputChange}
+              >
+                <option value="">Select...</option>
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+              </Form.Control>
+            </Form.Group>
             <Form.Group controlId="hitProgressive">
               <Form.Label>Did you hit a progressive?</Form.Label>
               <Form.Control
@@ -284,25 +299,25 @@ const LuckyPick = () => {
                 "Submit"
               )}
             </Button>
-                  {errorMessage && (
-        <Alert
-          severity="error"
-          onClose={() => setErrorMessage("")}
-          className="mt-4"
-        >
-          {errorMessage}
-        </Alert>
-      )}
+            {errorMessage && (
+              <Alert
+                severity="error"
+                onClose={() => setErrorMessage("")}
+                className="mt-4"
+              >
+                {errorMessage}
+              </Alert>
+            )}
 
-      {successMessage && (
-        <Alert
-          severity="success"
-          onClose={() => setSuccessMessage("")}
-          className="mt-4"
-        >
-          {successMessage}
-        </Alert>
-      )}
+            {successMessage && (
+              <Alert
+                severity="success"
+                onClose={() => setSuccessMessage("")}
+                className="mt-4"
+              >
+                {successMessage}
+              </Alert>
+            )}
           </Col>
         </Row>
       </Card>
@@ -443,6 +458,12 @@ const LuckyPick = () => {
                         <strong>Cash End:</strong>
                       </td>
                       <td>${sub.cashEnd}</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Found All Wilds:</strong>
+                      </td>
+                      <td>{sub.allWilds ? "Yes" : "No"}</td>
                     </tr>
                     <tr>
                       <td>

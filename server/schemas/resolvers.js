@@ -1,6 +1,16 @@
-const { signToken, AuthenticationError, generateResetToken } = require("../utils/auth.js");
+const {
+  signToken,
+  AuthenticationError,
+  generateResetToken,
+} = require("../utils/auth.js");
 const { User } = require("../models");
-const { LuckyPickSubmission, MoneyBallSubmission, RegalRichesSubmission, RichLittlePiggiesSubmission } = require("../models");
+const {
+  LuckyPickSubmission,
+  MoneyBallSubmission,
+  RegalRichesSubmission,
+  RichLittlePiggiesSubmission,
+  RocketRumbleSubmission,
+} = require("../models");
 
 const resolvers = {
   Query: {
@@ -13,8 +23,11 @@ const resolvers = {
     regalRichesSubmissions: async () => {
       return await RegalRichesSubmission.find().sort({ createdAt: -1 });
     },
-    richLittlePiggiesSubmissions: async () => { // Fixed the plural name here
+    richLittlePiggiesSubmissions: async () => {
       return await RichLittlePiggiesSubmission.find().sort({ createdAt: -1 });
+    },
+    rocketRumbleSubmissions: async () => {
+      return await RocketRumbleSubmission.find().sort({ createdAt: -1 });
     },
     me: async (parent, args, context) => {
       if (context.user) {
@@ -73,6 +86,7 @@ const resolvers = {
           bet,
           cashStart,
           cashEnd,
+          allWilds,
           hitProgressive,
           stageDetails,
         },
@@ -93,6 +107,7 @@ const resolvers = {
         bet,
         cashStart,
         cashEnd,
+        allWilds,
         hitProgressive,
         stageDetails,
       });
@@ -108,6 +123,7 @@ const resolvers = {
           bet,
           cashStart,
           cashEnd,
+          allWilds,
           hitProgressive,
           stageDetails,
           answer: "default",
@@ -191,7 +207,7 @@ const resolvers = {
           cashStart,
           cashEnd,
           notes,
-          createdAt
+          createdAt,
         },
       },
       context
@@ -232,7 +248,8 @@ const resolvers = {
       }
     },
 
-    submitRichLittlePiggies: async ( // Fixed here by moving it inside Mutation
+    submitRichLittlePiggies: async (
+      // Fixed here by moving it inside Mutation
       parent,
       {
         richLittlePiggiesData: {
@@ -243,7 +260,7 @@ const resolvers = {
           cashStart,
           cashEnd,
           notes,
-          createdAt
+          createdAt,
         },
       },
       context
@@ -260,25 +277,89 @@ const resolvers = {
         cashStart,
         cashEnd,
         notes,
-        createdAt
+        createdAt,
       });
 
       try {
-        const newSubmissionRichLittlePiggies = await RichLittlePiggiesSubmission.create({
-          beginningNumber,
-          endingNumber,
-          jackPotFreeGames,
-          bet,
-          cashStart,
-          cashEnd,
-          notes,
-          createdAt
-        });
-        console.log("New Rich Little Piggies created:", newSubmissionRichLittlePiggies);
+        const newSubmissionRichLittlePiggies =
+          await RichLittlePiggiesSubmission.create({
+            beginningNumber,
+            endingNumber,
+            jackPotFreeGames,
+            bet,
+            cashStart,
+            cashEnd,
+            notes,
+            createdAt,
+          });
+        console.log(
+          "New Rich Little Piggies created:",
+          newSubmissionRichLittlePiggies
+        );
         return newSubmissionRichLittlePiggies; // Fixed the return statement
       } catch (error) {
         console.error("Error creating Rich Little Piggies:", error);
         throw new Error("Failed to create Rich Little Piggies submission.");
+      }
+    },
+
+    submitRocketRumble: async (
+      // Fixed here by moving it inside Mutation
+      parent,
+      {
+        rocketRumbleData: {
+          blueNumber,
+          greenNumber,
+          purpleNumber,
+          redNumber,
+          rocketBoost,
+          freeGames,
+          bet,
+          cashStart,
+          cashEnd,
+          notes,
+          createdAt,
+        },
+      },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in.");
+      }
+
+      console.log("Data received in resolver:", {
+        blueNumber,
+        greenNumber,
+        purpleNumber,
+        redNumber,
+        rocketBoost,
+        freeGames,
+        bet,
+        cashStart,
+        cashEnd,
+        notes,
+        createdAt,
+      });
+
+      try {
+        const newSubmissionRocketRumble = await RocketRumbleSubmission.create({
+          blueNumber,
+          greenNumber,
+          purpleNumber,
+          redNumber,
+          rocketBoost,
+          freeGames,
+          bet,
+          cashStart,
+          cashEnd,
+          notes,
+          createdAt,
+        });
+        console.log("New Rocket Rumble created:", newSubmissionRocketRumble);
+        return newSubmissionRichLittlePiggies; // Fixed the return statement
+      } catch (error) {
+        console.error("Error creating Rocket Rumble:", error);
+        throw new Error("Failed to create Rocket Rumble submission.");
       }
     },
   },

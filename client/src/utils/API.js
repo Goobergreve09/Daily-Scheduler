@@ -119,3 +119,23 @@ export const submitRichLittlePiggies = async (formData) => {
     })
     .catch(handleFetchError);
 };
+
+export const submitRocketRumble = async (formData) => {
+  const token = AuthService.getToken();
+
+  return fetch("/api/rocketrumble", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to submit Rocket Rumble data");
+      }
+      return response.json();
+    })
+    .catch(handleFetchError);
+};

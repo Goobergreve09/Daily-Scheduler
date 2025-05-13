@@ -43,6 +43,7 @@ export const QUERY_LUCKYPICK = gql`
       bet
       cashStart
       cashEnd
+      allWilds
       hitProgressive
       stageDetails
       createdAt
@@ -93,6 +94,25 @@ export const QUERY_RICH_PIGGIES = gql`
       beginningNumber
       endingNumber
       jackPotFreeGames
+      bet
+      cashStart
+      cashEnd
+      notes
+      createdAt
+    }
+  }
+`;
+
+export const QUERY_ROCKET  = gql`
+  query rocketRumbleSubmissions {
+    rocketRumbleSubmissions {
+      _id
+      blueNumber
+      greenNumber
+      purpleNumber
+      redNumber
+      rocketBoost
+      freeGames
       bet
       cashStart
       cashEnd

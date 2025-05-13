@@ -75,3 +75,12 @@ export const RICHLITTLEPIGGIES_SUBMIT = gql`
     }
   }
 `;
+
+export const ROCKETRUMBLE_SUBMIT = gql`
+  mutation SubmitRocketRumble($rocketRumbleData: RocketRumbleInput!) {
+    submitRocketRumble(rocketRumbleData: $rocketRumbleData) {
+      _id
+      createdAt
+    }
+  }
+`;

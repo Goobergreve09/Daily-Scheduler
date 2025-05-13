@@ -310,6 +310,48 @@ const MoneyBall = () => {
                 ) / submissions.length
               ).toFixed(2);
 
+              // Count specific values
+              const totalSubmissions = submissions.length;
+              const freeGamesHits = submissions.filter(
+                (sub) => sub.hitFreeGames
+              ).length;
+              const jackpotHits = submissions.filter(
+                (sub) => sub.hitJackPot
+              ).length;
+
+              // Multiplier breakdown
+              const multiplierCounts = submissions.reduce(
+                (acc, sub) => {
+                  const multiplier = sub.multipliers;
+                  if (multiplier === "2x") acc.twoX += 1;
+                  else if (multiplier === "3x") acc.threeX += 1;
+                  else if (multiplier === "5x") acc.fiveX += 1;
+                  return acc;
+                },
+                { twoX: 0, threeX: 0, fiveX: 0 }
+              );
+
+              // Calculate percentages
+              const freeGamesPercentage = totalSubmissions
+                ? ((freeGamesHits / totalSubmissions) * 100).toFixed(2)
+                : "0.00";
+
+              const jackpotPercentage = totalSubmissions
+                ? ((jackpotHits / totalSubmissions) * 100).toFixed(2)
+                : "0.00";
+
+              const twoXPercentage = totalSubmissions
+                ? ((multiplierCounts.twoX / totalSubmissions) * 100).toFixed(2)
+                : "0.00";
+              const threeXPercentage = totalSubmissions
+                ? ((multiplierCounts.threeX / totalSubmissions) * 100).toFixed(
+                    2
+                  )
+                : "0.00";
+              const fiveXPercentage = totalSubmissions
+                ? ((multiplierCounts.fiveX / totalSubmissions) * 100).toFixed(2)
+                : "0.00";
+
               return (
                 <Container className="totalsBackground p-3 mb-4">
                   <Row className="text-center mb-2">
@@ -332,9 +374,29 @@ const MoneyBall = () => {
                       <h5>Games Lost: {totals.gamesLost}</h5>
                     </Col>
                   </Row>
-                  <Row className="text-center mt-4">
+                  <Row className="text-center mt-4 mb-3">
                     <Col>
                       <h5>Win Percentage: {winPercentage}%</h5>
+                    </Col>
+                  </Row>
+                  <Row className="text-center mt-2">
+                    <Col>
+                      <h5>Free Games Hit: {freeGamesPercentage}%</h5>
+                    </Col>
+                  </Row>
+                  <Row className="text-center">
+                    <Col>
+                      <h5>Jackpot Hit: {jackpotPercentage}%</h5>
+                    </Col>
+                  </Row>
+                  <Row className="text-center mt-4">
+                    <Col>
+                      <h5>Multiplier Distribution:</h5>
+                      <p><strong>
+                        2x: {twoXPercentage}% | 3x: {threeXPercentage}% | 5x:{" "}
+                        {fiveXPercentage}%
+                        </strong>
+                      </p>
                     </Col>
                   </Row>
                 </Container>

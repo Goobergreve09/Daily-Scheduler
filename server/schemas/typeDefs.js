@@ -20,6 +20,7 @@ type LuckyPick {
   bet: Float
   cashStart: Float
   cashEnd: Float
+  allWilds: Boolean
   hitProgressive: Boolean
   stageDetails: String
   answer: String
@@ -36,6 +37,7 @@ input LuckyPickInput {
   bet: Float
   cashStart: Float
   cashEnd: Float
+  allWilds: Boolean
   hitProgressive: Boolean
   stageDetails: String
 }
@@ -117,6 +119,35 @@ endingNumber: Int
   createdAt: DateTime
 }
 
+type RocketRumble {
+  _id: ID!
+ blueNumber: Int
+greenNumber: Int
+purpleNumber: Int
+redNumber: Int
+ rocketBoost: Boolean
+  freeGames: Boolean
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  notes: String
+  createdAt: DateTime
+}
+
+input RocketRumbleInput {
+ blueNumber: Int
+greenNumber: Int
+purpleNumber: Int
+redNumber: Int
+ rocketBoost: Boolean
+  freeGames: Boolean
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  notes: String
+  createdAt: DateTime
+}
+
 
   type Auth {
     token: ID!
@@ -128,18 +159,20 @@ endingNumber: Int
     users: [User]
     luckyPickSubmissions: [LuckyPick]
     moneyBallSubmissions: [MoneyBall]
-     regalRichesSubmissions: [RegalRiches]
-     richLittlePiggiesSubmissions: [RichLittlePiggies]
+    regalRichesSubmissions: [RegalRiches]
+    richLittlePiggiesSubmissions: [RichLittlePiggies]
+    rocketRumbleSubmissions: [RocketRumble]
   }
 
   type Mutation {
-   login(username: String!, password: String!): Auth
+    login(username: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
     resetPassword(email:String!): Auth
-      submitLuckyPick(luckyPickData: LuckyPickInput!): LuckyPick
-      submitMoneyBall(moneyBallData: MoneyBallInput!): MoneyBall
-      submitRegalRiches(regalRichesData: RegalRichesInput!): RegalRiches
-       submitRichLittlePiggies(richLittlePiggiesData: RichLittlePiggiesInput!): RichLittlePiggies
+    submitLuckyPick(luckyPickData: LuckyPickInput!): LuckyPick
+    submitMoneyBall(moneyBallData: MoneyBallInput!): MoneyBall
+    submitRegalRiches(regalRichesData: RegalRichesInput!): RegalRiches
+    submitRichLittlePiggies(richLittlePiggiesData: RichLittlePiggiesInput!): RichLittlePiggies
+    submitRocketRumble(rocketRumbleData: RocketRumbleInput!): RocketRumble
   }
 `;
 

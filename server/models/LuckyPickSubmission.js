@@ -36,6 +36,9 @@ const LuckyPickSubmissionSchema = new mongoose.Schema(
     cashEnd: {
       type: Number,
     },
+    allWilds: {
+      type: Boolean
+    },
     hitProgressive: {
       type: Boolean,
     },

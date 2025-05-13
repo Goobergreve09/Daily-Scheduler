@@ -11,6 +11,7 @@ import LuckyPick from "./pages/LuckyPick.jsx";
 import MoneyBall from "./pages/MoneyBall.jsx";
 import RegalRiches from "./pages/RegalRiches.jsx";
 import RichLittlePiggies from "./pages/RichLittlePiggies.jsx";
+import RocketRumble from "./pages/RocketRumble.jsx";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: "/richlittlepiggies",
         element: <RichLittlePiggies />,
+      },
+          {
+        path: "/rocketrumble",
+        element: <RocketRumble />,
       },
     ],
   },
