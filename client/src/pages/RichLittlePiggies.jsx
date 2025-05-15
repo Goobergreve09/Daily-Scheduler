@@ -403,7 +403,7 @@ const RichLittlePiggies = () => {
                         <td>
                           <strong>Comments:</strong>
                         </td>
-                        <td>{sub.notes}</td>
+                        <td>{sub.notes || "N/A"}</td>
                       </tr>
                     </tbody>
                   </table>

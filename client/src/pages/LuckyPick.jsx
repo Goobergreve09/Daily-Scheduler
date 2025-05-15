@@ -248,25 +248,42 @@ const LuckyPick = () => {
               </Row>
               <Row className="mt-4">
                 <Col md={6}>
-                  {[
-                    "multipliers",
-                    "freeGames",
-                    "numbersOffBoard",
-                    "wilds",
-                    "bet",
-                  ].map((field) => (
-                    <Form.Group controlId={field} key={field}>
-                      <Form.Label>
-                        {field.replace(/([A-Z])/g, " $1")}
-                      </Form.Label>
-                      <Form.Control
-                        type="number"
-                        name={field}
-                        value={formData[field]}
-                        onChange={handleInputChange}
-                      />
-                    </Form.Group>
-                  ))}
+                  <Form.Group controlId="multipliers">
+                    <Form.Label>Number of Multipliers to Start?</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="multipliers"
+                      value={formData.multipliers}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="freeGames">
+                    <Form.Label>Number of free games to start?</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="freeGames"
+                      value={formData.freeGames}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="wilds">
+                    <Form.Label>Number of Wilds to start?</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="wilds"
+                      value={formData.wilds}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="numbersOffBoard">
+                    <Form.Label>Numbers off the board to start?</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="numbersOffBoard"
+                      value={formData.numbersOffBoard}
+                      onChange={handleInputChange}
+                    />
+                  </Form.Group>
                 </Col>
                 <Col md={6}>
                   <Form.Group controlId="cashStart">
@@ -536,7 +553,7 @@ const LuckyPick = () => {
                       <td>
                         <strong>Stages Hit:</strong>
                       </td>
-                      <td>{sub.stageDetails}</td>
+                      <td>{sub.stageDetails || "N/A"}</td>
                     </tr>
                   </tbody>
                 </table>
