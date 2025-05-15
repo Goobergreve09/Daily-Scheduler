@@ -13,6 +13,7 @@ import RichLittlePiggies from "./pages/RichLittlePiggies.jsx";
 import RocketRumble from "./pages/RocketRumble.jsx";
 import Cats from "./pages/Cats.jsx";
 import AscendingFortunes from "./pages/AscendingFortunes.jsx";
+import GoldenJungle from "./pages/GoldenJungle.jsx";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +63,11 @@ const router = createBrowserRouter([
         path: "/rocketrumble",
         element: <RocketRumble />,
       },
+                {
+        path: "/goldenjungle",
+        element: <GoldenJungle />,
+      },
+      
     ],
   },
 ]);

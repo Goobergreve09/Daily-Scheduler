@@ -45,17 +45,6 @@ const AppNavbar = () => {
 
         <Navbar.Toggle onClick={handleNavbarToggle} />
         <Navbar.Collapse id="navbarCollapse">
-          <Nav className="mr-auto ">
-            <Nav.Link
-              as={NavLink}
-              to="/home"
-              activeclassname="active"
-              onClick={handleLinkClick}
-            >
-              Scheduler
-            </Nav.Link>
-
-          </Nav>
 
           <Nav>
             {Auth.loggedIn() ? (

@@ -196,6 +196,27 @@ input AscendingFortunesInput {
  createdAt: DateTime
 }
 
+type GoldenJungle {
+  _id: ID!
+ imageUrl: String!
+ gameStart: Int
+  freeGames: Boolean
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  createdAt: DateTime
+}
+
+input GoldenJungleInput {
+ imageUrl: String!
+ gameStart: Int
+  freeGames: Boolean
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  createdAt: DateTime
+}
+
 
   type Auth {
     token: ID!
@@ -212,6 +233,7 @@ input AscendingFortunesInput {
     rocketRumbleSubmissions: [RocketRumble]
     catsSubmissions: [Cats]
     ascendingFortunesSubmissions: [AscendingFortunes]
+    goldenJungleSubmissions: [GoldenJungle]
   }
 
   type Mutation {
@@ -225,6 +247,7 @@ input AscendingFortunesInput {
     submitRocketRumble(rocketRumbleData: RocketRumbleInput!): RocketRumble
     submitCats(catsData: CatsInput!): Cats
     submitAscendingFortunes(ascendingFortunesData: AscendingFortunesInput!): AscendingFortunes
+     submitGoldenJungle(goldenJungleData: GoldenJungleInput!): GoldenJungle
   }
 `;
 

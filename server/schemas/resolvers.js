@@ -12,6 +12,7 @@ const {
   RocketRumbleSubmission,
   CatsSubmission,
   AscendingFortunesSubmission,
+  GoldenJungleSubmission,
 } = require("../models");
 
 const resolvers = {
@@ -36,6 +37,9 @@ const resolvers = {
     },
     ascendingFortunesSubmissions: async () => {
       return await AscendingFortunesSubmission.find().sort({ createdAt: -1 });
+    },
+    goldenJungleSubmissions: async () => {
+      return await GoldenJungleSubmission.find().sort({ createdAt: -1 });
     },
     me: async (parent, args, context) => {
       if (context.user) {
@@ -289,17 +293,21 @@ const resolvers = {
       });
 
       try {
-        const newSubmissionRichLittlePiggies = await RichLittlePiggiesSubmission.create({
-          beginningNumber,
-          endingNumber,
-          jackPotFreeGames,
-          bet,
-          cashStart,
-          cashEnd,
-          notes,
-          createdAt,
-        });
-        console.log("New Rich Little Piggies created:", newSubmissionRichLittlePiggies);
+        const newSubmissionRichLittlePiggies =
+          await RichLittlePiggiesSubmission.create({
+            beginningNumber,
+            endingNumber,
+            jackPotFreeGames,
+            bet,
+            cashStart,
+            cashEnd,
+            notes,
+            createdAt,
+          });
+        console.log(
+          "New Rich Little Piggies created:",
+          newSubmissionRichLittlePiggies
+        );
         return newSubmissionRichLittlePiggies;
       } catch (error) {
         console.error("Error creating Rich Little Piggies:", error);
@@ -426,6 +434,7 @@ const resolvers = {
           imageUrl,
           jackPot,
           combo,
+          bet,
           cashStart,
           cashEnd,
           notes,
@@ -442,6 +451,7 @@ const resolvers = {
         imageUrl,
         jackPot,
         combo,
+        bet,
         cashStart,
         cashEnd,
         notes,
@@ -449,20 +459,71 @@ const resolvers = {
       });
 
       try {
-        const newSubmissionAscendingFortunes = await AscendingFortunesSubmission.create({
-          imageUrl,
-          jackPot,
-          combo,
-          cashStart,
-          cashEnd,
-          notes,
-          createdAt,
-        });
-        console.log("New Ascending Fortunes created:", newSubmissionAscendingFortunes);
+        const newSubmissionAscendingFortunes =
+          await AscendingFortunesSubmission.create({
+            imageUrl,
+            jackPot,
+            combo,
+            bet,
+            cashStart,
+            cashEnd,
+            notes,
+            createdAt,
+          });
+        console.log(
+          "New Ascending Fortunes created:",
+          newSubmissionAscendingFortunes
+        );
         return newSubmissionAscendingFortunes;
       } catch (error) {
         console.error("Error creating Ascending Fortunes:", error);
         throw new Error("Failed to create Ascending Fortunes submission.");
+      }
+    },
+    submitGoldenJungle: async (
+      parent,
+      {
+        goldenJungleData: {
+          imageUrl,
+          gameStart,
+          freeGames,
+          bet,
+          cashStart,
+          cashEnd,
+          createdAt,
+        },
+      },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in.");
+      }
+
+      console.log("Data received in resolver:", {
+        imageUrl,
+        gameStart,
+        freeGames,
+        bet,
+        cashStart,
+        cashEnd,
+        createdAt,
+      });
+
+      try {
+        const newSubmissionGoldenJungle = await GoldenJungleSubmission.create({
+          imageUrl,
+          gameStart,
+          freeGames,
+          bet,
+          cashStart,
+          cashEnd,
+          createdAt,
+        });
+        console.log("New Golden Jungle created:", newSubmissionGoldenJungle);
+        return newSubmissionGoldenJungle;
+      } catch (error) {
+        console.error("Error creating Golden Jungle:", error);
+        throw new Error("Failed to create Golden Jungle submission.");
       }
     },
   },

@@ -154,3 +154,18 @@ export const QUERY_ACENDING_FORTUNES  = gql`
     }
   }
 `;
+
+export const QUERY_GOLDEN_JUNGLE  = gql`
+  query goldenJungleSubmissions {
+    goldenJungleSubmissions {
+      _id
+      imageUrl
+      gameStart
+      freeGames
+      bet
+      cashStart
+      cashEnd
+      createdAt
+    }
+  }
+`;

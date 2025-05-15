@@ -180,3 +180,23 @@ export const submitAscendingFortunes = async (formData) => {
     .catch(handleFetchError);
 };
 
+export const submitGoldenJungle = async (formData) => {
+  const token = AuthService.getToken();
+
+  return fetch("/api/goldenjungle", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to submit Golden Jungle data");
+      }
+      return response.json();
+    })
+    .catch(handleFetchError);
+};
+

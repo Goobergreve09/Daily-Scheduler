@@ -102,3 +102,12 @@ export const ASCENDINGFORTUNES_SUBMIT = gql`
     }
   }
 `;
+
+export const GOLDENJUNGLE_SUBMIT = gql`
+  mutation SubmitGoldenJungle($goldenJungleData: GoldenJungleInput!) {
+    submitGoldenJungle(goldenJungleData: $goldenJungleData) {
+      _id
+      createdAt
+    }
+  }
+`;
