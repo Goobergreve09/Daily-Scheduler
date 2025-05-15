@@ -3,22 +3,18 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  from,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
 import "./css/App.css";
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import React from "react";
 
-const httpLink = createHttpLink({
-  uri: "/graphql",
-});
-
 // Construct request middleware that will attach the JWT token to every request as an `authorization` header
 const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
   const token = localStorage.getItem("id_token");
-  // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
@@ -26,9 +22,32 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
+
+// Define errorLink before using it in ApolloClient setup
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    for (const err of graphQLErrors) {
+      if (err.extensions?.code === "UNAUTHENTICATED") {
+        console.warn("Token expired or invalid. Redirecting to homepage.");
+        localStorage.removeItem("id_token");
+        window.location.href = "/";
+      }
+    }
+  }
+
+  if (networkError && networkError.statusCode === 401) {
+    console.warn("401 Unauthorized. Redirecting.");
+    localStorage.removeItem("id_token");
+    window.location.href = "/";
+  }
+});
+
+const httpLink = createHttpLink({
+  uri: "http://localhost:3000/graphql",
+});
+
 const client = new ApolloClient({
-  // Set up our client to execute the `authLink` middleware prior to making the request to our GraphQL API
-  link: authLink.concat(httpLink),
+  link: from([errorLink, authLink.concat(httpLink)]), // Order matters
   cache: new InMemoryCache(),
 });
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import ChecklistImg from "../assets/images/checklist.jpg";
+import homePageImg from "../assets/images/homepageHeader.jpg";
 
 import "../css/base.css";
 import "../css/Home.css";
@@ -12,6 +12,16 @@ class Home extends React.Component {
         <Row className="homePage-row">
           <Col className="justify-content-center">
             Welcome to the Daily Scheduler!
+          </Col>
+        </Row>
+                <Row className="homePage-row">
+          <Col className="justify-content-center">
+            <img 
+              src={homePageImg} 
+              alt="Homepage" 
+              className="homepage-image" 
+              style={{ width: "100%", maxHeight: "400px", objectFit: "cover" }} 
+            />
           </Col>
         </Row>
         <Row className="homePage-row">

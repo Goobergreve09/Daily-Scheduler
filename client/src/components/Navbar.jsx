@@ -4,7 +4,6 @@ import { Navbar, Nav, Modal, Tab } from "react-bootstrap";
 
 import Auth from "../utils/auth";
 
-import SignUpForm from "./SignupForm";
 import LoginForm from "./LoginForm";
 
 import Logo from "../assets/images/navBarLogo.png";
@@ -71,20 +70,12 @@ const AppNavbar = () => {
                   Games
                 </Nav.Link>
 
-                <Nav.Link
-                  as={NavLink}
-                  to="/profile"
-                  activeclassname="active"
-                  onClick={handleLinkClick}
-                >
-                  Profile
-                </Nav.Link>
                 <Nav.Link onClick={Auth.logout}>Logout</Nav.Link>
               </>
             ) : (
               <Nav className="mr-lg-0">
                 <Nav.Link onClick={() => setShowModal(true)}>
-                  Login/Sign Up
+                  Login
                 </Nav.Link>
               </Nav>
             )}
@@ -105,9 +96,6 @@ const AppNavbar = () => {
                 <Nav.Item>
                   <Nav.Link eventKey="login">Login</Nav.Link>
                 </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link eventKey="signup">Sign Up</Nav.Link>
-                </Nav.Item>
               </Nav>
             </Modal.Title>
           </Modal.Header>
@@ -116,9 +104,6 @@ const AppNavbar = () => {
             <Tab.Content>
               <Tab.Pane eventKey="login">
                 <LoginForm handleModalClose={() => setShowModal(false)} />
-              </Tab.Pane>
-              <Tab.Pane eventKey="signup">
-                <SignUpForm handleModalClose={() => setShowModal(false)} />
               </Tab.Pane>
             </Tab.Content>
           </Modal.Body>

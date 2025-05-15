@@ -49,23 +49,24 @@ const resolvers = {
   },
 
   Mutation: {
-    addUser: async (parent, { username, email, password }) => {
-      const user = await User.create({ username, email, password });
-      const token = signToken(user);
-      return { token, user };
-    },
-
     login: async (parent, { username, password }) => {
-      const user = await User.findOne({ username });
-      if (!user) {
+      // Hardcoded fallback (optional) for development
+      const allowedUsername = process.env.ADMIN_USERNAME;
+      const allowedPassword = process.env.ADMIN_PASSWORD;
+
+      if (username !== allowedUsername || password !== allowedPassword) {
         throw AuthenticationError;
       }
-      const correctPw = await user.isCorrectPassword(password);
-      if (!correctPw) {
-        throw AuthenticationError;
-      }
-      const token = signToken(user);
-      return { token, user };
+
+      // You can create a fake user object for consistent structure
+      const mockUser = {
+        _id: "admin-id",
+        username: allowedUsername,
+        email: "admin@example.com",
+      };
+
+      const token = signToken(mockUser);
+      return { token, user: mockUser };
     },
 
     resetPassword: async (parent, { email }) => {
@@ -257,7 +258,6 @@ const resolvers = {
     },
 
     submitRichLittlePiggies: async (
-      // Fixed here by moving it inside Mutation
       parent,
       {
         richLittlePiggiesData: {
@@ -289,22 +289,18 @@ const resolvers = {
       });
 
       try {
-        const newSubmissionRichLittlePiggies =
-          await RichLittlePiggiesSubmission.create({
-            beginningNumber,
-            endingNumber,
-            jackPotFreeGames,
-            bet,
-            cashStart,
-            cashEnd,
-            notes,
-            createdAt,
-          });
-        console.log(
-          "New Rich Little Piggies created:",
-          newSubmissionRichLittlePiggies
-        );
-        return newSubmissionRichLittlePiggies; // Fixed the return statement
+        const newSubmissionRichLittlePiggies = await RichLittlePiggiesSubmission.create({
+          beginningNumber,
+          endingNumber,
+          jackPotFreeGames,
+          bet,
+          cashStart,
+          cashEnd,
+          notes,
+          createdAt,
+        });
+        console.log("New Rich Little Piggies created:", newSubmissionRichLittlePiggies);
+        return newSubmissionRichLittlePiggies;
       } catch (error) {
         console.error("Error creating Rich Little Piggies:", error);
         throw new Error("Failed to create Rich Little Piggies submission.");
@@ -312,7 +308,6 @@ const resolvers = {
     },
 
     submitRocketRumble: async (
-      // Fixed here by moving it inside Mutation
       parent,
       {
         rocketRumbleData: {
@@ -364,12 +359,13 @@ const resolvers = {
           createdAt,
         });
         console.log("New Rocket Rumble created:", newSubmissionRocketRumble);
-        return newSubmissionRocketRumble; // Fixed the return statement
+        return newSubmissionRocketRumble;
       } catch (error) {
         console.error("Error creating Rocket Rumble:", error);
         throw new Error("Failed to create Rocket Rumble submission.");
       }
     },
+
     submitCats: async (
       parent,
       {
@@ -416,12 +412,13 @@ const resolvers = {
           createdAt,
         });
         console.log("New Cats created:", newSubmissionCats);
-        return newSubmissionCats; // Fixed the return statement
+        return newSubmissionCats;
       } catch (error) {
         console.error("Error creating Cats:", error);
         throw new Error("Failed to create Cats submission.");
       }
     },
+
     submitAscendingFortunes: async (
       parent,
       {
@@ -452,21 +449,17 @@ const resolvers = {
       });
 
       try {
-        const newSubmissionAscendingFortunes =
-          await AscendingFortunesSubmission.create({
-            imageUrl,
-            jackPot,
-            combo,
-            cashStart,
-            cashEnd,
-            notes,
-            createdAt,
-          });
-        console.log(
-          "New Ascending Fortunes created:",
-          newSubmissionAscendingFortunes
-        );
-        return newSubmissionAscendingFortunes; // Fixed the return statement
+        const newSubmissionAscendingFortunes = await AscendingFortunesSubmission.create({
+          imageUrl,
+          jackPot,
+          combo,
+          cashStart,
+          cashEnd,
+          notes,
+          createdAt,
+        });
+        console.log("New Ascending Fortunes created:", newSubmissionAscendingFortunes);
+        return newSubmissionAscendingFortunes;
       } catch (error) {
         console.error("Error creating Ascending Fortunes:", error);
         throw new Error("Failed to create Ascending Fortunes submission.");
