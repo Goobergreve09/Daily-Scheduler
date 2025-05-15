@@ -120,3 +120,12 @@ export const MAGICNILE_SUBMIT = gql`
     }
   }
 `;
+
+export const OCEANMAGIC_SUBMIT = gql`
+  mutation SubmitOceanMagic($oceanMagicData: OceanMagicInput!) {
+    submitOceanMagic(oceanMagicData: $oceanMagicData) {
+      _id
+      createdAt
+    }
+  }
+`;

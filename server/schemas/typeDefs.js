@@ -242,6 +242,23 @@ cashEnd: Float
 createdAt: DateTime
 }
 
+type OceanMagic {
+  _id: ID!
+freeGames: Boolean
+bet: Float
+cashStart: Float
+cashEnd: Float
+createdAt: DateTime
+}
+
+input OceanMagicInput {
+freeGames: Boolean
+bet: Float
+cashStart: Float
+cashEnd: Float
+createdAt: DateTime
+}
+
 
   type Auth {
     token: ID!
@@ -260,6 +277,7 @@ createdAt: DateTime
     ascendingFortunesSubmissions: [AscendingFortunes]
     goldenJungleSubmissions: [GoldenJungle]
     magicNileSubmissions: [MagicNile]
+    oceanMagicSubmissions: [OceanMagic]
   }
 
   type Mutation {
@@ -275,6 +293,7 @@ createdAt: DateTime
     submitAscendingFortunes(ascendingFortunesData: AscendingFortunesInput!): AscendingFortunes
      submitGoldenJungle(goldenJungleData: GoldenJungleInput!): GoldenJungle
      submitMagicNile(magicNileData: MagicNileInput!): MagicNile
+     submitOceanMagic(oceanMagicData: OceanMagicInput!): OceanMagic
   }
 `;
 

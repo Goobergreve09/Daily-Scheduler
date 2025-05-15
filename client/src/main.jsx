@@ -15,6 +15,7 @@ import Cats from "./pages/Cats.jsx";
 import AscendingFortunes from "./pages/AscendingFortunes.jsx";
 import GoldenJungle from "./pages/GoldenJungle.jsx";
 import MagicNile from "./pages/MagicNile.jsx";
+import OceanMagic from "./pages/OceanMagic.jsx";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
                       {
         path: "/magicnile",
         element: <MagicNile />,
+      },
+                            {
+        path: "/oceanmagic",
+        element: <OceanMagic />,
       },
       
       

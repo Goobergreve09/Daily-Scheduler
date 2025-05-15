@@ -7,6 +7,7 @@ const CatsSubmission = require("./CatsSubmission");
 const AscendingFortunesSubmission = require("./AscendingFortunesSubmission");
 const GoldenJungleSubmission = require("./GoldenJungleSubmission");
 const MagicNileSubmission= require("./MagicNileSubmission");
+const OceanMagicSubmission= require("./OceanMagicSubmission");
 
 
 const User = require("./User");
@@ -21,5 +22,6 @@ module.exports = {
   CatsSubmission,
   AscendingFortunesSubmission,
   GoldenJungleSubmission,
-  MagicNileSubmission
+  MagicNileSubmission,
+  OceanMagicSubmission
 };

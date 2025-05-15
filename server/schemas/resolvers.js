@@ -14,6 +14,7 @@ const {
   AscendingFortunesSubmission,
   GoldenJungleSubmission,
   MagicNileSubmission,
+  OceanMagicSubmission,
 } = require("../models");
 
 const resolvers = {
@@ -44,6 +45,9 @@ const resolvers = {
     },
     magicNileSubmissions: async () => {
       return await MagicNileSubmission.find().sort({ createdAt: -1 });
+    },
+    oceanMagicSubmissions: async () => {
+      return await OceanMagicSubmission.find().sort({ createdAt: -1 });
     },
     me: async (parent, args, context) => {
       if (context.user) {
@@ -580,6 +584,38 @@ const resolvers = {
       } catch (error) {
         console.error("Error creating Magic Nile:", error);
         throw new Error("Failed to create Magic Nile submission.");
+      }
+    },
+    submitOceanMagic: async (
+      parent,
+      { oceanMagicData: { freeGames, bet, cashStart, cashEnd, createdAt } },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in.");
+      }
+
+      console.log("Data received in resolver:", {
+        freeGames,
+        bet,
+        cashStart,
+        cashEnd,
+        createdAt,
+      });
+
+      try {
+        const newSubmissionOceanMagic = await OceanMagicSubmission.create({
+          freeGames,
+          bet,
+          cashStart,
+          cashEnd,
+          createdAt,
+        });
+        console.log("New Ocean Magic created:", newSubmissionOceanMagic);
+        return newSubmissionOceanMagic;
+      } catch (error) {
+        console.error("Error creating Ocean Magic:", error);
+        throw new Error("Failed to create Ocean Magic submission.");
       }
     },
   },

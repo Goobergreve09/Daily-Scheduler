@@ -45,7 +45,7 @@ const Games = () => {
             <h5>Lucky Pick</h5>{" "}
           </Link>
         </Col>
-               <Col sm={6} md={4} className="gamesList mb-3 justify-content-center">
+        <Col sm={6} md={4} className="gamesList mb-3 justify-content-center">
           <Link to="/magicnile">
             <h5>Magic of the Nile</h5>
           </Link>
@@ -53,6 +53,11 @@ const Games = () => {
         <Col sm={6} md={4} className="gamesList mb-3 justify-content-center">
           <Link to="/moneyball">
             <h5>Moneyball</h5>
+          </Link>
+        </Col>
+        <Col sm={6} md={4} className="gamesList mb-3 justify-content-center">
+          <Link to="/oceanmagic">
+            <h5>Ocean Magic</h5>
           </Link>
         </Col>
         <Col sm={6} md={4} className="gamesList mb-3 justify-content-center">

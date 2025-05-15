@@ -186,3 +186,16 @@ export const QUERY_MAGIC_NILE  = gql`
     }
   }
 `;
+
+export const QUERY_OCEAN_MAGIC  = gql`
+  query oceanMagicSubmissions {
+    oceanMagicSubmissions {
+      _id
+      freeGames
+      bet
+      cashStart
+      cashEnd
+      createdAt
+    }
+  }
+`;
