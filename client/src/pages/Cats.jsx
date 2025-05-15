@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
-import { QUERY_MONEYBALL } from "../utils/queries";
-import { MONEYBALL_SUBMIT } from "../utils/mutations";
+import { QUERY_CATS } from "../utils/queries";
+import { CATS_SUBMIT } from "../utils/mutations";
 import {
   Container,
   Row,
@@ -12,34 +12,32 @@ import {
   ProgressBar,
   Accordion,
 } from "react-bootstrap";
-import moneyBallLogo from "../assets/images/moneyBallLogo.jpg";
+import catsLogo from "../assets/images/cats.png";
 import Alert from "@mui/material/Alert";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
 import "../css/base.css";
 import "../css/luckyPick.css";
 
-const MoneyBall = () => {
-  const { loading, data, refetch } = useQuery(QUERY_MONEYBALL);
+const Cats = () => {
+  const { loading, data, refetch } = useQuery(QUERY_CATS);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
-  const [submitMoneyBall] = useMutation(MONEYBALL_SUBMIT, {
+  const [submitCats] = useMutation(CATS_SUBMIT, {
     errorPolicy: "all",
   });
 
   const [formData, setFormData] = useState({
-    beginningNumber: "",
-    endingNumber: "",
-    hitJackPot: "",
-    jackpotDetails: "",
-    multipliers: "",
+    numberWilds: "",
+    numberWays: "",
+    jackPot: "",
+    freeGames: "",
+    hitBoth: "",
     bet: "",
     cashStart: "",
     cashEnd: "",
-    hitFreeGames: "",
-    freeGamesDetails: "",
   });
 
   const handleInputChange = (e) => {
@@ -53,19 +51,17 @@ const MoneyBall = () => {
     setSuccessMessage("");
 
     try {
-      await submitMoneyBall({
+      await submitCats({
         variables: {
-          moneyBallData: {
-            beginningNumber: parseInt(formData.beginningNumber),
-            endingNumber: parseInt(formData.endingNumber),
-            hitJackPot: formData.hitJackPot === "true",
-            jackpotDetails: formData.jackpotDetails || "",
-            multipliers: formData.multipliers || "",
+          catsData: {
+            numberWilds: parseInt(formData.numberWilds),
+            numberWays: parseInt(formData.numberWays),
+            jackPot: formData.hitJackPot === "true",
+            freeGames: parseInt(formData.freeGames),
+            hitBoth: formData.hitBoth === "true",
             bet: parseFloat(formData.bet) || 0,
             cashStart: parseFloat(formData.cashStart) || 0,
             cashEnd: formData.cashEnd !== "" ? parseFloat(formData.cashEnd) : 0,
-            hitFreeGames: formData.hitFreeGames === "true",
-            freeGamesDetails: formData.freeGamesDetails || "",
           },
         },
       });
@@ -75,16 +71,14 @@ const MoneyBall = () => {
 
       // Reset form
       setFormData({
-        beginningNumber: "",
-        endingNumber: "",
-        hitJackPot: "",
-        jackpotDetails: "",
-        multipliers: "",
+        numberWilds: "",
+        numberWays: "",
+        jackPot: "",
+        freeGames: "",
+        hitBoth: "",
         bet: "",
         cashStart: "",
         cashEnd: "",
-        hitFreeGames: "",
-        freeGamesDetails: "",
       });
     } catch (error) {
       console.error("Submission error:", error);
@@ -94,14 +88,14 @@ const MoneyBall = () => {
     }
   };
 
-  const submissions = data?.moneyBallSubmissions || [];
+  const submissions = data?.catsSubmissions || [];
 
   return (
     <Container className="luckyPick-container">
       <Row className="img-header-row text-center">
         <Col>
           <img
-            src={moneyBallLogo}
+            src={catsLogo}
             alt="Money Ball Logo"
             className="headerImage mt-3"
           />
@@ -110,7 +104,7 @@ const MoneyBall = () => {
       <Row className="img-header-row text-center">
         <Col>
           <h1 className="mt-4">
-            MoneyBall <span>Submission Form </span>
+            Cats<span>Submission Form </span>
           </h1>
         </Col>
       </Row>
@@ -125,32 +119,32 @@ const MoneyBall = () => {
             <Card className="formCard mt-5 mb-5 p-4">
               <Row className="mt-4">
                 <Col md={6}>
-                  <Form.Group controlId="beginningNumber">
-                    <Form.Label>What number did you begin with?</Form.Label>
+                  <Form.Group controlId="numberWilds">
+                    <Form.Label>Number of Wilds at start?</Form.Label>
                     <Form.Control
                       type="number"
-                      name="beginningNumber"
-                      value={formData.beginningNumber}
+                      name="numberWilds"
+                      value={formData.numberWilds}
                       onChange={handleInputChange}
                     />
                   </Form.Group>
 
-                  <Form.Group controlId="endingNumber">
-                    <Form.Label>What number did you hit on?</Form.Label>
+                  <Form.Group controlId="numberWays">
+                    <Form.Label>Number of Ways at Start?</Form.Label>
                     <Form.Control
                       type="number"
-                      name="endingNumber"
-                      value={formData.endingNumber}
+                      name="numberWays"
+                      value={formData.numberWays}
                       onChange={handleInputChange}
                     />
                   </Form.Group>
 
-                  <Form.Group controlId="hitJackPot">
-                    <Form.Label>Did you hit the jackpot?</Form.Label>
+                  <Form.Group controlId="jackPot">
+                    <Form.Label>Did you hit a jackpot?</Form.Label>
                     <Form.Control
                       as="select"
-                      name="hitJackPot"
-                      value={formData.hitJackPot}
+                      name="jackPot"
+                      value={formData.jackPot}
                       onChange={handleInputChange}
                     >
                       <option value="">Select...</option>
@@ -159,29 +153,27 @@ const MoneyBall = () => {
                     </Form.Control>
                   </Form.Group>
 
-                  <Form.Group controlId="jackpotDetails">
-                    <Form.Label>How many times?</Form.Label>
+                  <Form.Group controlId="freeGames">
+                    <Form.Label>How many free games did you hit?</Form.Label>
                     <Form.Control
-                      type="text"
-                      name="jackpotDetails"
-                      value={formData.jackpotDetails}
+                      type="number"
+                      name="freeGames"
+                      value={formData.freeGames}
                       onChange={handleInputChange}
                     />
                   </Form.Group>
 
-                  <Form.Group controlId="multipliers">
-                    <Form.Label>Did you Hit a Multiplier?</Form.Label>
+                  <Form.Group controlId="hitBoth">
+                    <Form.Label>Did you hit both cats?</Form.Label>
                     <Form.Control
                       as="select"
-                      name="multipliers"
-                      value={formData.multipliers}
+                      name="hitBoth"
+                      value={formData.hitBoth}
                       onChange={handleInputChange}
                     >
-                      <option value="">Select an Option</option>
-                      <option value="None">No</option>
-                      <option value="2x">2x</option>
-                      <option value="3x">3x</option>
-                      <option value="5x">5x</option>
+                      <option value="">Select...</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
                     </Form.Control>
                   </Form.Group>
                 </Col>
@@ -217,30 +209,6 @@ const MoneyBall = () => {
                       value={formData.cashEnd}
                       onChange={handleInputChange}
                       step="any"
-                    />
-                  </Form.Group>
-
-                  <Form.Group controlId="hitFreeGames">
-                    <Form.Label>Did you hit free games?</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="hitFreeGames"
-                      value={formData.hitFreeGames}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select...</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                    </Form.Control>
-                  </Form.Group>
-
-                  <Form.Group controlId="freeGamesDetails">
-                    <Form.Label>How many times?</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="freeGamesDetails"
-                      value={formData.freeGamesDetails}
-                      onChange={handleInputChange}
                     />
                   </Form.Group>
                 </Col>
@@ -297,7 +265,6 @@ const MoneyBall = () => {
 
       <Row>
         <Col>
-
           {!loading &&
             submissions.length > 0 &&
             (() => {
@@ -322,53 +289,26 @@ const MoneyBall = () => {
                 totalGames > 0
                   ? ((totals.gamesWon / totalGames) * 100).toFixed(2)
                   : "0.00";
-              const averageHit = (
-                submissions.reduce(
-                  (acc, sub) => acc + (sub.endingNumber || 0),
-                  0
-                ) / submissions.length
-              ).toFixed(2);
 
               // Count specific values
               const totalSubmissions = submissions.length;
-              const freeGamesHits = submissions.filter(
-                (sub) => sub.hitFreeGames
-              ).length;
+
               const jackpotHits = submissions.filter(
-                (sub) => sub.hitJackPot
+                (sub) => sub.jackPot
               ).length;
 
-              // Multiplier breakdown
-              const multiplierCounts = submissions.reduce(
-                (acc, sub) => {
-                  const multiplier = sub.multipliers;
-                  if (multiplier === "2x") acc.twoX += 1;
-                  else if (multiplier === "3x") acc.threeX += 1;
-                  else if (multiplier === "5x") acc.fiveX += 1;
-                  return acc;
-                },
-                { twoX: 0, threeX: 0, fiveX: 0 }
-              );
+              const bothCatsHits = submissions.filter(
+                (sub) => sub.hitBoth
+              ).length;
+
+              const bothCatsPercentage = totalSubmissions
+                ? ((bothCatsHits / totalSubmissions) * 100).toFixed(2)
+                : "0.00";
 
               // Calculate percentages
-              const freeGamesPercentage = totalSubmissions
-                ? ((freeGamesHits / totalSubmissions) * 100).toFixed(2)
-                : "0.00";
 
               const jackpotPercentage = totalSubmissions
                 ? ((jackpotHits / totalSubmissions) * 100).toFixed(2)
-                : "0.00";
-
-              const twoXPercentage = totalSubmissions
-                ? ((multiplierCounts.twoX / totalSubmissions) * 100).toFixed(2)
-                : "0.00";
-              const threeXPercentage = totalSubmissions
-                ? ((multiplierCounts.threeX / totalSubmissions) * 100).toFixed(
-                    2
-                  )
-                : "0.00";
-              const fiveXPercentage = totalSubmissions
-                ? ((multiplierCounts.fiveX / totalSubmissions) * 100).toFixed(2)
                 : "0.00";
 
               return (
@@ -377,12 +317,8 @@ const MoneyBall = () => {
 
                   <Row className="mb-3">
                     <Col>
-                      <h6 className="text-secondary">Average Number Hit</h6>
-                      <h4 className="text-primary fw-bold">{averageHit}</h4>
-                    </Col>
-                    <Col>
                       <h6 className="text-secondary">Total Revenue</h6>
-                                   <h4
+                      <h4
                         className={`fw-bold ${
                           parseFloat(totalRevenue) < 0
                             ? "text-danger"
@@ -391,6 +327,14 @@ const MoneyBall = () => {
                       >
                         ${totalRevenue}
                       </h4>
+                    </Col>
+                    <Col>
+                      <h6 className="text-secondary">Win Percentage</h6>
+                      <ProgressBar
+                        now={winPercentage}
+                        label={`${winPercentage}%`}
+                        variant="info"
+                      />
                     </Col>
                   </Row>
 
@@ -411,39 +355,18 @@ const MoneyBall = () => {
                     </Col>
                   </Row>
 
-                  <Row className="mb-4">
-                    <Col>
-                      <h6 className="text-secondary">Win Percentage</h6>
-                      <ProgressBar
-                        now={winPercentage}
-                        label={`${winPercentage}%`}
-                        variant="info"
-                      />
-                    </Col>
-                  </Row>
-
                   <Row className="mb-3">
-                    <Col>
-                      <h6 className="text-secondary">Free Games Hit</h6>
-                      <h4 className="fw-bold">{freeGamesPercentage}%</h4>
-                    </Col>
                     <Col>
                       <h6 className="text-secondary">Jackpot Hit</h6>
                       <h4 className="fw-bold">{jackpotPercentage}%</h4>
                     </Col>
-                  </Row>
-
-                  <Row className="mt-3">
                     <Col>
-                      <h6 className="text-secondary">
-                        🎯 Multiplier Distribution
-                      </h6>
-                      <p className="fw-bold mb-0">
-                        2x: {twoXPercentage}% | 3x: {threeXPercentage}% | 5x:{" "}
-                        {fiveXPercentage}%
-                      </p>
+                      <h6 className="text-secondary">Both Cats Hit</h6>
+                      <h4 className="fw-bold">{bothCatsPercentage}%</h4>
                     </Col>
                   </Row>
+
+                  <Row className="mt-3"></Row>
                 </Card>
               );
             })()}
@@ -467,15 +390,15 @@ const MoneyBall = () => {
                       <tbody>
                         <tr>
                           <td>
-                            <strong>Beginning Number:</strong>
+                            <strong>Number of Wilds:</strong>
                           </td>
-                          <td>{sub.beginningNumber}</td>
+                          <td>{sub.numberWilds}</td>
                         </tr>
                         <tr>
                           <td>
-                            <strong>Number Hit On:</strong>
+                            <strong>Number of Ways:</strong>
                           </td>
-                          <td>{sub.endingNumber}</td>
+                          <td>{sub.numberWays}</td>
                         </tr>
                         <tr>
                           <td>
@@ -484,18 +407,16 @@ const MoneyBall = () => {
                           <td>{sub.hitJackPot ? "Yes" : "No"}</td>
                         </tr>
                         <tr>
-                          <td colSpan="2" style={{ textAlign: "center" }}>
-                            <strong>
-                              Jackpot hit{" "}
-                              {sub.hitJackPot ? sub.jackpotDetails : 0} times
-                            </strong>
+                          <td>
+                            <strong>Number of free games hit:</strong>
                           </td>
+                          <td>{sub.freeGames}</td>
                         </tr>
                         <tr>
                           <td>
-                            <strong>Multiplier Hit:</strong>
+                            <strong>Both cats hit:</strong>
                           </td>
-                          <td>{sub.multipliers}</td>
+                          <td>{sub.hitBoth ? "Yes" : "No"}</td>
                         </tr>
                         <tr>
                           <td>
@@ -514,21 +435,6 @@ const MoneyBall = () => {
                             <strong>Cash End:</strong>
                           </td>
                           <td>${sub.cashEnd}</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <strong>FreeGames Hit:</strong>
-                          </td>
-                          <td>{sub.hitFreeGames ? "Yes" : "No"}</td>
-                        </tr>
-                        <tr>
-                          <td colSpan="2" style={{ textAlign: "center" }}>
-                            <strong>
-                              Free Games Hit{" "}
-                              {sub.hitFreeGames ? sub.freeGamesDetails : 0}{" "}
-                              times
-                            </strong>
-                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -551,4 +457,4 @@ const MoneyBall = () => {
   );
 };
 
-export default MoneyBall;
+export default Cats;

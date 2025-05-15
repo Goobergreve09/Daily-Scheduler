@@ -121,3 +121,20 @@ export const QUERY_ROCKET  = gql`
     }
   }
 `;
+
+export const QUERY_CATS  = gql`
+  query catsSubmissions {
+    catsSubmissions {
+      _id
+      numberWilds
+      numberWays
+      jackPot
+      freeGames
+      hitBoth
+      bet
+      cashStart
+      cashEnd
+      createdAt
+    }
+  }
+`;

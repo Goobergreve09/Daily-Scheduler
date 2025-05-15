@@ -84,3 +84,12 @@ export const ROCKETRUMBLE_SUBMIT = gql`
     }
   }
 `;
+
+export const CATS_SUBMIT = gql`
+  mutation SubmitCats($catsData: CatsInput!) {
+    submitCats(catsData: $catsData) {
+      _id
+      createdAt
+    }
+  }
+`;

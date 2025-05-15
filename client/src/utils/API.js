@@ -139,3 +139,23 @@ export const submitRocketRumble = async (formData) => {
     })
     .catch(handleFetchError);
 };
+
+export const submitCats = async (formData) => {
+  const token = AuthService.getToken();
+
+  return fetch("/api/cats", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to submit Cats data");
+      }
+      return response.json();
+    })
+    .catch(handleFetchError);
+};

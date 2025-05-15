@@ -10,6 +10,7 @@ const {
   RegalRichesSubmission,
   RichLittlePiggiesSubmission,
   RocketRumbleSubmission,
+  CatsSubmission,
 } = require("../models");
 
 const resolvers = {
@@ -28,6 +29,9 @@ const resolvers = {
     },
     rocketRumbleSubmissions: async () => {
       return await RocketRumbleSubmission.find().sort({ createdAt: -1 });
+    },
+    catsSubmissions: async () => {
+      return await CatsSubmission.find().sort({ createdAt: -1 });
     },
     me: async (parent, args, context) => {
       if (context.user) {
@@ -356,10 +360,62 @@ const resolvers = {
           createdAt,
         });
         console.log("New Rocket Rumble created:", newSubmissionRocketRumble);
-        return newSubmissionRichLittlePiggies; // Fixed the return statement
+        return newSubmissionRocketRumble; // Fixed the return statement
       } catch (error) {
         console.error("Error creating Rocket Rumble:", error);
         throw new Error("Failed to create Rocket Rumble submission.");
+      }
+    },
+    submitCats: async (
+      parent,
+      {
+        catsData: {
+          numberWilds,
+          numberWays,
+          jackPot,
+          freeGames,
+          hitBoth,
+          bet,
+          cashStart,
+          cashEnd,
+          createdAt,
+        },
+      },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in.");
+      }
+
+      console.log("Data received in resolver:", {
+        numberWilds,
+        numberWays,
+        jackPot,
+        freeGames,
+        hitBoth,
+        bet,
+        cashStart,
+        cashEnd,
+        createdAt,
+      });
+
+      try {
+        const newSubmissionCats = await CatsSubmission.create({
+        numberWilds,
+        numberWays,
+        jackPot,
+        freeGames,
+        hitBoth,
+        bet,
+        cashStart,
+        cashEnd,
+        createdAt,
+        });
+        console.log("New Cats created:", newSubmissionCats);
+        return newSubmissionCats; // Fixed the return statement
+      } catch (error) {
+        console.error("Error creating Cats:", error);
+        throw new Error("Failed to create Cats submission.");
       }
     },
   },

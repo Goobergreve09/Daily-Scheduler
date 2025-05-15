@@ -148,6 +148,31 @@ redNumber: Int
   createdAt: DateTime
 }
 
+type Cats {
+  _id: ID!
+ numberWilds: Int
+numberWays: Int
+ jackPot: Boolean
+  freeGames: Int
+   hitBoth: Boolean
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  createdAt: DateTime
+}
+
+input CatsInput {
+ numberWilds: Int
+numberWays: Int
+ jackPot: Boolean
+  freeGames: Int
+   hitBoth: Boolean
+  bet: Float
+  cashStart: Float
+  cashEnd: Float
+  createdAt: DateTime
+}
+
 
   type Auth {
     token: ID!
@@ -162,6 +187,7 @@ redNumber: Int
     regalRichesSubmissions: [RegalRiches]
     richLittlePiggiesSubmissions: [RichLittlePiggies]
     rocketRumbleSubmissions: [RocketRumble]
+     catsSubmissions: [Cats]
   }
 
   type Mutation {
@@ -173,6 +199,7 @@ redNumber: Int
     submitRegalRiches(regalRichesData: RegalRichesInput!): RegalRiches
     submitRichLittlePiggies(richLittlePiggiesData: RichLittlePiggiesInput!): RichLittlePiggies
     submitRocketRumble(rocketRumbleData: RocketRumbleInput!): RocketRumble
+     submitCats(catsData: CatsInput!): Cats
   }
 `;
 

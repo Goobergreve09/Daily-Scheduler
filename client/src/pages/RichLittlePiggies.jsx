@@ -294,7 +294,15 @@ const RichLittlePiggies = () => {
           </Col>
           <Col>
             <h6 className="text-secondary">Total Revenue</h6>
-            <h4 className="text-success fw-bold">${totalRevenue}</h4>
+                        <h4
+                        className={`fw-bold ${
+                          parseFloat(totalRevenue) < 0
+                            ? "text-danger"
+                            : "text-success"
+                        }`}
+                      >
+                        ${totalRevenue}
+                      </h4>
           </Col>
         </Row>
 
