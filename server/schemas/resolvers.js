@@ -11,6 +11,7 @@ const {
   RichLittlePiggiesSubmission,
   RocketRumbleSubmission,
   CatsSubmission,
+  AscendingFortunesSubmission,
 } = require("../models");
 
 const resolvers = {
@@ -32,6 +33,9 @@ const resolvers = {
     },
     catsSubmissions: async () => {
       return await CatsSubmission.find().sort({ createdAt: -1 });
+    },
+    ascendingFortunesSubmissions: async () => {
+      return await AscendingFortunesSubmission.find().sort({ createdAt: -1 });
     },
     me: async (parent, args, context) => {
       if (context.user) {
@@ -401,21 +405,71 @@ const resolvers = {
 
       try {
         const newSubmissionCats = await CatsSubmission.create({
-        numberWilds,
-        numberWays,
-        jackPot,
-        freeGames,
-        hitBoth,
-        bet,
-        cashStart,
-        cashEnd,
-        createdAt,
+          numberWilds,
+          numberWays,
+          jackPot,
+          freeGames,
+          hitBoth,
+          bet,
+          cashStart,
+          cashEnd,
+          createdAt,
         });
         console.log("New Cats created:", newSubmissionCats);
         return newSubmissionCats; // Fixed the return statement
       } catch (error) {
         console.error("Error creating Cats:", error);
         throw new Error("Failed to create Cats submission.");
+      }
+    },
+    submitAscendingFortunes: async (
+      parent,
+      {
+        ascendingFortunesData: {
+          imageUrl,
+          jackPot,
+          combo,
+          cashStart,
+          cashEnd,
+          notes,
+          createdAt,
+        },
+      },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in.");
+      }
+
+      console.log("Data received in resolver:", {
+        imageUrl,
+        jackPot,
+        combo,
+        cashStart,
+        cashEnd,
+        notes,
+        createdAt,
+      });
+
+      try {
+        const newSubmissionAscendingFortunes =
+          await AscendingFortunesSubmission.create({
+            imageUrl,
+            jackPot,
+            combo,
+            cashStart,
+            cashEnd,
+            notes,
+            createdAt,
+          });
+        console.log(
+          "New Ascending Fortunes created:",
+          newSubmissionAscendingFortunes
+        );
+        return newSubmissionAscendingFortunes; // Fixed the return statement
+      } catch (error) {
+        console.error("Error creating Ascending Fortunes:", error);
+        throw new Error("Failed to create Ascending Fortunes submission.");
       }
     },
   },

@@ -93,3 +93,12 @@ export const CATS_SUBMIT = gql`
     }
   }
 `;
+
+export const ASCENDINGFORTUNES_SUBMIT = gql`
+  mutation SubmitAscendingFortunes($ascendingFortunesData: AscendingFortunesInput!) {
+    submitAscendingFortunes(ascendingFortunesData: $ascendingFortunesData) {
+      _id
+      createdAt
+    }
+  }
+`;

@@ -43,95 +43,95 @@ input LuckyPickInput {
 }
 
 type MoneyBall {
-  _id: ID!
-  beginningNumber: Int
-  endingNumber: Int
- hitJackPot: Boolean
-  jackpotDetails: String
-  multipliers: String
-  bet: Float
-  cashStart: Float
-  cashEnd: Float
-  hitFreeGames: Boolean
-  freeGamesDetails: String
-  createdAt: DateTime
+_id: ID!
+beginningNumber: Int
+endingNumber: Int
+hitJackPot: Boolean
+jackpotDetails: String
+multipliers: String
+bet: Float
+cashStart: Float
+cashEnd: Float
+hitFreeGames: Boolean
+freeGamesDetails: String
+createdAt: DateTime
 }
 
 input MoneyBallInput {
-  beginningNumber: Int
-  endingNumber: Int
- hitJackPot: Boolean
-  jackpotDetails: String
-  multipliers: String
-  bet: Float
-  cashStart: Float
-  cashEnd: Float
-  hitFreeGames: Boolean
-  freeGamesDetails: String
-  createdAt: DateTime
+beginningNumber: Int
+endingNumber: Int
+hitJackPot: Boolean
+jackpotDetails: String
+multipliers: String
+bet: Float
+cashStart: Float
+cashEnd: Float
+hitFreeGames: Boolean
+freeGamesDetails: String
+createdAt: DateTime
 }
 
 type RegalRiches {
-  _id: ID!
- whichColor: String
-  combo: Boolean
- beginningNumber: Int
-  endingNumber: Int
-  bet: Float
-  cashStart: Float
-  cashEnd: Float
-  notes: String
-  createdAt: DateTime
+_id: ID!
+whichColor: String
+combo: Boolean
+beginningNumber: Int
+endingNumber: Int
+bet: Float
+cashStart: Float
+cashEnd: Float
+notes: String
+createdAt: DateTime
 }
 
 input RegalRichesInput {
- whichColor: String
-  combo: Boolean
- beginningNumber: Int
-  endingNumber: Int
-  bet: Float
-  cashStart: Float
-  cashEnd: Float
-  notes: String
-  createdAt: DateTime
+whichColor: String
+combo: Boolean
+beginningNumber: Int
+endingNumber: Int
+bet: Float
+cashStart: Float
+cashEnd: Float
+notes: String
+createdAt: DateTime
 }
 
 type RichLittlePiggies {
-  _id: ID!
- beginningNumber: Int
+_id: ID!
+beginningNumber: Int
 endingNumber: Int
- jackPotFreeGames: Boolean
-  bet: Float
-  cashStart: Float
-  cashEnd: Float
-  notes: String
-  createdAt: DateTime
+jackPotFreeGames: Boolean
+bet: Float
+cashStart: Float
+cashEnd: Float
+notes: String
+createdAt: DateTime
 }
 
 input RichLittlePiggiesInput {
 beginningNumber: Int
 endingNumber: Int
- jackPotFreeGames: Boolean
-  bet: Float
-  cashStart: Float
-  cashEnd: Float
-  notes: String
-  createdAt: DateTime
+jackPotFreeGames: Boolean
+bet: Float
+cashStart: Float
+cashEnd: Float
+notes: String
+createdAt: DateTime
 }
 
 type RocketRumble {
-  _id: ID!
+_id: ID!
  blueNumber: Int
 greenNumber: Int
 purpleNumber: Int
 redNumber: Int
- rocketBoost: Boolean
-  freeGames: Boolean
-  bet: Float
-  cashStart: Float
-  cashEnd: Float
-  notes: String
-  createdAt: DateTime
+rocketBoost: Boolean
+freeGames: Boolean
+bet: Float
+cashStart: Float
+cashEnd: Float
+notes: String
+createdAt: DateTime
 }
 
 input RocketRumbleInput {
@@ -139,8 +139,45 @@ input RocketRumbleInput {
 greenNumber: Int
 purpleNumber: Int
 redNumber: Int
- rocketBoost: Boolean
-  freeGames: Boolean
+rocketBoost: Boolean
+freeGames: Boolean
+bet: Float
+cashStart: Float
+cashEnd: Float
+notes: String
+createdAt: DateTime
+}
+
+type Cats {
+_id: ID!
+numberWilds: Int
+numberWays: Int
+jackPot: Boolean
+freeGames: Int
+hitBoth: Boolean
+bet: Float
+cashStart: Float
+cashEnd: Float
+createdAt: DateTime
+}
+
+input CatsInput {
+ numberWilds: Int
+numberWays: Int
+jackPot: Boolean
+freeGames: Int
+hitBoth: Boolean
+bet: Float
+cashStart: Float
+cashEnd: Float
+createdAt: DateTime
+}
+
+type AscendingFortunes {
+  _id: ID!
+ imageUrl: String!
+ jackPot: String
+  combo: Boolean
   bet: Float
   cashStart: Float
   cashEnd: Float
@@ -148,29 +185,15 @@ redNumber: Int
   createdAt: DateTime
 }
 
-type Cats {
-  _id: ID!
- numberWilds: Int
-numberWays: Int
- jackPot: Boolean
-  freeGames: Int
-   hitBoth: Boolean
-  bet: Float
-  cashStart: Float
-  cashEnd: Float
-  createdAt: DateTime
-}
-
-input CatsInput {
- numberWilds: Int
-numberWays: Int
- jackPot: Boolean
-  freeGames: Int
-   hitBoth: Boolean
-  bet: Float
-  cashStart: Float
-  cashEnd: Float
-  createdAt: DateTime
+input AscendingFortunesInput {
+ imageUrl: String!
+ jackPot: String
+ combo: Boolean
+ bet: Float
+ cashStart: Float
+ cashEnd: Float
+ notes: String
+ createdAt: DateTime
 }
 
 
@@ -187,7 +210,8 @@ numberWays: Int
     regalRichesSubmissions: [RegalRiches]
     richLittlePiggiesSubmissions: [RichLittlePiggies]
     rocketRumbleSubmissions: [RocketRumble]
-     catsSubmissions: [Cats]
+    catsSubmissions: [Cats]
+    ascendingFortunesSubmissions: [AscendingFortunes]
   }
 
   type Mutation {
@@ -199,7 +223,8 @@ numberWays: Int
     submitRegalRiches(regalRichesData: RegalRichesInput!): RegalRiches
     submitRichLittlePiggies(richLittlePiggiesData: RichLittlePiggiesInput!): RichLittlePiggies
     submitRocketRumble(rocketRumbleData: RocketRumbleInput!): RocketRumble
-     submitCats(catsData: CatsInput!): Cats
+    submitCats(catsData: CatsInput!): Cats
+    submitAscendingFortunes(ascendingFortunesData: AscendingFortunesInput!): AscendingFortunes
   }
 `;
 

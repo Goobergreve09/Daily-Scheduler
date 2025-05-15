@@ -13,6 +13,11 @@ const Games = () => {
         </Col>
       </Row>
       <Row>
+                   <Col sm={6} md={4} className=" gamesList mb-3 justify-content-center text-center">
+          <Link to="/ascendingfortunes">
+            <h5>Ascending Fortunes</h5>{" "}
+          </Link>
+        </Col>
              <Col sm={6} md={4} className=" gamesList mb-3 justify-content-center text-center">
           <Link to="/cats">
             <h5>Knock Knock Guardians Queen/Cats</h5>{" "}

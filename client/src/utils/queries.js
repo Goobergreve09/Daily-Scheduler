@@ -138,3 +138,19 @@ export const QUERY_CATS  = gql`
     }
   }
 `;
+
+export const QUERY_ACENDING_FORTUNES  = gql`
+  query ascendingFortunesSubmissions {
+    ascendingFortunesSubmissions {
+      _id
+      imageUrl
+      jackPot
+      combo
+      bet
+      cashStart
+      cashEnd
+      notes
+      createdAt
+    }
+  }
+`;

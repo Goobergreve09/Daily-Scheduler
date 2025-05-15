@@ -159,3 +159,24 @@ export const submitCats = async (formData) => {
     })
     .catch(handleFetchError);
 };
+
+export const submitAscendingFortunes = async (formData) => {
+  const token = AuthService.getToken();
+
+  return fetch("/api/ascendingfortunes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to submit Ascending Fortunes data");
+      }
+      return response.json();
+    })
+    .catch(handleFetchError);
+};
+

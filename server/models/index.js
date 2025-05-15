@@ -4,6 +4,8 @@ const RegalRichesSubmission = require("./RegalRichesSubmission");
 const RichLittlePiggiesSubmission = require("./RichLittlePiggiesSubmission");
 const RocketRumbleSubmission = require("./RocketRumbleSubmission");
 const CatsSubmission = require("./CatsSubmission");
+const AscendingFortunesSubmission = require("./AscendingFortunesSubmission");
+
 const User = require("./User");
 
 module.exports = {
@@ -13,5 +15,6 @@ module.exports = {
   RegalRichesSubmission,
   RichLittlePiggiesSubmission,
   RocketRumbleSubmission,
-  CatsSubmission
+  CatsSubmission,
+  AscendingFortunesSubmission
 };
