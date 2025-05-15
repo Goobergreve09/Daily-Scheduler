@@ -11,6 +11,8 @@ import "./css/App.css";
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import React from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Construct request middleware that will attach the JWT token to every request as an `authorization` header
 const authLink = setContext((_, { headers }) => {
@@ -28,17 +30,19 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     for (const err of graphQLErrors) {
       if (err.extensions?.code === "UNAUTHENTICATED") {
-        console.warn("Token expired or invalid. Redirecting to homepage.");
+        console.warn("Token expired or invalid.");
         localStorage.removeItem("id_token");
-        window.location.href = "/";
+
+        // Dispatch custom event for React to listen to
+        window.dispatchEvent(new Event("token-expired"));
       }
     }
   }
 
   if (networkError && networkError.statusCode === 401) {
-    console.warn("401 Unauthorized. Redirecting.");
+    console.warn("401 Unauthorized.");
     localStorage.removeItem("id_token");
-    window.location.href = "/";
+    window.dispatchEvent(new Event("token-expired"));
   }
 });
 
@@ -52,6 +56,19 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleTokenExpired = () => {
+      navigate("/"); // or navigate("/login") depending on your app
+    };
+
+    window.addEventListener("token-expired", handleTokenExpired);
+    return () => {
+      window.removeEventListener("token-expired", handleTokenExpired);
+    };
+  }, [navigate]);
+
   return (
     <ApolloProvider client={client}>
       <Navbar />
