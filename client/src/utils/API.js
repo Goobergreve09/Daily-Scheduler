@@ -200,3 +200,22 @@ export const submitGoldenJungle = async (formData) => {
     .catch(handleFetchError);
 };
 
+export const submitMagicNile = async (formData) => {
+  const token = AuthService.getToken();
+
+  return fetch("/api/magicnile", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(formData),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to submit Magic Nile data");
+      }
+      return response.json();
+    })
+    .catch(handleFetchError);
+};

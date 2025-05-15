@@ -111,3 +111,12 @@ export const GOLDENJUNGLE_SUBMIT = gql`
     }
   }
 `;
+
+export const MAGICNILE_SUBMIT = gql`
+  mutation SubmitMagicNile($magicNileData: MagicNileInput!) {
+    submitMagicNile(magicNileData: $magicNileData) {
+      _id
+      createdAt
+    }
+  }
+`;

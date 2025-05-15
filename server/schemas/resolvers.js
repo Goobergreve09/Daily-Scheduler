@@ -13,6 +13,7 @@ const {
   CatsSubmission,
   AscendingFortunesSubmission,
   GoldenJungleSubmission,
+  MagicNileSubmission,
 } = require("../models");
 
 const resolvers = {
@@ -40,6 +41,9 @@ const resolvers = {
     },
     goldenJungleSubmissions: async () => {
       return await GoldenJungleSubmission.find().sort({ createdAt: -1 });
+    },
+    magicNileSubmissions: async () => {
+      return await MagicNileSubmission.find().sort({ createdAt: -1 });
     },
     me: async (parent, args, context) => {
       if (context.user) {
@@ -524,6 +528,58 @@ const resolvers = {
       } catch (error) {
         console.error("Error creating Golden Jungle:", error);
         throw new Error("Failed to create Golden Jungle submission.");
+      }
+    },
+    submitMagicNile: async (
+      parent,
+      {
+        magicNileData: {
+          blocksGreen,
+          blocksRed,
+          blocksBlue,
+          colorHit,
+          freeGames,
+          bet,
+          cashStart,
+          cashEnd,
+          createdAt,
+        },
+      },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError("You must be logged in.");
+      }
+
+      console.log("Data received in resolver:", {
+        blocksGreen,
+        blocksRed,
+        blocksBlue,
+        colorHit,
+        freeGames,
+        bet,
+        cashStart,
+        cashEnd,
+        createdAt,
+      });
+
+      try {
+        const newSubmissionMagicNile = await MagicNileSubmission.create({
+          blocksGreen,
+          blocksRed,
+          blocksBlue,
+          colorHit,
+          freeGames,
+          bet,
+          cashStart,
+          cashEnd,
+          createdAt,
+        });
+        console.log("New Magic Nile created:", newSubmissionMagicNile);
+        return newSubmissionMagicNile;
+      } catch (error) {
+        console.error("Error creating Magic Nile:", error);
+        throw new Error("Failed to create Magic Nile submission.");
       }
     },
   },

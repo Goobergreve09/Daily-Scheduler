@@ -169,3 +169,20 @@ export const QUERY_GOLDEN_JUNGLE  = gql`
     }
   }
 `;
+
+export const QUERY_MAGIC_NILE  = gql`
+  query magicNileSubmissions {
+    magicNileSubmissions {
+      _id
+      blocksGreen
+      blocksRed
+      blocksBlue
+      colorHit
+      freeGames
+      bet
+      cashStart
+      cashEnd
+      createdAt
+    }
+  }
+`;

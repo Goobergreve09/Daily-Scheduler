@@ -217,6 +217,31 @@ input GoldenJungleInput {
   createdAt: DateTime
 }
 
+type MagicNile {
+  _id: ID!
+blocksGreen: Int
+blocksRed: Int
+blocksBlue: Int
+colorHit: String
+freeGames: Boolean
+bet: Float
+cashStart: Float
+cashEnd: Float
+createdAt: DateTime
+}
+
+input MagicNileInput {
+blocksGreen: Int
+blocksRed: Int
+blocksBlue: Int
+colorHit: String
+freeGames: Boolean
+bet: Float
+cashStart: Float
+cashEnd: Float
+createdAt: DateTime
+}
+
 
   type Auth {
     token: ID!
@@ -234,6 +259,7 @@ input GoldenJungleInput {
     catsSubmissions: [Cats]
     ascendingFortunesSubmissions: [AscendingFortunes]
     goldenJungleSubmissions: [GoldenJungle]
+    magicNileSubmissions: [MagicNile]
   }
 
   type Mutation {
@@ -248,6 +274,7 @@ input GoldenJungleInput {
     submitCats(catsData: CatsInput!): Cats
     submitAscendingFortunes(ascendingFortunesData: AscendingFortunesInput!): AscendingFortunes
      submitGoldenJungle(goldenJungleData: GoldenJungleInput!): GoldenJungle
+     submitMagicNile(magicNileData: MagicNileInput!): MagicNile
   }
 `;
 
